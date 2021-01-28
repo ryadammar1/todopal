@@ -1,0 +1,1 @@
+web: java -jar todopal-backend/build/libs/todopal-backend-0.0.1-SNAPSHOT.jar
