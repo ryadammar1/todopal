@@ -1,7 +1,7 @@
 package model;
 
 import javax.persistence.Entity;
-import DateBridge;
+import DateBridge.*;
 import javax.persistence.ManyToOne;
 import javax.persistence.Id;
 

@@ -2,7 +2,7 @@ package model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import Array;
+import Array.*;
 import java.util.Set;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;

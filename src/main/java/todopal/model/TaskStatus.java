@@ -1,7 +1,7 @@
 package model;
 
 import javax.persistence.Entity;
-import EnumExtension;
+import EnumExtension.*;
 
 @Entity
 public enum TaskStatus{
