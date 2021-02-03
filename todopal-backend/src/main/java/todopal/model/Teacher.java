@@ -1,4 +1,4 @@
-package model;
+package todopal.model;
 
 import javax.persistence.Entity;
 import java.util.Set;

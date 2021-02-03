@@ -1,7 +1,9 @@
-package model;
+package todopal.model;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import Array.*;
+
+import java.util.List;
 import java.util.Set;
 import javax.persistence.OneToMany;
 import javax.persistence.ManyToOne;
@@ -16,20 +18,22 @@ private void setTotalPoints(int value) {
 private int getTotalPoints() {
     return this.totalPoints;
 }
-private Array taskCategories;
+private List<String> taskCategories;
 
-private void setTaskCategories(Array value) {
+private void setTaskCategories(List<String> value) {
     this.taskCategories = value;
 }
-private Array getTaskCategories() {
+@ElementCollection
+private List<String> getTaskCategories() {
     return this.taskCategories;
 }
-private Array taskTags;
+private List<String> taskTags;
 
-private void setTaskTags(Array value) {
+private void setTaskTags(List<String> value) {
     this.taskTags = value;
 }
-private Array getTaskTags() {
+   @ElementCollection
+private List<String> getTaskTags() {
     return this.taskTags;
 }
    private Set<TaskContainer> school;

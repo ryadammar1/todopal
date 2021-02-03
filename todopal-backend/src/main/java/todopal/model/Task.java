@@ -1,7 +1,7 @@
-package model;
+package todopal.model;
 
 import javax.persistence.Entity;
-import DateBridge.*;
+import java.util.Date;
 import javax.persistence.Id;
 import java.util.Set;
 import javax.persistence.OneToMany;
@@ -57,20 +57,20 @@ private void setDescription(String value) {
 private String getDescription() {
     return this.description;
 }
-private DateBridge startDate;
+private Date startDate;
 
-private void setStartDate(DateBridge value) {
+private void setStartDate(Date value) {
     this.startDate = value;
 }
-private DateBridge getStartDate() {
+private Date getStartDate() {
     return this.startDate;
 }
-private DateBridge dueDate;
+private Date dueDate;
 
-private void setDueDate(DateBridge value) {
+private void setDueDate(Date value) {
     this.dueDate = value;
 }
-private DateBridge getDueDate() {
+private Date getDueDate() {
     return this.dueDate;
 }
 private int id;

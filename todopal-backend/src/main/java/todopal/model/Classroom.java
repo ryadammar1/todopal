@@ -1,11 +1,10 @@
-package model;
+package todopal.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import Array.*;
+import javax.persistence.*;
+
+
+import java.util.List;
 import java.util.Set;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Classroom{
@@ -42,20 +41,22 @@ private void setImage(String value) {
 private String getImage() {
     return this.image;
 }
-private Array taskCategories;
+private List<String> taskCategories;
 
-private void setTaskCategories(Array value) {
+private void setTaskCategories(List<String> value) {
     this.taskCategories = value;
 }
-private Array getTaskCategories() {
+    @ElementCollection
+private List<String> getTaskCategories() {
     return this.taskCategories;
 }
-private Array taskTags;
+private List<String> taskTags;
 
-private void setTaskTags(Array value) {
+private void setTaskTags(List<String> value) {
     this.taskTags = value;
 }
-private Array getTaskTags() {
+    @ElementCollection
+private List<String> getTaskTags() {
     return this.taskTags;
 }
 private String subject;

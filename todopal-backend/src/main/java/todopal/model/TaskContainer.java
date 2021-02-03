@@ -1,7 +1,7 @@
-package model;
+package todopal.model;
 
 import javax.persistence.Entity;
-import DateBridge.*;
+import java.util.Date;
 import javax.persistence.ManyToOne;
 import javax.persistence.Id;
 
@@ -15,12 +15,12 @@ private void setStatus(TaskStatus value) {
 private TaskStatus getStatus() {
     return this.status;
 }
-private DateBridge dateCompleted;
+private Date dateCompleted;
 
-private void setDateCompleted(DateBridge value) {
+private void setDateCompleted(Date value) {
     this.dateCompleted = value;
 }
-private DateBridge getDateCompleted() {
+private Date getDateCompleted() {
     return this.dateCompleted;
 }
 private Student student;
