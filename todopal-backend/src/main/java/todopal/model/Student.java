@@ -1,72 +1,68 @@
 package todopal.model;
 
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Set;
 import javax.persistence.OneToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Student extends Person{
    private int totalPoints;
 
-private void setTotalPoints(int value) {
+public void setTotalPoints(int value) {
     this.totalPoints = value;
 }
-private int getTotalPoints() {
+public int getTotalPoints() {
     return this.totalPoints;
 }
-private List<String> taskCategories;
+private ArrayList taskCategories;
 
-private void setTaskCategories(List<String> value) {
+public void setTaskCategories(ArrayList value) {
     this.taskCategories = value;
 }
-@ElementCollection
-private List<String> getTaskCategories() {
+public ArrayList getTaskCategories() {
     return this.taskCategories;
 }
-private List<String> taskTags;
+private ArrayList taskTags;
 
-private void setTaskTags(List<String> value) {
+public void setTaskTags(ArrayList value) {
     this.taskTags = value;
 }
-   @ElementCollection
-private List<String> getTaskTags() {
+public ArrayList getTaskTags() {
     return this.taskTags;
 }
-   private Set<TaskContainer> school;
+   private Set<TaskContainer> schoolTask;
    
-   @OneToMany(mappedBy="student" )
-   public Set<TaskContainer> getSchool() {
-      return this.school;
+   @OneToMany
+   public Set<TaskContainer> getSchoolTask() {
+      return this.schoolTask;
    }
    
-   public void setSchool(Set<TaskContainer> schools) {
-      this.school = schools;
+   public void setSchoolTask(Set<TaskContainer> schoolTasks) {
+      this.schoolTask = schoolTasks;
    }
    
-   private Set<TaskContainer> personal;
+   private Set<TaskContainer> personalTask;
    
-   @OneToMany(mappedBy="student1" )
-   public Set<TaskContainer> getPersonal() {
-      return this.personal;
+   @OneToMany
+   public Set<TaskContainer> getPersonalTask() {
+      return this.personalTask;
    }
    
-   public void setPersonal(Set<TaskContainer> personals) {
-      this.personal = personals;
+   public void setPersonalTask(Set<TaskContainer> personalTasks) {
+      this.personalTask = personalTasks;
    }
    
-   private Classroom classroom;
+   private Set<Classroom> classroom;
    
-   @ManyToOne(optional=false)
-   public Classroom getClassroom() {
+   @ManyToMany
+   public Set<Classroom> getClassroom() {
       return this.classroom;
    }
    
-   public void setClassroom(Classroom classroom) {
-      this.classroom = classroom;
+   public void setClassroom(Set<Classroom> classrooms) {
+      this.classroom = classrooms;
    }
    
    }

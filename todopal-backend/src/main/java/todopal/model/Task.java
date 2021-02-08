@@ -1,98 +1,85 @@
 package todopal.model;
 
 import javax.persistence.Entity;
-import java.util.Date;
+import java.sql.Date;
 import javax.persistence.Id;
-import java.util.Set;
-import javax.persistence.OneToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class Task{
    private boolean isMandatory;
 
-private void setIsMandatory(boolean value) {
+public void setIsMandatory(boolean value) {
     this.isMandatory = value;
 }
-private boolean isIsMandatory() {
+public boolean isIsMandatory() {
     return this.isMandatory;
 }
 private String tag;
 
-private void setTag(String value) {
+public void setTag(String value) {
     this.tag = value;
 }
-private String getTag() {
+public String getTag() {
     return this.tag;
 }
 private String category;
 
-private void setCategory(String value) {
+public void setCategory(String value) {
     this.category = value;
 }
-private String getCategory() {
+public String getCategory() {
     return this.category;
 }
 private int pointCount;
 
-private void setPointCount(int value) {
+public void setPointCount(int value) {
     this.pointCount = value;
 }
-private int getPointCount() {
+public int getPointCount() {
     return this.pointCount;
 }
 private String name;
 
-private void setName(String value) {
+public void setName(String value) {
     this.name = value;
 }
-private String getName() {
+public String getName() {
     return this.name;
 }
 private String description;
 
-private void setDescription(String value) {
+public void setDescription(String value) {
     this.description = value;
 }
-private String getDescription() {
+public String getDescription() {
     return this.description;
 }
-private Date startDate;
+private String startDate;
 
-private void setStartDate(Date value) {
+public void setStartDate(String value) {
     this.startDate = value;
 }
-private Date getStartDate() {
+public String getStartDate() {
     return this.startDate;
 }
 private Date dueDate;
 
-private void setDueDate(Date value) {
+public void setDueDate(Date value) {
     this.dueDate = value;
 }
-private Date getDueDate() {
+public Date getDueDate() {
     return this.dueDate;
 }
-private int id;
+private long taskId;
 
-private void setId(int value) {
-    this.id = value;
+public void setTaskId(long value) {
+    this.taskId = value;
 }
 @Id
-private int getId() {
-    return this.id;
+public long getTaskId() {
+    return this.taskId;
 }
-   private Set<TaskContainer> tracking;
-   
-   @OneToMany(mappedBy="task" )
-   public Set<TaskContainer> getTracking() {
-      return this.tracking;
-   }
-   
-   public void setTracking(Set<TaskContainer> trackings) {
-      this.tracking = trackings;
-   }
-   
    private Classroom classroom;
    
    @ManyToOne
