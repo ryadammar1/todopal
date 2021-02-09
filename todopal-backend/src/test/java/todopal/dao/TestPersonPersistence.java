@@ -32,7 +32,7 @@ public class TestPersonPersistence {
 	}
 
 	@Test
-	public void testPersistAndLoadClassroom() {
+	public void testPersistAfterSave() {
 		Person person = new Teacher();
 
 		person.setEmail(PERSON_EMAIL);
