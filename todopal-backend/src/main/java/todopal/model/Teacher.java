@@ -1,8 +1,11 @@
 package todopal.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+
 import java.util.Set;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Teacher extends Person{
@@ -16,7 +19,7 @@ public String getApprovalCode() {
 }
    private Set<Classroom> classroom;
    
-   @ManyToMany
+   @ManyToMany(fetch = FetchType.EAGER)
    public Set<Classroom> getClassroom() {
       return this.classroom;
    }

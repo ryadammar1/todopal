@@ -1,6 +1,7 @@
 package todopal.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.Set;
@@ -91,7 +92,7 @@ public String getSubject() {
    
    private Set<Task> task;
    
-   @OneToMany(mappedBy="classroom" )
+   @OneToMany(mappedBy="classroom", fetch = FetchType.EAGER)
    public Set<Task> getTask() {
       return this.task;
    }
