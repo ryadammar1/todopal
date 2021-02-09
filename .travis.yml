@@ -3,6 +3,5 @@ before_install:
         - chmod +x gradlew
 script:
         - ./gradlew build
-branch:
- only:
-        - main
+branches:
+  only: ["main"]

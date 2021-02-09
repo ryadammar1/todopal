@@ -8,21 +8,21 @@ import javax.persistence.ManyToMany;
 public class Teacher extends Person{
    private String approvalCode;
 
-private void setApprovalCode(String value) {
+public void setApprovalCode(String value) {
     this.approvalCode = value;
 }
-private String getApprovalCode() {
+public String getApprovalCode() {
     return this.approvalCode;
 }
-   private Set<Classroom> classrooms;
+   private Set<Classroom> classroom;
    
-   @ManyToMany(mappedBy="teachers" )
-   public Set<Classroom> getClassrooms() {
-      return this.classrooms;
+   @ManyToMany
+   public Set<Classroom> getClassroom() {
+      return this.classroom;
    }
    
-   public void setClassrooms(Set<Classroom> classroomss) {
-      this.classrooms = classroomss;
+   public void setClassroom(Set<Classroom> classrooms) {
+      this.classroom = classrooms;
    }
    
    }

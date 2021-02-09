@@ -1,92 +1,91 @@
 package todopal.model;
 
-import javax.persistence.*;
-
-
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.util.ArrayList;
 import java.util.Set;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Classroom{
-   private String classId;
+   private long classroomId;
 
-private void setClassId(String value) {
-    this.classId = value;
+public void setClassroomId(long value) {
+    this.classroomId = value;
 }
 @Id
-private String getClassId() {
-    return this.classId;
+public long getClassroomId() {
+    return this.classroomId;
 }
 private String name;
 
-private void setName(String value) {
+public void setName(String value) {
     this.name = value;
 }
-private String getName() {
+public String getName() {
     return this.name;
 }
-private String descrription;
+private String description;
 
-private void setDescrription(String value) {
-    this.descrription = value;
+public void setDescription(String value) {
+    this.description = value;
 }
-private String getDescrription() {
-    return this.descrription;
+public String getDescription() {
+    return this.description;
 }
-private String image;
+private String imagePath;
 
-private void setImage(String value) {
-    this.image = value;
+public void setImagePath(String value) {
+    this.imagePath = value;
 }
-private String getImage() {
-    return this.image;
+public String getImagePath() {
+    return this.imagePath;
 }
-private List<String> taskCategories;
+private ArrayList taskCategories;
 
-private void setTaskCategories(List<String> value) {
+public void setTaskCategories(ArrayList value) {
     this.taskCategories = value;
 }
-    @ElementCollection
-private List<String> getTaskCategories() {
+public ArrayList getTaskCategories() {
     return this.taskCategories;
 }
-private List<String> taskTags;
+private ArrayList taskTags;
 
-private void setTaskTags(List<String> value) {
+public void setTaskTags(ArrayList value) {
     this.taskTags = value;
 }
-    @ElementCollection
-private List<String> getTaskTags() {
+public ArrayList getTaskTags() {
     return this.taskTags;
 }
 private String subject;
 
-private void setSubject(String value) {
+public void setSubject(String value) {
     this.subject = value;
 }
-private String getSubject() {
+public String getSubject() {
     return this.subject;
 }
-   private Set<Teacher> teachers;
+   private Set<Teacher> teacher;
    
-   @ManyToMany
-   public Set<Teacher> getTeachers() {
-      return this.teachers;
+   @ManyToMany(mappedBy="classroom" )
+   public Set<Teacher> getTeacher() {
+      return this.teacher;
    }
    
-   public void setTeachers(Set<Teacher> teacherss) {
-      this.teachers = teacherss;
+   public void setTeacher(Set<Teacher> teachers) {
+      this.teacher = teachers;
    }
    
-   private Set<Student> students;
+   private Set<Student> student;
    
-   @OneToMany(mappedBy="classroom" )
-   public Set<Student> getStudents() {
-      return this.students;
+   @ManyToMany(mappedBy="classroom" )
+   public Set<Student> getStudent() {
+      return this.student;
    }
    
-   public void setStudents(Set<Student> studentss) {
-      this.students = studentss;
+   public void setStudent(Set<Student> students) {
+      this.student = students;
    }
    
    private Set<Task> task;
