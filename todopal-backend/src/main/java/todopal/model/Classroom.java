@@ -70,7 +70,7 @@ public String getSubject() {
 }
    private Teacher teacher;
    
-   @ManyToOne
+   @ManyToOne(optional = true)
    public Teacher getTeacher() {
       return this.teacher;
    }
@@ -81,7 +81,7 @@ public String getSubject() {
    
    private Set<Student> student;
    
-   @ManyToMany(mappedBy="classroom" )
+   @OneToMany(mappedBy="classroom")
    public Set<Student> getStudent() {
       return this.student;
    }

@@ -19,7 +19,7 @@ public String getApprovalCode() {
 }
    private Set<Classroom> classroom;
    
-   @ManyToMany(fetch = FetchType.EAGER)
+   @OneToMany(fetch = FetchType.EAGER)
    public Set<Classroom> getClassroom() {
       return this.classroom;
    }

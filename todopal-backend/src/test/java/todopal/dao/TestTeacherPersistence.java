@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import todopal.model.Classroom;
+import todopal.model.Student;
 import todopal.model.Teacher;
 
 @ExtendWith(SpringExtension.class)
@@ -34,8 +35,16 @@ public class TestTeacherPersistence {
 
 	@AfterEach
 	public void clearDatabase() {
-		classroomRepository.deleteAll();
+		for (Teacher t : teacherRepository.findAll()) {
+			for (Classroom c : t.getClassroom()) {
+				c.setTeacher(null);
+				classroomRepository.save(c);
+			}
+			t.setClassroom(new HashSet<Classroom>());
+			teacherRepository.save(t);
+		}
 		teacherRepository.deleteAll();
+		classroomRepository.deleteAll();
 	}
 
 	private Teacher createTeacher() {
@@ -94,9 +103,9 @@ public class TestTeacherPersistence {
 		final Classroom classroomWithTeacher = (Classroom)classroomsWithTeacher.toArray()[0];
 
 		assertNotNull(savedTeacherWithClassroom);
-		assertEquals(TEACHER_NAME, savedTeacherWithClassroom.getName());
-		assertEquals(TEACHER_BIO, savedTeacherWithClassroom.getBio());
-		assertEquals(TEACHER_APPROVAL_CODE, savedTeacherWithClassroom.getApprovalCode());
+		assertEquals(TEACHER_NAME_2, savedTeacherWithClassroom.getName());
+		assertEquals(TEACHER_BIO_2, savedTeacherWithClassroom.getBio());
+		assertEquals(TEACHER_APPROVAL_CODE_2, savedTeacherWithClassroom.getApprovalCode());
 		
 		assertEquals(savedClassroom.getClassroomId(), classroomWithTeacher.getClassroomId());
 		assertEquals(classroomWithTeacher.getTeacher().getEmail(), savedTeacherWithClassroom.getEmail());
