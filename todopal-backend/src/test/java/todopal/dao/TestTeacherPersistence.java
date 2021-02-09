@@ -31,7 +31,7 @@ public class TestTeacherPersistence {
 
 	@AfterEach
 	public void clearDatabase() {
-		personRepository.deleteAll();
+		teacherRepository.deleteAll();
 	}
 
 	@Test
