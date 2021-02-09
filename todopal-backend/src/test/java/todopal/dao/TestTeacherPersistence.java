@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import todopal.model.Person;
 import todopal.model.Teacher;
 
 @ExtendWith(SpringExtension.class)
@@ -23,9 +22,6 @@ public class TestTeacherPersistence {
 	private final String TEACHER_EMAIL = "name.test@yahoo.ca";
     private final String TEACHER_BIO = "I love pen island!";
 	private final String TEACHER_APPROVAL_CODE = "911";
-
-	@Autowired
-	private PersonRepository personRepository;
 
 	@Autowired
 	private TeacherRepository teacherRepository;
