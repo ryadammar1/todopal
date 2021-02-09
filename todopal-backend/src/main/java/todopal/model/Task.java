@@ -55,12 +55,12 @@ public void setDescription(String value) {
 public String getDescription() {
     return this.description;
 }
-private String startDate;
+private Date startDate;
 
-public void setStartDate(String value) {
+public void setStartDate(Date value) {
     this.startDate = value;
 }
-public String getStartDate() {
+public Date getStartDate() {
     return this.startDate;
 }
 private Date dueDate;
