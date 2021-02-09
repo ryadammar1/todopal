@@ -5,6 +5,7 @@ import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.Set;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -66,15 +67,15 @@ public void setSubject(String value) {
 public String getSubject() {
     return this.subject;
 }
-   private Set<Teacher> teacher;
+   private Teacher teacher;
    
-   @ManyToMany(mappedBy="classroom" )
-   public Set<Teacher> getTeacher() {
+   @ManyToOne
+   public Teacher getTeacher() {
       return this.teacher;
    }
    
-   public void setTeacher(Set<Teacher> teachers) {
-      this.teacher = teachers;
+   public void setTeacher(Teacher teacher) {
+      this.teacher = teacher;
    }
    
    private Set<Student> student;
