@@ -1,12 +1,15 @@
 package todopal.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import todopal.dao.ClassroomRepository;
+import todopal.dao.PersonRepository;
 import todopal.model.Classroom;
 import todopal.model.Teacher;
 
@@ -15,6 +18,8 @@ public class ClassroomService {
 
 	@Autowired
 	ClassroomRepository classroomRepository;
+	@Autowired
+	PersonRepository personRepository;
 
 	@Transactional
 	public Classroom createClassroom(long id, Teacher teacher, String name, String imagePath, String subject) {
@@ -138,5 +143,30 @@ public class ClassroomService {
 		}
 		return resultList;
 	}
+	
+	@Transactional
+	public Teacher createTeacher(String name) {
+		if (name == null || name.trim().length() == 0) {
+			throw new IllegalArgumentException("Teacher name cannot be empty!");
+		} else if (personRepository.existsById(name)) {
+			throw new IllegalArgumentException("Teacher has already been created!");
+		}
+		Teacher teacher = new Teacher();
+		teacher.setName(name);
+		personRepository.save(teacher);
+		return teacher;
+	}
+
+
+	@Transactional
+	public Teacher getTeacher(String name) {
+		if (name == null || name.trim().length() == 0) {
+			throw new IllegalArgumentException("Teacher name cannot be empty!");
+		}
+		Teacher teacher = (Teacher) personRepository.findByEmail(name);
+		return teacher;
+	}
+
+	
 
 }
