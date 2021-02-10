@@ -1,0 +1,77 @@
+#topbar-wrapper {
+  padding: 1rem;
+  background-color: #d2ffea;
+
+  width: 95%;
+  margin: auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+
+  border-radius: 4rem;
+
+  box-shadow: 0.2rem 0.2rem 0rem 0rem #1ace98;
+
+  display: flex;
+}
+
+#home-button {
+  padding: 0.7rem;
+  background-color: #d2ffea;
+  font-size: 2rem;
+
+  border: none;
+  outline: none;
+  border-radius: 1.5rem;
+  color: #1ace98;
+  transition: 0.3s;
+
+  flex-grow: 0.3;
+}
+
+#home-button:hover {
+  background-color: #1ace98;
+  color: white;
+}
+
+#small-button-wrapper {
+  display: flex;
+  flex-grow: 4;
+  justify-content: space-around;
+}
+
+.small-button {
+  padding: 0.7rem;
+  min-width: 10rem;
+  background-color: #d2ffea;
+  font-size: 1.5rem;
+
+  border: none;
+  outline: none;
+  border-radius: 1.5rem;
+  color: #1ace98;
+  transition: 0.3s;
+}
+
+.small-button:hover {
+  background-color: #472de2;
+  color: white;
+}
+
+#profile-button {
+  padding: 0.7rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  background-color: #1ace98;
+  font-size: 1.5rem;
+
+  border: none;
+  outline: none;
+  border-radius: 1.5rem;
+  color: white;
+  transition: 0.3s;
+}
+
+#profile-button:hover {
+  background-color: white;
+  color: #1ace98;
+}
