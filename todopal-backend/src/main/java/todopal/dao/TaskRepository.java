@@ -5,8 +5,8 @@ import org.springframework.data.repository.CrudRepository;
 import todopal.model.Task;
 
 
-public interface TaskRepository extends CrudRepository<Task, String> {
+public interface TaskRepository extends CrudRepository<Task, Long> {
 
-	Task findByClassroomId(long classId);
+	Task findBytaskId(long taskId);
 	
 }
