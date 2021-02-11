@@ -1,9 +1,14 @@
 package todopal.service;
 
+import static org.hamcrest.CoreMatchers.any;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.lenient;
 
+import java.util.*;
+
+import org.hibernate.mapping.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import jdk.jfr.Timestamp;
+//import jdk.jfr.Timestamp;
+import todopal.dao.TeacherRepository;
+import todopal.model.Classroom;
+import todopal.model.Teacher;
 
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -38,7 +46,7 @@ public class TestTeacherService {
     private final String WRONG_TEACHER_EMAIL = "bad";
     private final String TEACHER_PASSWORD = "testTeacherpassword";
     private final String TEACHER_BIO = "testTeacherBio";
-    private final Set<Classroom> CLASSROOMS = new Set<Classroom>();
+    private final HashSet<Classroom> CLASSROOMS = new HashSet<Classroom>();
 
     private ArrayList<String> TASK_CATEGORIES = new ArrayList<String>();
 
@@ -51,10 +59,10 @@ public class TestTeacherService {
 				throw new IllegalArgumentException();
             }
 			return null;
-		}).when(teacherRepository).save(any(Teacher.class));
+		}).when(teacherRepository).save((Teacher) any(Teacher.class));
 
         // teacherRepository.find();
-		lenient().when(teacherRepository).findByTeacherEmail(any(String.class)).thenAnswer((InvocationOnMock invocation) -> {
+		lenient().when(teacherRepository).findTeacherByEmail(any(String.class)).thenAnswer((InvocationOnMock invocation) -> {
 			if (invocation.getArgument(0).equals(null)) {
 				throw new IllegalArgumentException();
             } else if ((int) invocation.getArgument(0) == WRONG_TEACHER_EMAIL) {
@@ -75,7 +83,7 @@ public class TestTeacherService {
 		lenient().doAnswer((InvocationOnMock invocation) -> {
             // do nothing
 			return null;
-		}).when(teacherRepository).delete(any(Teacher.class));
+		}).when(teacherRepository).delete((Teacher) any(Teacher.class));
     }
 
     @Test 
