@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import todopal.dao.ClassroomRepository;
 import todopal.dao.PersonRepository;
 import todopal.model.Classroom;
+import todopal.model.Person;
 import todopal.model.Teacher;
 
 @Service
@@ -165,6 +165,19 @@ public class ClassroomService {
 		}
 		Teacher teacher = (Teacher) personRepository.findByEmail(name);
 		return teacher;
+	}
+	
+	@Transactional
+	public List<Person> getAllPersons() {
+		return toList(personRepository.findAll());
+	}
+	
+	private <T> List<T> toList(Iterable<T> iterable) {
+		List<T> resultList = new ArrayList<T>();
+		for (T t : iterable) {
+			resultList.add(t);
+		}
+		return resultList;
 	}
 
 	
