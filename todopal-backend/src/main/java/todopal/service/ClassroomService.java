@@ -167,11 +167,6 @@ public class ClassroomService {
 		return teacher;
 	}
 	
-	@Transactional
-	public List<Person> getAllPersons() {
-		return toList(personRepository.findAll());
-	}
-	
 	private <T> List<T> toList(Iterable<T> iterable) {
 		List<T> resultList = new ArrayList<T>();
 		for (T t : iterable) {
