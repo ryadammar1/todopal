@@ -43,14 +43,7 @@ public class TodopalRestController {
 	public TeacherDto getTeacherByName(@PathVariable("name") String name) throws IllegalArgumentException {
 		return convertToDto(service.getTeacher(name));
 	}
-//	@GetMapping(value = { "/persons", "/persons/" })
-//	public List<PersonDto> getAllPersons() {
-//		List<PersonDto> persons = new ArrayList<>();
-//		for (Person person : service.getAllPersons()) {
-//			persons.add(convertToDto(person));
-//		}
-//		return persons;
-//	}
+
 	
 	private PersonDto convertToDto(Person p) {
 		if (p == null) {
