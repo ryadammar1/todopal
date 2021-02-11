@@ -22,28 +22,35 @@ public class TodopalRestController {
 	@Autowired
 	private ClassroomService service;
 	
-	@PostMapping(value = { "/persons/{name}", "/persons/{name}/" })
-	public TeacherDto createPerson(@PathVariable("name") String name) throws IllegalArgumentException {
-		
-		Teacher teacher = service.createTeacher(name);
-		return convertToDto(teacher);
-	}
-	@GetMapping(value = { "/persons/{name}", "/person/{name}/" })
-	public TeacherDto getPersonByName(@PathVariable("name") String name) throws IllegalArgumentException {
-		return convertToDto(service.getTeacher(name));
-	}
-	
-	@PostMapping(value = { "/teachers/{name}", "/teachers/{name}/" })
-	public TeacherDto createTeacher(@PathVariable("name") String name) throws IllegalArgumentException {
-		
-		Teacher teacher = service.createTeacher(name);
-		return convertToDto(teacher);
-	}
-	@GetMapping(value = { "/teachers/{name}", "/teachers/{name}/" })
-	public TeacherDto getTeacherByName(@PathVariable("name") String name) throws IllegalArgumentException {
-		return convertToDto(service.getTeacher(name));
-	}
-
+//	@PostMapping(value = { "/persons/{name}", "/persons/{name}/" })
+//	public TeacherDto createPerson(@PathVariable("name") String name) throws IllegalArgumentException {
+//		
+//		Teacher teacher = service.createTeacher(name);
+//		return convertToDto(teacher);
+//	}
+//	@GetMapping(value = { "/persons/{name}", "/person/{name}/" })
+//	public TeacherDto getPersonByName(@PathVariable("name") String name) throws IllegalArgumentException {
+//		return convertToDto(service.getTeacher(name));
+//	}
+//	
+//	@PostMapping(value = { "/teachers/{name}", "/teachers/{name}/" })
+//	public TeacherDto createTeacher(@PathVariable("name") String name) throws IllegalArgumentException {
+//		
+//		Teacher teacher = service.createTeacher(name);
+//		return convertToDto(teacher);
+//	}
+//	@GetMapping(value = { "/teachers/{name}", "/teachers/{name}/" })
+//	public TeacherDto getTeacherByName(@PathVariable("name") String name) throws IllegalArgumentException {
+//		return convertToDto(service.getTeacher(name));
+//	}
+//	@GetMapping(value = { "/persons", "/persons/" })
+//	public List<PersonDto> getAllPersons() {
+//		List<PersonDto> persons = new ArrayList<>();
+//		for (Person person : service.getAllPersons()) {
+//			persons.add(convertToDto(person));
+//		}
+//		return persons;
+//	}
 	
 	private PersonDto convertToDto(Person p) {
 		if (p == null) {
