@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import javax.persistence.OneToMany;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Student extends Person{
@@ -54,14 +55,14 @@ public ArrayList getTaskTags() {
       this.personalTask = personalTasks;
    }
    
-   private Set<Classroom> classroom;
+   private Classroom classroom;
    
-   @ManyToMany
-   public Set<Classroom> getClassroom() {
+   @ManyToOne(optional = true)
+   public Classroom getClassroom() {
       return this.classroom;
    }
    
-   public void setClassroom(Set<Classroom> classrooms) {
+   public void setClassroom(Classroom classrooms) {
       this.classroom = classrooms;
    }
    
