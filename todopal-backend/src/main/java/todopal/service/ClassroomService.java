@@ -18,8 +18,7 @@ public class ClassroomService {
 
 	@Autowired
 	ClassroomRepository classroomRepository;
-	@Autowired
-	TeacherRepository teacherRepository;
+	
 
 	@Transactional
 	public Classroom createClassroom(long id, Teacher teacher, String name, String imagePath, String subject) {
@@ -144,36 +143,7 @@ public class ClassroomService {
 		return resultList;
 	}
 	
-	@Transactional
-	public Teacher createTeacher(String name) {
-		if (name == null || name.trim().length() == 0) {
-			throw new IllegalArgumentException("Teacher name cannot be empty!");
-		} else if (teacherRepository.existsById(name)) {
-			throw new IllegalArgumentException("Teacher has already been created!");
-		}
-		Teacher teacher = new Teacher();
-		teacher.setName(name);
-		teacherRepository.save(teacher);
-		return teacher;
-	}
-
-
-	@Transactional
-	public Teacher getTeacher(String name) {
-		if (name == null || name.trim().length() == 0) {
-			throw new IllegalArgumentException("Teacher name cannot be empty!");
-		}
-		Teacher teacher = (Teacher) teacherRepository.findByEmail(name);
-		return teacher;
-	}
 	
-	private <T> List<T> toList(Iterable<T> iterable) {
-		List<T> resultList = new ArrayList<T>();
-		for (T t : iterable) {
-			resultList.add(t);
-		}
-		return resultList;
-	}
 
 	
 
