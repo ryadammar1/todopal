@@ -1,7 +1,7 @@
 package todopal.service;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import todopal.dao.ClassroomRepository;
 import todopal.dao.TeacherRepository;
 import todopal.model.Classroom;
-import todopal.model.Person;
 import todopal.model.Teacher;
 
 @Service
@@ -20,10 +19,27 @@ public class ClassroomService {
 	ClassroomRepository classroomRepository;
 	
 
+	private final String NULL_CLASSROOM_EXCEPTION = "[error] Classroom with id does not exist";
+	private final String EMPTY_STRING_EXCEPTION = "[error] String argument is empty";
+	
 	@Transactional
-	public Classroom createClassroom(long id, Teacher teacher, String name, String imagePath, String subject) {
+	public Classroom createClassroom(Teacher teacher, String name, String imagePath, String subject) {
 		Classroom classroom = new Classroom();
 
+		Random rand = new Random();
+		
+		long id = rand.nextLong();
+		
+		while(classroomRepository.findByClassroomId(id) != null)
+			id = rand.nextLong();
+		
+		if(name.length()==0)
+			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		if(imagePath.length()==0)
+			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		if(subject.length()==0)
+			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		
 		classroom.setClassroomId(id);
 		classroom.setTeacher(teacher);
 		classroom.setName(name);
@@ -36,9 +52,15 @@ public class ClassroomService {
 	}
 
 	@Transactional
-	public Classroom setClassroomName(long id, String name) {
+	public Classroom setClassroomName(long id, String name) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
+		if(classroom == null)
+			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
+		
+		if(name.length()==0)
+			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		
 		classroom.setName(name);
 
 		classroomRepository.save(classroom);
@@ -47,9 +69,15 @@ public class ClassroomService {
 	}
 
 	@Transactional
-	public Classroom setClassroomDescription(long id, String description) {
+	public Classroom setClassroomDescription(long id, String description) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
+		if(classroom == null)
+			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
+
+		if(description.length()==0)
+			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		
 		classroom.setDescription(description);
 
 		classroomRepository.save(classroom);
@@ -58,9 +86,15 @@ public class ClassroomService {
 	}
 
 	@Transactional
-	public Classroom setClassroomSubject(long id, String subject) {
+	public Classroom setClassroomSubject(long id, String subject) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
+		if(classroom == null)
+			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
+
+		if(subject.length()==0)
+			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		
 		classroom.setSubject(subject);
 
 		classroomRepository.save(classroom);
@@ -69,9 +103,15 @@ public class ClassroomService {
 	}
 
 	@Transactional
-	public Classroom setClassroomImage(long id, String imagePath) {
+	public Classroom setClassroomImage(long id, String imagePath) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
+		if(classroom == null)
+			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
+
+		if(imagePath.length()==0)
+			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		
 		classroom.setImagePath(imagePath);
 
 		classroomRepository.save(classroom);
@@ -80,9 +120,12 @@ public class ClassroomService {
 	}
 
 	@Transactional
-	public Classroom setClassroomTaskCategories(long id, ArrayList<String> taskCategories) {
+	public Classroom setClassroomTaskCategories(long id, ArrayList<String> taskCategories) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
+		if(classroom == null)
+			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
+		
 		classroom.setTaskCategories(taskCategories);
 
 		classroomRepository.save(classroom);
@@ -92,9 +135,15 @@ public class ClassroomService {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Classroom addToClassroomTaskCategories(long id, String taskCategory) {
+	public Classroom addToClassroomTaskCategories(long id, String taskCategory) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
+		if(classroom == null)
+			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
+
+		if(taskCategory.length()==0)
+			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		
 		classroom.getTaskCategories().add(taskCategory);
 
 		classroomRepository.save(classroom);
@@ -103,9 +152,12 @@ public class ClassroomService {
 	}
 
 	@Transactional
-	public Classroom setClassroomTaskTags(long id, ArrayList<String> taskTags) {
+	public Classroom setClassroomTaskTags(long id, ArrayList<String> taskTags) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
+		if(classroom == null)
+			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
+		
 		classroom.setTaskTags(taskTags);
 
 		classroomRepository.save(classroom);
@@ -115,9 +167,15 @@ public class ClassroomService {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Classroom addToClassroomTaskTag(long id, String taskTag) {
+	public Classroom addToClassroomTaskTag(long id, String taskTag) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
+		if(classroom == null)
+			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
+
+		if(taskTag.length()==0)
+			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		
 		classroom.getTaskTags().add(taskTag);
 
 		classroomRepository.save(classroom);
@@ -143,8 +201,4 @@ public class ClassroomService {
 		return resultList;
 	}
 	
-	
-
-	
-
 }
