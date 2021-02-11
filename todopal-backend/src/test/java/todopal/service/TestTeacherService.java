@@ -46,6 +46,9 @@ public class TestTeacherService {
     private final String WRONG_TEACHER_EMAIL = "bad";
     private final String TEACHER_PASSWORD = "testTeacherpassword";
     private final String TEACHER_BIO = "testTeacherBio";
+    private final long CLASS_ID = 1;
+    private final String CLASS_NAME = "testClassrrom";
+    
     private final HashSet<Classroom> CLASSROOMS = new HashSet<Classroom>();
 
     private ArrayList<String> TASK_CATEGORIES = new ArrayList<String>();
@@ -62,7 +65,7 @@ public class TestTeacherService {
 		}).when(teacherRepository).save((Teacher) any(Teacher.class));
 
         // teacherRepository.find();
-		lenient().when(teacherRepository).findTeacherByEmail(any(String.class)).thenAnswer((InvocationOnMock invocation) -> {
+		lenient().when(teacherRepository.findTeacherByEmail(any(String.class))).thenAnswer((InvocationOnMock invocation) -> {
 			if (invocation.getArgument(0).equals(null)) {
 				throw new IllegalArgumentException();
             } else if ((int) invocation.getArgument(0) == WRONG_TEACHER_EMAIL) {
@@ -149,7 +152,8 @@ public class TestTeacherService {
         teacher.setPassword(TEACHER_PASSWORD);
         teacher.setBio(TEACHER_BIO);
         CLASSROOMS.add(getTestClassroom());
-        teacher.setClassroom(CLASSROOMS());
+        teacher.setClassroom(CLASSROOMS);
+        return teacher;
     }
 
     private Classroom getTestClassroom() {
