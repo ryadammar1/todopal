@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import todopal.model.Classroom;
-import todopal.model.Student;
+
 import todopal.model.Teacher;
 
 @ExtendWith(SpringExtension.class)
@@ -62,7 +62,7 @@ public class TestTeacherPersistence {
 	public void testPersistAfterSave() {
 		createTeacher();
 
-		final Teacher savedTeacher = teacherRepository.findTeacherByemail(TEACHER_EMAIL);
+		final Teacher savedTeacher = teacherRepository.findByEmail(TEACHER_EMAIL);
 
 		assertNotNull(savedTeacher);
 		assertEquals(TEACHER_NAME, savedTeacher.getName());
