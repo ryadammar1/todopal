@@ -1,6 +1,7 @@
 package todopal.service;
 
-import static org.hamcrest.CoreMatchers.any;
+import static org.mockito.ArgumentMatchers.any; 
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -64,41 +65,24 @@ public class TestTeacherService {
 		}).when(teacherRepository).save((Teacher) any(Teacher.class));
 
         // teacherRepository.find();
-		lenient().when(teacherRepository.findByEmail(any(String.class))).thenAnswer((InvocationOnMock invocation) -> {
+		lenient().when(teacherRepository.findTeacherByemail(any(String.class))).thenAnswer((InvocationOnMock invocation) -> {
 			if (invocation.getArgument(0).equals(null)) {
 				throw new IllegalArgumentException();
-            } else if ((int) invocation.getArgument(0) == WRONG_TEACHER_EMAIL) {
+            } else if ((String) invocation.getArgument(0) == WRONG_TEACHER_EMAIL) {
                 return null;
             }
             return makeTestingTeacher();
 		});
-
-        // teacherRepository.update();
-		lenient().doAnswer((InvocationOnMock invocation) -> {
-			if (invocation.getArgument(0).equals(null)) {
-				throw new IllegalArgumentException();
-            }
-			return null;
-		}).when(teacherRepository.update(any(Teacher.class));
 
         // teacherRepository.find();
-		lenient().when(teacherRepository.findByEmail(any(String.class)).thenAnswer((InvocationOnMock invocation) -> {
+		lenient().when(teacherRepository.findTeacherByemail(any(String.class))).thenAnswer((InvocationOnMock invocation) -> {
 			if (invocation.getArgument(0).equals(null)) {
 				throw new IllegalArgumentException();
-            } else if ((int) invocation.getArgument(0) == WRONG_TEACHER_EMAIL) {
+            } else if ((String) invocation.getArgument(0) == WRONG_TEACHER_EMAIL) {
                 return null;
             }
             return makeTestingTeacher();
 		});
-
-        // teacherRepository.update();
-		lenient().doAnswer((InvocationOnMock invocation) -> {
-			if (invocation.getArgument(0).equals(null)) {
-				throw new IllegalArgumentException();
-            }
-			return null;
-		}).when(((Object) teacherRepository.update(any(Teacher.class));
-
 
         // teacherRepository.delete();
 		lenient().doAnswer((InvocationOnMock invocation) -> {
@@ -142,11 +126,12 @@ public class TestTeacherService {
 
     @Test 
     public void WithTeacherService_GivenExistTeacher_WhenUpdatingTeacher_ThenTeacherIsUpdated() {
-        Teacher teacher = teacherService.updateTeacher(APPROVAL_CODE, TEACHER_NAME, TEACHER_EMAIL, TEACHER_PASSWORD, TEACHER_BIO, CLASSROOMS);
+        Teacher teacher = teacherService.createTeacher(APPROVAL_CODE, TEACHER_NAME, TEACHER_EMAIL, TEACHER_PASSWORD, TEACHER_BIO, CLASSROOMS);
+        teacher = teacherService.updateTeacher(APPROVAL_CODE, "New Teacher", TEACHER_EMAIL, TEACHER_PASSWORD, TEACHER_BIO, CLASSROOMS);
 
         assertNotNull(teacher);
         assertEquals(APPROVAL_CODE, teacher.getApprovalCode());
-        assertEquals(TEACHER_NAME, teacher.getName());
+        assertEquals("New Teacher", teacher.getName());
         assertEquals(TEACHER_EMAIL, teacher.getEmail());
         assertEquals(TEACHER_PASSWORD, teacher.getPassword());
         assertEquals(TEACHER_BIO, teacher.getBio());
