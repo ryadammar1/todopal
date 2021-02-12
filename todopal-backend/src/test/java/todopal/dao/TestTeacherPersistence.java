@@ -62,7 +62,7 @@ public class TestTeacherPersistence {
 	public void testPersistAfterSave() {
 		createTeacher();
 
-		final Teacher savedTeacher = teacherRepository.findByEmail(TEACHER_EMAIL);
+		final Teacher savedTeacher = teacherRepository.findTeacherByemail(TEACHER_EMAIL);
 
 		assertNotNull(savedTeacher);
 		assertEquals(TEACHER_NAME, savedTeacher.getName());
