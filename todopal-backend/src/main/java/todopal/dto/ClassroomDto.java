@@ -73,24 +73,24 @@ public class ClassroomDto {
 		this.teacher = teacher;
 	}
 
-	private Set<StudentDto> student;
-
-	public Set<StudentDto> getStudent() {
-		return this.student;
-	}
-
-	public void setStudent(Set<StudentDto> students) {
-		this.student = students;
-	}
-
-	private Set<TaskDto> task;
-
-	public Set<TaskDto> getTask() {
-		return this.task;
-	}
-
-	public void setTask(Set<TaskDto> tasks) {
-		this.task = tasks;
-	}
+//	private Set<StudentDto> student;
+//
+//	public Set<StudentDto> getStudent() {
+//		return this.student;
+//	}
+//
+//	public void setStudent(Set<StudentDto> students) {
+//		this.student = students;
+//	}
+//
+//	private Set<TaskDto> task;
+//
+//	public Set<TaskDto> getTask() {
+//		return this.task;
+//	}
+//
+//	public void setTask(Set<TaskDto> tasks) {
+//		this.task = tasks;
+//	}
 
 }

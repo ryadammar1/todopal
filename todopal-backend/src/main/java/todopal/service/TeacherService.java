@@ -1,6 +1,9 @@
 package todopal.service;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0f1724801694d38dd1053383d4c81dc03e8e3b60
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -38,7 +41,11 @@ public class TeacherService {
 		if (name == null || name.trim().length() == 0) {
 			throw new IllegalArgumentException("Teacher name cannot be empty!");
 		}
+<<<<<<< HEAD
 		Teacher teacher = (Teacher) teacherRepository.findByEmail(name);
+=======
+		Teacher teacher = (Teacher) teacherRepository.findTeacherByemail(name);
+>>>>>>> 0f1724801694d38dd1053383d4c81dc03e8e3b60
 		return teacher;
 	}
 	
@@ -88,7 +95,11 @@ public class TeacherService {
 
 	public boolean deleteTeacher(String tEACHER_EMAIL) {
 		// TODO Auto-generated method stub
+<<<<<<< HEAD
 		Teacher teacher = teacherRepository.findByEmail(tEACHER_EMAIL);
+=======
+		Teacher teacher = teacherRepository.findTeacherByemail(tEACHER_EMAIL);
+>>>>>>> 0f1724801694d38dd1053383d4c81dc03e8e3b60
 		if (teacher != null) {
 			teacherRepository.delete(teacher);
 			return true;
@@ -98,4 +109,7 @@ public class TeacherService {
 
 
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0f1724801694d38dd1053383d4c81dc03e8e3b60

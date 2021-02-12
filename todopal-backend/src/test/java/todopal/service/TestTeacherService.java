@@ -22,7 +22,6 @@ import todopal.dao.TeacherRepository;
 import todopal.model.Classroom;
 import todopal.model.Teacher;
 
-//import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
@@ -30,7 +29,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-//@RunWith(MockitoJUnitRunner.class)
+
 public class TestTeacherService {
     // mock stubs
     @Mock
@@ -81,6 +80,25 @@ public class TestTeacherService {
             }
 			return null;
 		}).when(teacherRepository.update(any(Teacher.class));
+
+        // teacherRepository.find();
+		lenient().when(teacherRepository.findByEmail(any(String.class)).thenAnswer((InvocationOnMock invocation) -> {
+			if (invocation.getArgument(0).equals(null)) {
+				throw new IllegalArgumentException();
+            } else if ((int) invocation.getArgument(0) == WRONG_TEACHER_EMAIL) {
+                return null;
+            }
+            return makeTestingTeacher();
+		});
+
+        // teacherRepository.update();
+		lenient().doAnswer((InvocationOnMock invocation) -> {
+			if (invocation.getArgument(0).equals(null)) {
+				throw new IllegalArgumentException();
+            }
+			return null;
+		}).when(((Object) teacherRepository.update(any(Teacher.class));
+
 
         // teacherRepository.delete();
 		lenient().doAnswer((InvocationOnMock invocation) -> {
@@ -166,9 +184,8 @@ public class TestTeacherService {
 		classroom.setClassroomId(CLASS_ID);
 		classroom.setName(CLASS_NAME);
 		classroom.setTaskCategories(TASK_CATEGORIES);
-//hello
+
         return classroom;
     }
-
 
 }
