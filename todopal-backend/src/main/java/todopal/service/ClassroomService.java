@@ -17,29 +17,28 @@ public class ClassroomService {
 
 	@Autowired
 	ClassroomRepository classroomRepository;
-	
 
 	private final String NULL_CLASSROOM_EXCEPTION = "[error] Classroom with id does not exist";
 	private final String EMPTY_STRING_EXCEPTION = "[error] String argument is empty";
-	
+
 	@Transactional
 	public Classroom createClassroom(Teacher teacher, String name, String imagePath, String subject) {
 		Classroom classroom = new Classroom();
 
 		Random rand = new Random();
-		
+
 		long id = rand.nextLong();
-		
-		while(classroomRepository.findByClassroomId(id) != null)
+
+		while (classroomRepository.findByClassroomId(id) != null)
 			id = rand.nextLong();
-		
-		if(name.length()==0)
+
+		if (name.length() == 0)
 			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
-		if(imagePath.length()==0)
+		if (imagePath.length() == 0)
 			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
-		if(subject.length()==0)
+		if (subject.length() == 0)
 			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
-		
+
 		classroom.setClassroomId(id);
 		classroom.setTeacher(teacher);
 		classroom.setName(name);
@@ -55,12 +54,12 @@ public class ClassroomService {
 	public Classroom setClassroomName(long id, String name) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
-		if(classroom == null)
+		if (classroom == null)
 			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
-		
-		if(name.length()==0)
+
+		if (name.length() == 0)
 			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
-		
+
 		classroom.setName(name);
 
 		classroomRepository.save(classroom);
@@ -72,12 +71,12 @@ public class ClassroomService {
 	public Classroom setClassroomDescription(long id, String description) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
-		if(classroom == null)
+		if (classroom == null)
 			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
 
-		if(description.length()==0)
+		if (description.length() == 0)
 			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
-		
+
 		classroom.setDescription(description);
 
 		classroomRepository.save(classroom);
@@ -89,12 +88,12 @@ public class ClassroomService {
 	public Classroom setClassroomSubject(long id, String subject) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
-		if(classroom == null)
+		if (classroom == null)
 			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
 
-		if(subject.length()==0)
+		if (subject.length() == 0)
 			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
-		
+
 		classroom.setSubject(subject);
 
 		classroomRepository.save(classroom);
@@ -106,12 +105,12 @@ public class ClassroomService {
 	public Classroom setClassroomImage(long id, String imagePath) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
-		if(classroom == null)
+		if (classroom == null)
 			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
 
-		if(imagePath.length()==0)
+		if (imagePath.length() == 0)
 			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
-		
+
 		classroom.setImagePath(imagePath);
 
 		classroomRepository.save(classroom);
@@ -120,12 +119,13 @@ public class ClassroomService {
 	}
 
 	@Transactional
-	public Classroom setClassroomTaskCategories(long id, ArrayList<String> taskCategories) throws IllegalArgumentException {
+	public Classroom setClassroomTaskCategories(long id, ArrayList<String> taskCategories)
+			throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
-		if(classroom == null)
+		if (classroom == null)
 			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
-		
+
 		classroom.setTaskCategories(taskCategories);
 
 		classroomRepository.save(classroom);
@@ -138,12 +138,12 @@ public class ClassroomService {
 	public Classroom addToClassroomTaskCategories(long id, String taskCategory) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
-		if(classroom == null)
+		if (classroom == null)
 			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
 
-		if(taskCategory.length()==0)
+		if (taskCategory.length() == 0)
 			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
-		
+
 		classroom.getTaskCategories().add(taskCategory);
 
 		classroomRepository.save(classroom);
@@ -155,9 +155,9 @@ public class ClassroomService {
 	public Classroom setClassroomTaskTags(long id, ArrayList<String> taskTags) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
-		if(classroom == null)
+		if (classroom == null)
 			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
-		
+
 		classroom.setTaskTags(taskTags);
 
 		classroomRepository.save(classroom);
@@ -170,12 +170,12 @@ public class ClassroomService {
 	public Classroom addToClassroomTaskTag(long id, String taskTag) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
-		if(classroom == null)
+		if (classroom == null)
 			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
 
-		if(taskTag.length()==0)
+		if (taskTag.length() == 0)
 			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
-		
+
 		classroom.getTaskTags().add(taskTag);
 
 		classroomRepository.save(classroom);
@@ -193,12 +193,12 @@ public class ClassroomService {
 		return toArrayList(classroomRepository.findAll());
 	}
 
-	private <T> ArrayList<T> toArrayList(Iterable<T> iterable){
+	private <T> ArrayList<T> toArrayList(Iterable<T> iterable) {
 		ArrayList<T> resultList = new ArrayList<T>();
 		for (T t : iterable) {
 			resultList.add(t);
 		}
 		return resultList;
 	}
-	
+
 }
