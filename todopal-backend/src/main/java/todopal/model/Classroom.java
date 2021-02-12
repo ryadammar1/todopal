@@ -1,6 +1,7 @@
 package todopal.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.Set;
@@ -69,7 +70,7 @@ public String getSubject() {
 }
    private Teacher teacher;
    
-   @ManyToOne
+   @ManyToOne(optional = true)
    public Teacher getTeacher() {
       return this.teacher;
    }
@@ -80,7 +81,7 @@ public String getSubject() {
    
    private Set<Student> student;
    
-   @ManyToMany(mappedBy="classroom" )
+   @OneToMany(mappedBy="classroom")
    public Set<Student> getStudent() {
       return this.student;
    }
@@ -91,7 +92,7 @@ public String getSubject() {
    
    private Set<Task> task;
    
-   @OneToMany(mappedBy="classroom" )
+   @OneToMany(mappedBy="classroom", fetch = FetchType.EAGER)
    public Set<Task> getTask() {
       return this.task;
    }
