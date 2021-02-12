@@ -65,7 +65,7 @@ public class TestTeacherService {
 		}).when(teacherRepository).save((Teacher) any(Teacher.class));
 
         // teacherRepository.find();
-		lenient().when(teacherRepository.findTeacherByemail(any(String.class))).thenAnswer((InvocationOnMock invocation) -> {
+		lenient().when(teacherRepository.findTeacherByEmail(any(String.class))).thenAnswer((InvocationOnMock invocation) -> {
 			if (invocation.getArgument(0).equals(null)) {
 				throw new IllegalArgumentException();
             } else if ((String) invocation.getArgument(0) == WRONG_TEACHER_EMAIL) {
@@ -75,7 +75,7 @@ public class TestTeacherService {
 		});
 
         // teacherRepository.find();
-		lenient().when(teacherRepository.findTeacherByemail(any(String.class))).thenAnswer((InvocationOnMock invocation) -> {
+		lenient().when(teacherRepository.findTeacherByEmail(any(String.class))).thenAnswer((InvocationOnMock invocation) -> {
 			if (invocation.getArgument(0).equals(null)) {
 				throw new IllegalArgumentException();
             } else if ((String) invocation.getArgument(0) == WRONG_TEACHER_EMAIL) {
