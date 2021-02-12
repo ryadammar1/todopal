@@ -37,7 +37,8 @@ public class TeacherService {
 		if (name == null || name.trim().length() == 0) {
 			throw new IllegalArgumentException("Teacher name cannot be empty!");
 		}
-		Teacher teacher = (Teacher) teacherRepository.findByEmail(name);
+		Teacher teacher = (Teacher) teacherRepository.findTeacherByEmail(name);
+
 		return teacher;
 	}
 	
@@ -67,7 +68,7 @@ public class TeacherService {
 		teacher.setClassroom(cLASSROOMS);
 		
 		teacherRepository.save(teacher);
-		return null;
+		return teacher;
 	}
 	
 	public Teacher updateTeacher(String aPPROVAL_CODE, String tEACHER_NAME, String tEACHER_EMAIL,
@@ -82,12 +83,13 @@ public class TeacherService {
 		teacher.setClassroom(cLASSROOMS);
 		
 		teacherRepository.save(teacher);
-		return null;
+		return teacher;
 	}
 
 	public boolean deleteTeacher(String tEACHER_EMAIL) {
 		// TODO Auto-generated method stub
-		Teacher teacher = teacherRepository.findByEmail(tEACHER_EMAIL);
+		Teacher teacher = teacherRepository.findTeacherByEmail(tEACHER_EMAIL);
+
 		if (teacher != null) {
 			teacherRepository.delete(teacher);
 			return true;
@@ -97,3 +99,4 @@ public class TeacherService {
 
 
 }
+
