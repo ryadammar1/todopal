@@ -37,7 +37,7 @@ public class TeacherService {
 		if (name == null || name.trim().length() == 0) {
 			throw new IllegalArgumentException("Teacher name cannot be empty!");
 		}
-		Teacher teacher = (Teacher) teacherRepository.findTeacherByemail(name);
+		Teacher teacher = (Teacher) teacherRepository.findTeacherByEmail(name);
 
 		return teacher;
 	}
@@ -88,7 +88,7 @@ public class TeacherService {
 
 	public boolean deleteTeacher(String tEACHER_EMAIL) {
 		// TODO Auto-generated method stub
-		Teacher teacher = teacherRepository.findTeacherByemail(tEACHER_EMAIL);
+		Teacher teacher = teacherRepository.findTeacherByEmail(tEACHER_EMAIL);
 
 		if (teacher != null) {
 			teacherRepository.delete(teacher);
