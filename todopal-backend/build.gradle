@@ -40,7 +40,7 @@ task cucumber() {
         javaexec {
             main = "io.cucumber.core.cli.Main"
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
-            args = ['--plugin', 'pretty', '--glue', 'todopal.features', 'src/test/resources/ID007_Delete_Task.feature']
+            args = ['--plugin', 'pretty', '--glue', 'todopal.features', 'src/test/resources']
         }
     }
 }
