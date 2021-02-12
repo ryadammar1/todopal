@@ -1,0 +1,64 @@
+#create-class-page-wrapper {
+  padding: 1rem;
+  background-color: #d2ffea;
+
+  width: 95%;
+  margin: auto;
+  margin-top: 3rem;
+
+  border-radius: 4rem;
+
+  box-shadow: 0.2rem 0.2rem 0rem 0rem #1ace98;
+
+  display: flex;
+  flex-direction: column;
+  color: #1ace98;
+}
+
+#message-create-class {
+  font-size: 3rem;
+}
+
+.row-create-class {
+  width: 97%;
+  margin: auto;
+  margin: 0.5rem;
+  font-size: 2rem;
+}
+
+#name-subject-create-class {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.name-subject {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  max-width: 47%;
+}
+
+input,
+textarea {
+  border: none;
+  outline: none;
+  font-size: 1.7rem;
+  border-radius: 1.5rem;
+  padding: 1rem;
+  width: 100%;
+  caret-color: #1ace98;
+  color: #1ace98;
+}
+
+#input-wrapper-create-class {
+  width: 95%;
+  margin: auto;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+#input-description {
+  height: 18rem;
+  text-overflow: inherit;
+}
