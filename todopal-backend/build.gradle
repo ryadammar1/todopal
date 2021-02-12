@@ -18,6 +18,7 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
     	testImplementation 'io.cucumber:cucumber-java:6.8.1'
+		testImplementation 'io.cucumber:cucumber-junit:6.8.1'
 
 	// Use JUnit test framework
     	testImplementation 'junit:junit:4.13'
@@ -39,7 +40,7 @@ task cucumber() {
         javaexec {
             main = "io.cucumber.core.cli.Main"
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
-            args = ['--plugin', 'pretty', '--glue', 'gradle.cucumber', 'src/test/resources']
+            args = ['--plugin', 'pretty', '--glue', 'todopal.features', 'src/test/resources/ID007_Delete_Task.feature']
         }
     }
 }
