@@ -72,3 +72,23 @@
   padding: 1rem;
   color: #1ace98;
 }
+
+#submit-button {
+  font-size: 1.5rem;
+  background-color: #1ace98;
+  color: white;
+  border-radius: 1rem;
+  border: none;
+  outline: none;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  width: 20%;
+  margin-left: 40%;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+#submit-button:hover {
+  background-color: white;
+  color: #1ace98;
+}

@@ -58,6 +58,8 @@ const TaskCreater = ({ isDisplay, setIsDisplay }) => {
           </div>
           <p className="row-item-task-creater small-text">Description</p>
           <textarea id="task-creater-description"></textarea>
+
+          <button id="submit-button">SUBMIT</button>
         </div>
       </div>
     </div>
