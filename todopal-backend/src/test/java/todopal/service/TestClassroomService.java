@@ -3,7 +3,6 @@ package todopal.service;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -86,7 +85,7 @@ public class TestClassroomService {
 		String expectedMessage = "String argument is empty";
 		String actualMessage = exception.getMessage();
 
-		assertTrue(actualMessage.contains(expectedMessage));
+		assertEquals(true, actualMessage.contains(expectedMessage));
 	}
 
 	@Test
@@ -109,6 +108,6 @@ public class TestClassroomService {
 		String expectedMessage = "String argument is empty";
 		String actualMessage = exception.getMessage();
 
-		assertTrue(actualMessage.contains(expectedMessage));
+		assertEquals(true, actualMessage.contains(expectedMessage));
 	}
 }

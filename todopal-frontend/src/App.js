@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment } from "react";
+import TemporaryHomePage from "./pages/TemporaryHomePage";
+import CreateClassroomPage from "./pages/CreateClassroomPage";
+import Topbar from "./components/Topbar.js";
+import "./style/global/__font.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  setState = this.setState.bind(this);
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentPage: "TemporaryHomePage",
+    };
+  }
+
+  render() {
+    if (this.state.currentPage === "TemporaryHomePage") {
+      return (
+        <Fragment>
+          <Topbar setState={this.setState} name="Teacher" />
+          <TemporaryHomePage setState={this.setState} />
+        </Fragment>
+      );
+    }
+
+    if (this.state.currentPage === "CreateClassroomPage") {
+      return (
+        <Fragment>
+          <Topbar setState={this.setState} name="Teacher" />
+          <CreateClassroomPage setState={this.setState} />
+        </Fragment>
+      );
+    }
+  }
 }
 
 export default App;
