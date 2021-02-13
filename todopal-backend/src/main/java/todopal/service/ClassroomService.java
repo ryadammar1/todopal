@@ -193,6 +193,11 @@ public class ClassroomService {
 	}
 
 	@Transactional
+	public Classroom getClassroom(String teacherName, String classroomName) {
+		return classroomRepository.findByNameAndTeacherEmail(teacherName, classroomName);
+	}
+
+	@Transactional
 	public Iterable<Classroom> getAllClassrooms() {
 		return toArrayList(classroomRepository.findAll());
 	}
