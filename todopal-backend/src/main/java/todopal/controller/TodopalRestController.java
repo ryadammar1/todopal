@@ -99,9 +99,9 @@ public class TodopalRestController {
   	
 	@PostMapping(value = { "/teachers/{name}", "/teachers/{name}/" })
 	public TeacherDto createTeacher(@PathVariable("approvalCode") String appCode,@PathVariable("name") String name,@PathVariable("email") String email,@PathVariable("password") String password,
-			@PathVariable("bio") String bio,@PathVariable("classrooms") HashSet<Classroom>  classrooms) throws IllegalArgumentException {
+			@PathVariable("bio") String bio) throws IllegalArgumentException {
 		
-		Teacher teacher = teacherservice.createTeacher(appCode,name,email,password,bio,classrooms);
+		Teacher teacher = teacherservice.createTeacher(appCode,name,email,password,bio);
 		return convertToDto(teacher);
 	}
 	@GetMapping(value = { "/teachers/{name}", "/teachers/{name}/" })
