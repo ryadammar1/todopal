@@ -2,6 +2,7 @@ package todopal.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,14 @@ import todopal.dto.PersonDto;
 import todopal.dto.TaskContainerDto;
 import todopal.dto.TaskDto;
 import todopal.dto.TeacherDto;
+import todopal.model.Classroom;
 import todopal.model.Person;
 import todopal.model.Task;
 import todopal.model.TaskContainer;
 import todopal.model.TaskStatus;
 import todopal.model.Teacher;
+
+import todopal.service.TeacherService;
 import todopal.service.ClassroomService;
 import todopal.service.TaskService;
 
@@ -28,6 +32,8 @@ import todopal.service.TaskService;
 public class TodopalRestController {
 	
 	@Autowired
+	private TeacherService teacherservice;
+  @Autowired
 	private ClassroomService classroomService;
 	@Autowired
 	private TaskService taskService;
@@ -96,49 +102,32 @@ public class TodopalRestController {
 		}
 		return taskContainers;
 	}
-	
-	
-//	@PostMapping(value = { "/persons/{name}", "/persons/{name}/" })
-//	public TeacherDto createPerson(@PathVariable("name") String name) throws IllegalArgumentException {
-//		
-//		Teacher teacher = service.createTeacher(name);
-//		return convertToDto(teacher);
-//	}
-//	@GetMapping(value = { "/persons/{name}", "/person/{name}/" })
-//	public TeacherDto getPersonByName(@PathVariable("name") String name) throws IllegalArgumentException {
-//		return convertToDto(service.getTeacher(name));
-//	}
-//	
-//	@PostMapping(value = { "/teachers/{name}", "/teachers/{name}/" })
-//	public TeacherDto createTeacher(@PathVariable("name") String name) throws IllegalArgumentException {
-//		
-//		Teacher teacher = service.createTeacher(name);
-//		return convertToDto(teacher);
-//	}
-//	@GetMapping(value = { "/teachers/{name}", "/teachers/{name}/" })
-//	public TeacherDto getTeacherByName(@PathVariable("name") String name) throws IllegalArgumentException {
-//		return convertToDto(service.getTeacher(name));
-//	}
-//	@GetMapping(value = { "/persons", "/persons/" })
-//	public List<PersonDto> getAllPersons() {
-//		List<PersonDto> persons = new ArrayList<>();
-//		for (Person person : service.getAllPersons()) {
-//			persons.add(convertToDto(person));
-//		}
-//		return persons;
-//	}
-	
-	private PersonDto convertToDto(Person p) {
-		if (p == null) {
-			throw new IllegalArgumentException("There is no such Person!");
+  
+  	
+	@PostMapping(value = { "/teachers/{name}", "/teachers/{name}/" })
+	public TeacherDto createTeacher(@RequestParam("approvalCode") String appCode,@PathVariable("name") String name,
+			@RequestParam("email") String email,@RequestParam("password") String password,
+			@RequestParam("bio") String bio) throws IllegalArgumentException {
+		
+		Teacher teacher = teacherservice.createTeacher(appCode,name,email,password,bio);
+		return convertToDto(teacher);
+	}
+	@GetMapping(value = { "/teachers/{email}", "/teachers/{email}/" })
+	public TeacherDto getTeacherByName(@PathVariable("email") String email) throws IllegalArgumentException {
+		return convertToDto(teacherservice.getTeacher(email));
+	}
+	@GetMapping(value = { "/teachers", "/teachers/" })
+	public List<TeacherDto> getAllTeachers() {
+		List<TeacherDto> teachers = new ArrayList<>();
+		for (Teacher teacher : teacherservice.getAllTeachers()) {
+			teachers.add(convertToDto(teacher));
 		}
-		PersonDto personDto = new PersonDto(p.getName());
-		return personDto;
+		return teachers;
 	}
 	
 	private TeacherDto convertToDto(Teacher t) {
 		if (t == null) {
-			throw new IllegalArgumentException("There is no such Person!");
+			throw new IllegalArgumentException("There is no such Teacher!");
 		}
 		TeacherDto teacherDto = new TeacherDto(t.getName());
 		return teacherDto;
