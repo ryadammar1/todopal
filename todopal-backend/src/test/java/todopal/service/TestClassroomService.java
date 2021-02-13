@@ -26,6 +26,16 @@ public class TestClassroomService {
 	
 	private final long TEST_ID = 0;
 
+	// teacher's values
+    private final String APPROVAL_CODE = "appr123";
+    private final String TEACHER_NAME = "testTeacher";
+    private final String TEACHER_EMAIL = "testTeacher@email.com";
+    private final String WRONG_TEACHER_EMAIL = "bad";
+    private final String TEACHER_PASSWORD = "testTeacherpassword";
+    private final String TEACHER_BIO = "testTeacherBio";
+    private final long CLASS_ID = 1;
+    private final String CLASS_NAME = "testClassrrom";
+
 	@Mock
 	private ClassroomRepository classroomRepository;
 
@@ -67,7 +77,9 @@ public class TestClassroomService {
 
 	@Test
 	public void testCreateClassroomSucessfull() {
-		Classroom classroom = service.createClassroom(null, "group1", "www.image.com", "math");
+		Teacher teacher = makeTestingTeacher();
+
+		Classroom classroom = service.createClassroom(teacher, "group1", "www.image.com", "math");
 
 		assertEquals(classroom.getName(), "group1");
 		assertEquals(classroom.getImagePath(), "www.image.com");
@@ -110,4 +122,15 @@ public class TestClassroomService {
 
 		assertEquals(true, actualMessage.contains(expectedMessage));
 	}
+
+	// helpers
+    private Teacher makeTestingTeacher() {
+        Teacher teacher = new Teacher();
+        teacher.setApprovalCode(APPROVAL_CODE);
+        teacher.setName(TEACHER_NAME);
+        teacher.setEmail(TEACHER_EMAIL);
+        teacher.setPassword(TEACHER_PASSWORD);
+        teacher.setBio(TEACHER_BIO);
+        return teacher;
+    }
 }

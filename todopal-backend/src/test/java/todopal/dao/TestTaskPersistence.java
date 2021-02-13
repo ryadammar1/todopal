@@ -3,6 +3,7 @@ package todopal.dao;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,8 @@ public class TestTaskPersistence {
 	private final String TASK_NAME = "MATH PROBLEM";
 	private final String TASK_DESCRIPTION = "DO PROBLEM 1.1";
 	private final int TASK_ID = 1;
+	private final String TASK_START_DATE = "2021-02-13";
+	private final String TASK_DUE_DATE = "2021-02-16";
 	
 	
 	@Autowired
@@ -49,6 +52,13 @@ public class TestTaskPersistence {
 		newTask.setName(TASK_NAME);
 		newTask.setDescription(TASK_DESCRIPTION);
 		newTask.setTaskId(TASK_ID);
+		
+		LocalDate realStartDate = LocalDate.parse(TASK_START_DATE);
+		newTask.setStartDate(realStartDate);
+		
+		LocalDate realDueDate = LocalDate.parse(TASK_DUE_DATE);
+		newTask.setDueDate(realDueDate);
+		
 
 		taskRepository.save(newTask);
 		Task savedTask = taskRepository.findBytaskId(TASK_ID);
@@ -61,6 +71,8 @@ public class TestTaskPersistence {
 		assertEquals(TASK_NAME, savedTask.getName());
 		assertEquals(TASK_DESCRIPTION, savedTask.getDescription());
 		assertEquals(TASK_ID, savedTask.getTaskId());
+		assertEquals(realStartDate, savedTask.getStartDate());
+		assertEquals(realDueDate, savedTask.getDueDate());
 	
 	}
 	

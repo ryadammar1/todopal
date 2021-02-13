@@ -7,6 +7,21 @@ public class ClassroomDto {
 	
 	private long classroomId;
 
+	public ClassroomDto() {
+	}
+
+	public ClassroomDto(String name) {
+		this.name = name;
+	}
+
+	public ClassroomDto(String name, TeacherDto teacher, String imagePath, String subject, long classroomId) {
+		this.name = name;
+		this.teacher = teacher;
+		this.imagePath = imagePath;
+		this.subject = subject;
+		this.classroomId = classroomId;
+	}
+
 	public void setClassroomDtoId(long value) {
 		this.classroomId = value;
 	}

@@ -1,7 +1,8 @@
 package todopal.model;
 
 import javax.persistence.Entity;
-import java.sql.Date;
+import java.time.LocalDate;
+
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -55,20 +56,20 @@ public void setDescription(String value) {
 public String getDescription() {
     return this.description;
 }
-private Date startDate;
+private LocalDate startDate;
 
-public void setStartDate(Date value) {
+public void setStartDate(LocalDate value) {
     this.startDate = value;
 }
-public Date getStartDate() {
+public LocalDate getStartDate() {
     return this.startDate;
 }
-private Date dueDate;
+private LocalDate dueDate;
 
-public void setDueDate(Date value) {
+public void setDueDate(LocalDate value) {
     this.dueDate = value;
 }
-public Date getDueDate() {
+public LocalDate getDueDate() {
     return this.dueDate;
 }
 private long taskId;

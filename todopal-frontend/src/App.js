@@ -27,7 +27,7 @@ class App extends React.Component {
     if (this.state.currentPage === "CreateClassroomPage") {
       return (
         <Fragment>
-          <Topbar setState={this.setState} name="Teacher" />
+          <Topbar setState={this.setState} name="TeacherClassRoom" />
           <CreateClassroomPage setState={this.setState} />
         </Fragment>
       );
