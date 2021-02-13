@@ -11,7 +11,7 @@ const [state, setState] = new useState({
 });
 
 let person = {
-    name: 'vfvf',
+    name: '',
     email:'',
     password:'',
 }
