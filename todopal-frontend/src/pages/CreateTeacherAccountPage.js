@@ -1,5 +1,6 @@
 import "../style/createClassroomPage.css";
 import { useState } from "react"
+import axios from "axios"
 
 function CreateTeacherAccountPage() {
 
@@ -17,6 +18,11 @@ let person = {
 
 function submitEvent () {
     console.log(person.name + person.password + person.email);
+    axios.post(`https://jsonplaceholder.typicode.com/users`)
+    .then(res => {
+      console.log(res);
+      console.log(res.data);
+    })
 }
 
   return (
