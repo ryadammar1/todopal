@@ -43,15 +43,15 @@ public class TeacherService {
 	}
 
 
-	public Teacher createTeacher(String aPPROVAL_CODE, String tEACHER_NAME, String tEACHER_EMAIL,
-			String tEACHER_PASSWORD, String tEACHER_BIO) {
+	public Teacher createTeacher(String APPROVAL_CODE, String TEACHER_NAME, String TEACHER_EMAIL,
+			String TEACHER_PASSWORD, String TEACHER_BIO) {
 		// TODO Auto-generated method stub
 		Teacher teacher = new Teacher();
-		teacher.setApprovalCode(aPPROVAL_CODE);
-		teacher.setName(tEACHER_NAME);
-		teacher.setEmail(tEACHER_EMAIL);
-		teacher.setPassword(tEACHER_PASSWORD);
-		teacher.setBio(tEACHER_BIO);
+		teacher.setApprovalCode(APPROVAL_CODE);
+		teacher.setName(TEACHER_NAME);
+		teacher.setEmail(TEACHER_EMAIL);
+		teacher.setPassword(TEACHER_PASSWORD);
+		teacher.setBio(TEACHER_BIO);
 		
 		
 		teacherRepository.save(teacher);
