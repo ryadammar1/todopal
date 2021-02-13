@@ -108,26 +108,18 @@ public class TodopalRestController {
 	public TeacherDto getTeacherByName(@PathVariable("name") String name) throws IllegalArgumentException {
 		return convertToDto(teacherservice.getTeacher(name));
 	}
-	@GetMapping(value = { "/persons", "/persons/" })
-	public List<PersonDto> getAllPersons() {
-		List<PersonDto> persons = new ArrayList<>();
-		for (Person person : teacherservice.getAllTeachers()) {
-			persons.add(convertToDto(person));
+	@GetMapping(value = { "/teachers", "/teachers/" })
+	public List<TeacherDto> getAllTeachers() {
+		List<TeacherDto> teachers = new ArrayList<>();
+		for (Teacher teacher : teacherservice.getAllTeachers()) {
+			teachers.add(convertToDto(teacher));
 		}
-		return persons;
-	}
-	
-	private PersonDto convertToDto(Person p) {
-		if (p == null) {
-			throw new IllegalArgumentException("There is no such Person!");
-		}
-		PersonDto personDto = new PersonDto(p.getName());
-		return personDto;
+		return teachers;
 	}
 	
 	private TeacherDto convertToDto(Teacher t) {
 		if (t == null) {
-			throw new IllegalArgumentException("There is no such Person!");
+			throw new IllegalArgumentException("There is no such Teacher!");
 		}
 		TeacherDto teacherDto = new TeacherDto(t.getName());
 		return teacherDto;
