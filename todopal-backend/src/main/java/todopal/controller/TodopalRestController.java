@@ -1,6 +1,6 @@
 package todopal.controller;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,18 +45,25 @@ public class TodopalRestController {
 	  public TaskDto createTaskWithDate(@RequestParam("id") long taskId, @RequestParam("mandatory") boolean isMandatory,
 			  @RequestParam("tag") String tag,  @RequestParam("category") String category,
 			  @RequestParam("points") int pointCount,  @RequestParam("name") String name,
-			  @RequestParam("description") String description, @PathVariable("startDate") Date startDate,
-			  @PathVariable("dueDate") Date dueDate) throws Exception {
+			  @RequestParam("description") String description, @PathVariable("startDate") String startDate,
+			  @PathVariable("dueDate") String dueDate) throws Exception {
+		
+		LocalDate realStartDate = LocalDate.parse(startDate);
+		LocalDate realDueDate = LocalDate.parse(dueDate);
+		
 	    Task task = taskService.createTask(taskId, isMandatory, tag, category, pointCount, name, description,
-	    		startDate, dueDate);
+	    		realStartDate, realDueDate);
 	    return convertToDto(task);
 	  }
 	
 	@PostMapping(value = {"/create-task-container", "/create-task-container/"})
 	  public TaskContainerDto createTaskContainer(@RequestParam("id") long taskContainerId, 
-			  @RequestParam("date") Date completionDate,  @RequestParam("status") TaskStatus status,
+			  @RequestParam("date") String completionDate,  @RequestParam("status") TaskStatus status,
 			  @RequestParam("taskId") long taskId) throws Exception {
-	    TaskContainer taskContainer = taskService.createTaskContainer(taskContainerId, completionDate, status, taskId);
+		
+		LocalDate realCompletionDate = LocalDate.parse(completionDate);
+		
+	    TaskContainer taskContainer = taskService.createTaskContainer(taskContainerId, realCompletionDate, status, taskId);
 	    return convertToDto(taskContainer);
 	  }
 	

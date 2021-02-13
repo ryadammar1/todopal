@@ -9,6 +9,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.time.LocalDate;
+
 import todopal.model.Task;
 import todopal.model.TaskContainer;
 import todopal.model.TaskStatus;
@@ -42,6 +44,9 @@ public class TestTaskContainerPersistence {
         taskContainer.setTaskContainerId(1);
         taskContainer.setTask(task);
         
+        LocalDate realCompletionDate = LocalDate.parse("2021-02-10");
+        taskContainer.setCompletionDate(realCompletionDate);
+        
 		taskContainerRepository.save(taskContainer);
 		
 		TaskContainer savedTaskContainer = taskContainerRepository.findBytaskContainerId(1);
@@ -50,6 +55,7 @@ public class TestTaskContainerPersistence {
 		assertEquals(TaskStatus.TODO, savedTaskContainer.getStatus());
 		assertEquals(1, savedTaskContainer.getTaskContainerId());
 		assertEquals(2, savedTaskContainer.getTask().getTaskId());
+		assertEquals(realCompletionDate, savedTaskContainer.getCompletionDate());
 		
 	
 	}
