@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import todopal.dto.ClassroomDto;
 import todopal.dto.PersonDto;
 import todopal.dto.TaskContainerDto;
 import todopal.dto.TaskDto;
@@ -27,6 +27,7 @@ import todopal.model.Teacher;
 import todopal.service.TeacherService;
 import todopal.service.ClassroomService;
 import todopal.service.TaskService;
+import todopal.service.TeacherService;
 
 @RestController
 public class TodopalRestController {
@@ -37,6 +38,8 @@ public class TodopalRestController {
 	private ClassroomService classroomService;
 	@Autowired
 	private TaskService taskService;
+	@Autowired
+	private TeacherService teacherService;
 	
 	@PostMapping(value = {"/create-task", "/create-task/"})
 	  public TaskDto createTask(@RequestParam("id") long taskId, @RequestParam("mandatory") boolean isMandatory,
@@ -72,6 +75,14 @@ public class TodopalRestController {
 	    TaskContainer taskContainer = taskService.createTaskContainer(taskContainerId, realCompletionDate, status, taskId);
 	    return convertToDto(taskContainer);
 	  }
+
+	@PostMapping(value = { "/create-classroom/{name}", "/create-classroom/{name}/" })
+	public ClassroomDto createClassroom(@RequestParam("teacherEmail") String teacherEmail, @RequestParam("imagePath") String imagePath, 
+			  @RequestParam("subject") String subject, @PathVariable("name") String name) throws Exception {
+		Teacher teacher = teacherService.getTeacher(teacherEmail);
+		Classroom classroom = classroomService.createClassroom(teacher, name, imagePath, subject);
+		return converDto(classroom);
+	}
 	
 	@GetMapping(value = { "/task", "/task/" })
 	public TaskDto getTask(@RequestParam("id") long taskId) throws Exception {
@@ -150,6 +161,15 @@ public class TodopalRestController {
 		TaskContainerDto taskContainerDto = new TaskContainerDto(taskContainer.getTaskContainerId(), 
 				taskContainer.getCompletionDate(), taskContainer.getStatus(), taskDto);
 		return taskContainerDto;
+	}
+
+	private ClassroomDto converDto(Classroom classroom) {
+		if (classroom == null) {
+			throw new IllegalArgumentException("There is no such Classroom!");
+		}
+		TeacherDto teacherDto = convertToDto(classroom.getTeacher());
+		ClassroomDto classroomDto = new ClassroomDto(classroom.getName(), teacherDto, classroom.getImagePath(), classroom.getSubject(), classroom.getClassroomId());
+		return classroomDto;
 	}
 
 }

@@ -20,6 +20,7 @@ public class ClassroomService {
 
 	private final String NULL_CLASSROOM_EXCEPTION = "[error] Classroom with id does not exist";
 	private final String EMPTY_STRING_EXCEPTION = "[error] String argument is empty";
+	private final String ALREADY_EXIST_EXCEPTION = "[error] Classroom with same name already created";
 
 	@Transactional
 	public Classroom createClassroom(Teacher teacher, String name, String imagePath, String subject) {
@@ -45,9 +46,12 @@ public class ClassroomService {
 		classroom.setImagePath(imagePath);
 		classroom.setSubject(subject);
 
-		classroomRepository.save(classroom);
-
-		return classroom;
+		if (classroomRepository.findByNameAndTeacherEmail(name, teacher.getEmail()) != null) {
+			throw new IllegalArgumentException(ALREADY_EXIST_EXCEPTION);
+		} else {
+			classroomRepository.save(classroom);
+			return classroom;
+		}
 	}
 
 	@Transactional
@@ -186,6 +190,11 @@ public class ClassroomService {
 	@Transactional
 	public Classroom getClassroom(long id) {
 		return classroomRepository.findByClassroomId(id);
+	}
+
+	@Transactional
+	public Classroom getClassroom(String teacherName, String classroomName) {
+		return classroomRepository.findByNameAndTeacherEmail(teacherName, classroomName);
 	}
 
 	@Transactional
