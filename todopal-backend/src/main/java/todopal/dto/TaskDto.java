@@ -1,6 +1,6 @@
 package todopal.dto;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class TaskDto {
 
@@ -10,14 +10,14 @@ public class TaskDto {
 	private int pointCount;
 	private String name;
 	private String description;
-	private Date startDate;
-	private Date dueDate;
+	private LocalDate startDate;
+	private LocalDate dueDate;
 	private long taskId;
 	private ClassroomDto classroom;
 
 
 	public TaskDto(long id, boolean isMandatory, String tag, String category, int pointCount, String name,
-			String description, Date startDate, Date dueDate, ClassroomDto classroom) {
+			String description, LocalDate startDate, LocalDate dueDate, ClassroomDto classroom) {
 		this.taskId = id;
 		this.isMandatory = isMandatory;
 		this.tag = tag;
@@ -31,7 +31,7 @@ public class TaskDto {
 	}
 	
 	public TaskDto(long id, boolean isMandatory, String tag, String category, int pointCount, String name,
-			String description, Date startDate, Date dueDate) {
+			String description, LocalDate startDate, LocalDate dueDate) {
 		this.taskId = id;
 		this.isMandatory = isMandatory;
 		this.tag = tag;
@@ -100,12 +100,12 @@ public class TaskDto {
 	}
 
 
-	public Date getStartDate() {
+	public LocalDate getStartDate() {
 		return this.startDate;
 	}
 
 
-	public Date getDueDate() {
+	public LocalDate getDueDate() {
 		return this.dueDate;
 	}
 

@@ -1,25 +1,26 @@
 package todopal.dto;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 import todopal.model.TaskStatus;
 
 public class TaskContainerDto {
 
-	private Date completionDate;
+	private LocalDate completionDate;
 	private TaskStatus status;
 	private TaskDto task;
 	private long taskContainerId;
 	
 	
-	public TaskContainerDto(long id, Date completionDate, TaskStatus status, TaskDto task) {
+	public TaskContainerDto(long id, LocalDate completionDate, TaskStatus status, TaskDto task) {
 		this.taskContainerId = id;
 		this.completionDate = completionDate;
 		this.status = status;
 		this.task = task;
 	}
 	
-	public Date getCompletionDate() {
+	public LocalDate getCompletionDate() {
 		return this.completionDate;
 	}
 	

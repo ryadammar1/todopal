@@ -46,12 +46,6 @@ public class TestTeacherService {
     private final String WRONG_TEACHER_EMAIL = "bad";
     private final String TEACHER_PASSWORD = "testTeacherpassword";
     private final String TEACHER_BIO = "testTeacherBio";
-    private final long CLASS_ID = 1;
-    private final String CLASS_NAME = "testClassrrom";
-    
-    private final HashSet<Classroom> CLASSROOMS = new HashSet<Classroom>();
-
-    private ArrayList<String> TASK_CATEGORIES = new ArrayList<String>();
 
     // tests
     @BeforeEach
@@ -93,7 +87,7 @@ public class TestTeacherService {
 
     @Test 
     public void WithTeacherService_GivenNoTeacher_WhenCreatingTeacher_ThenTeacherIsSaved() {
-        Teacher teacher = teacherService.createTeacher(APPROVAL_CODE, TEACHER_NAME, TEACHER_EMAIL, TEACHER_PASSWORD, TEACHER_BIO, CLASSROOMS);
+        Teacher teacher = teacherService.createTeacher(APPROVAL_CODE, TEACHER_NAME, TEACHER_EMAIL, TEACHER_PASSWORD, TEACHER_BIO);
 
         assertNotNull(teacher);
         assertEquals(APPROVAL_CODE, teacher.getApprovalCode());
@@ -101,7 +95,6 @@ public class TestTeacherService {
         assertEquals(TEACHER_EMAIL, teacher.getEmail());
         assertEquals(TEACHER_PASSWORD, teacher.getPassword());
         assertEquals(TEACHER_BIO, teacher.getBio());
-        assertNotNull(teacher.getClassroom());
     }
 
     @Test 
@@ -114,7 +107,6 @@ public class TestTeacherService {
         assertEquals(TEACHER_EMAIL, teacher.getEmail());
         assertEquals(TEACHER_PASSWORD, teacher.getPassword());
         assertEquals(TEACHER_BIO, teacher.getBio());
-        assertNotNull(teacher.getClassroom());
     }
 
     @Test 
@@ -126,8 +118,8 @@ public class TestTeacherService {
 
     @Test 
     public void WithTeacherService_GivenExistTeacher_WhenUpdatingTeacher_ThenTeacherIsUpdated() {
-        Teacher teacher = teacherService.createTeacher(APPROVAL_CODE, TEACHER_NAME, TEACHER_EMAIL, TEACHER_PASSWORD, TEACHER_BIO, CLASSROOMS);
-        teacher = teacherService.updateTeacher(APPROVAL_CODE, "New Teacher", TEACHER_EMAIL, TEACHER_PASSWORD, TEACHER_BIO, CLASSROOMS);
+        Teacher teacher = teacherService.createTeacher(APPROVAL_CODE, TEACHER_NAME, TEACHER_EMAIL, TEACHER_PASSWORD, TEACHER_BIO);
+        teacher = teacherService.updateTeacher(APPROVAL_CODE, "New Teacher", TEACHER_EMAIL, TEACHER_PASSWORD, TEACHER_BIO);
 
         assertNotNull(teacher);
         assertEquals(APPROVAL_CODE, teacher.getApprovalCode());
@@ -135,7 +127,6 @@ public class TestTeacherService {
         assertEquals(TEACHER_EMAIL, teacher.getEmail());
         assertEquals(TEACHER_PASSWORD, teacher.getPassword());
         assertEquals(TEACHER_BIO, teacher.getBio());
-        assertNotNull(teacher.getClassroom());
     }
 
     @Test 
@@ -154,23 +145,6 @@ public class TestTeacherService {
         teacher.setEmail(TEACHER_EMAIL);
         teacher.setPassword(TEACHER_PASSWORD);
         teacher.setBio(TEACHER_BIO);
-        CLASSROOMS.add(getTestClassroom());
-        teacher.setClassroom(CLASSROOMS);
         return teacher;
     }
-
-    private Classroom getTestClassroom() {
-        Classroom classroom = new Classroom();
-		
-		TASK_CATEGORIES.add("Math");
-		TASK_CATEGORIES.add("English");
-		TASK_CATEGORIES.add("Physics");
-
-		classroom.setClassroomId(CLASS_ID);
-		classroom.setName(CLASS_NAME);
-		classroom.setTaskCategories(TASK_CATEGORIES);
-
-        return classroom;
-    }
-
 }

@@ -1,18 +1,19 @@
 package todopal.model;
 
 import javax.persistence.Entity;
-import java.sql.Date;
+import java.time.LocalDate;
+
 import javax.persistence.OneToOne;
 import javax.persistence.Id;
 
 @Entity
 public class TaskContainer{
-   private Date completionDate;
+   private LocalDate completionDate;
 
-public void setCompletionDate(Date value) {
+public void setCompletionDate(LocalDate value) {
     this.completionDate = value;
 }
-public Date getCompletionDate() {
+public LocalDate getCompletionDate() {
     return this.completionDate;
 }
 private TaskStatus status;
