@@ -20,11 +20,11 @@ public class TeacherService {
 
 
 	@Transactional
-	public Teacher getTeacher(String name) {
-		if (name == null || name.trim().length() == 0) {
+	public Teacher getTeacher(String email) {
+		if (email == null || email.trim().length() == 0) {
 			throw new IllegalArgumentException("Teacher name cannot be empty!");
 		}
-		Teacher teacher = (Teacher) teacherRepository.findTeacherByEmail(name);
+		Teacher teacher = (Teacher) teacherRepository.findTeacherByEmail(email);
 
 		return teacher;
 	}
