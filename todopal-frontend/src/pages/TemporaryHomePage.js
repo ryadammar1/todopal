@@ -1,6 +1,5 @@
 function TemporaryHomePage({ setState }) {
   function CreateClassroomPageOnClick() {
-    console.log("hello");
     setState({ currentPage: "CreateClassroomPage" });
   }
 

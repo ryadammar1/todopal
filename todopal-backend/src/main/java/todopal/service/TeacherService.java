@@ -17,19 +17,6 @@ public class TeacherService {
 	
 	@Autowired
 	TeacherRepository teacherRepository;
-	
-//	@Transactional
-//	public Teacher createTeacher(String name) {
-//		if (name == null || name.trim().length() == 0) {
-//			throw new IllegalArgumentException("Teacher name cannot be empty!");
-//		} else if (teacherRepository.existsById(name)) {
-//			throw new IllegalArgumentException("Teacher has already been created!");
-//		}
-//		Teacher teacher = new Teacher();
-//		teacher.setName(name);
-//		teacherRepository.save(teacher);
-//		return teacher;
-//	}
 
 
 	@Transactional
@@ -42,10 +29,10 @@ public class TeacherService {
 		return teacher;
 	}
 	
-//	@Transactional
-//	public List<Person> getAllPersons() {
-//		return toList(personRepository.findAll());
-//	}
+	@Transactional
+	public List<Teacher> getAllTeachers() {
+		return toList(teacherRepository.findAll());
+	}
 	
 	private <T> List<T> toList(Iterable<T> iterable) {
 		List<T> resultList = new ArrayList<T>();
@@ -56,23 +43,23 @@ public class TeacherService {
 	}
 
 
-	public Teacher createTeacher(String aPPROVAL_CODE, String tEACHER_NAME, String tEACHER_EMAIL,
-			String tEACHER_PASSWORD, String tEACHER_BIO, HashSet<Classroom> cLASSROOMS) {
+	public Teacher createTeacher(String APPROVAL_CODE, String TEACHER_NAME, String TEACHER_EMAIL,
+			String TEACHER_PASSWORD, String TEACHER_BIO) {
 		// TODO Auto-generated method stub
 		Teacher teacher = new Teacher();
-		teacher.setApprovalCode(aPPROVAL_CODE);
-		teacher.setName(tEACHER_NAME);
-		teacher.setEmail(tEACHER_EMAIL);
-		teacher.setPassword(tEACHER_PASSWORD);
-		teacher.setBio(tEACHER_BIO);
-		teacher.setClassroom(cLASSROOMS);
+		teacher.setApprovalCode(APPROVAL_CODE);
+		teacher.setName(TEACHER_NAME);
+		teacher.setEmail(TEACHER_EMAIL);
+		teacher.setPassword(TEACHER_PASSWORD);
+		teacher.setBio(TEACHER_BIO);
+		
 		
 		teacherRepository.save(teacher);
 		return teacher;
 	}
 	
 	public Teacher updateTeacher(String aPPROVAL_CODE, String tEACHER_NAME, String tEACHER_EMAIL,
-			String tEACHER_PASSWORD, String tEACHER_BIO, HashSet<Classroom> cLASSROOMS) {
+			String tEACHER_PASSWORD, String tEACHER_BIO) {
 		// TODO Auto-generated method stub
 		Teacher teacher = new Teacher();
 		teacher.setApprovalCode(aPPROVAL_CODE);
@@ -80,7 +67,7 @@ public class TeacherService {
 		teacher.setEmail(tEACHER_EMAIL);
 		teacher.setPassword(tEACHER_PASSWORD);
 		teacher.setBio(tEACHER_BIO);
-		teacher.setClassroom(cLASSROOMS);
+		
 		
 		teacherRepository.save(teacher);
 		return teacher;

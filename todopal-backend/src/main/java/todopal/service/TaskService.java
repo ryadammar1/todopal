@@ -1,6 +1,6 @@
 package todopal.service;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class TaskService {
 	
 	@Transactional
 	public Task createTask(long id, boolean isMandatory, String tag, String category, int pointCount, 
-			String name, String description, Date startDate, Date dueDate) {
+			String name, String description, LocalDate startDate, LocalDate dueDate) {
 		Task task = new Task();
 
 		task.setTaskId(id);
@@ -63,7 +63,7 @@ public class TaskService {
 	
 	
 	@Transactional
-	public TaskContainer createTaskContainer(long id, Date completionDate, TaskStatus status, long taskId) {
+	public TaskContainer createTaskContainer(long id, LocalDate completionDate, TaskStatus status, long taskId) {
 		TaskContainer taskContainer = new TaskContainer();
 		
 		Task task = taskRepository.findBytaskId(taskId);
@@ -72,7 +72,7 @@ public class TaskService {
 		taskContainer.setStatus(status);
 		taskContainer.setTask(task);
 		taskContainer.setTaskContainerId(id);
-
+		
 		taskContainerRepository.save(taskContainer);
 
 		return taskContainer;
