@@ -43,10 +43,10 @@ public class TeacherService {
 		return teacher;
 	}
 	
-//	@Transactional
-//	public List<Person> getAllPersons() {
-//		return toList(personRepository.findAll());
-//	}
+	@Transactional
+	public List<Teacher> getAllTeachers() {
+		return toList(teacherRepository.findAll());
+	}
 	
 	private <T> List<T> toList(Iterable<T> iterable) {
 		List<T> resultList = new ArrayList<T>();
