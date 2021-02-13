@@ -98,13 +98,14 @@ public class TodopalRestController {
   
   	
 	@PostMapping(value = { "/teachers/{name}", "/teachers/{name}/" })
-	public TeacherDto createTeacher(@PathVariable("approvalCode") String appCode,@PathVariable("name") String name,@PathVariable("email") String email,@PathVariable("password") String password,
-			@PathVariable("bio") String bio) throws IllegalArgumentException {
+	public TeacherDto createTeacher(@RequestParam("approvalCode") String appCode,@PathVariable("name") String name,
+			@RequestParam("email") String email,@RequestParam("password") String password,
+			@RequestParam("bio") String bio) throws IllegalArgumentException {
 		
 		Teacher teacher = teacherservice.createTeacher(appCode,name,email,password,bio);
 		return convertToDto(teacher);
 	}
-	@GetMapping(value = { "/teachers/{name}", "/teachers/{name}/" })
+	@GetMapping(value = { "/teachers/{email}", "/teachers/{email}/" })
 	public TeacherDto getTeacherByName(@PathVariable("email") String email) throws IllegalArgumentException {
 		return convertToDto(teacherservice.getTeacher(email));
 	}
