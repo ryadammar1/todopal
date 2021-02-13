@@ -18,7 +18,8 @@ let person = {
 
 function submitEvent () {
     console.log(person.name + person.password + person.email);
-    axios.post(`https://jsonplaceholder.typicode.com/users`)
+
+    axios.post(`https://jsonplaceholder.typicode.com/users`, person)
     .then(res => {
       console.log(res);
       console.log(res.data);
