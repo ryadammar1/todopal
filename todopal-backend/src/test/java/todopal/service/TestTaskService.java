@@ -1,7 +1,7 @@
 package todopal.service;
 
 import org.junit.jupiter.api.Test;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -36,7 +36,7 @@ public class TestTaskService {
 	private final int TASK_POINTS = 5;
 	private final String TASK_NAME = "MATH PROBLEM";
 	private final String TASK_DESCRIPTION = "DO PROBLEM 1.1";
-	private final int TASK_ID = 1;
+	private final long TASK_ID = 1;
 
 	@InjectMocks
 	private TaskService service;
@@ -64,9 +64,8 @@ public class TestTaskService {
 		}).when(taskContainerRepository).save(any(TaskContainer.class));
 
 		//taskRepository.findBytaskId(anyInt())
-		lenient().when(taskRepository.findBytaskId(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
-			System.err.println("Fail");
-			if ((Integer) invocation.getArgument(0) == (TASK_ID)) {	 
+		lenient().when(taskRepository.findBytaskId(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
+			if ((Long) invocation.getArgument(0) == (TASK_ID)) {	 
 				Task task = makeTestingTask();
 				return task;
 			} else {
@@ -108,10 +107,7 @@ public class TestTaskService {
 		assertEquals(3, taskContainer.getTaskContainerId());
 		assertEquals(TaskStatus.TODO, taskContainer.getStatus());
 		assertEquals(realCompletionDate, taskContainer.getCompletionDate());
-
-
-		//TODO: MAKE THIS PASS
-		//assertNotNull(taskContainer.getTask());
+		assertNotNull(taskContainer.getTask());
 	}
 
 	//Helpers
