@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import TemporaryHomePage from "./pages/TemporaryHomePage";
 import CreateClassroomPage from "./pages/CreateClassroomPage";
+import CreateTeacherAccountPage from "./pages/CreateTeacherAccountPage";
 import Topbar from "./components/Topbar.js";
 import "./style/global/__font.css";
 
@@ -28,6 +29,15 @@ class App extends React.Component {
         <Fragment>
           <Topbar setState={this.setState} name="Teacher" />
           <CreateClassroomPage setState={this.setState} />
+        </Fragment>
+      );
+    }
+
+    if (this.state.currentPage === "CreateTeacherAccountPage") {
+      return (
+        <Fragment>
+          <Topbar setState={this.setState} name="Teacher" />
+          <CreateTeacherAccountPage setState={this.setState} />
         </Fragment>
       );
     }
