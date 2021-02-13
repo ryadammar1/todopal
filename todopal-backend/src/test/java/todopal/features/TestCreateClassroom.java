@@ -37,8 +37,7 @@ public class TestCreateClassroom {
         String approvalCode = "123";
         String password = "123";
         String bio = "Hello!";
-        HashSet<Classroom> classrooms = new HashSet<>();
-        teacher = teacherService.createTeacher(approvalCode, name, email, password, bio, classrooms);
+        teacher = teacherService.createTeacher(approvalCode, name, email, password, bio);
     }
 
     @When("{string} creates a classroom with name {string} and image with path {string} and subject {string}")
