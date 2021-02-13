@@ -1,0 +1,74 @@
+#task-creater-background {
+  top: 0;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  opacity: 0.6;
+}
+
+#task-creater-model {
+  position: absolute;
+  width: 50%;
+  height: 80%;
+  background-color: #d2ffea;
+  left: 25%;
+  top: 10%;
+  opacity: 1;
+
+  border-radius: 2rem;
+  box-shadow: 0.2rem 0.2rem 0rem 0rem #1ace98;
+}
+
+#task-creater-content {
+  width: 94%;
+  height: 90%;
+  margin: auto;
+  margin-top: 3%;
+
+  color: #1ace98;
+}
+
+.row-item-task-creater {
+  margin: 0.5rem;
+  margin-left: 0;
+  margin-right: 0;
+  font-size: 2rem;
+}
+
+.small-text {
+  font-size: 1.5rem;
+}
+
+#task-creator-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#task-creater-description {
+  width: 97%;
+  height: 20%;
+}
+
+.row-item-1 {
+  width: 96.5%;
+}
+
+.row-item-2 {
+  width: 93%;
+}
+
+.row-item-3 {
+  width: 85%;
+}
+
+#is-mandatory-select {
+  margin-top: 0.5rem;
+  border: none;
+  outline: none;
+  border-radius: 1.5rem;
+  font-size: 2rem;
+  padding: 1rem;
+  color: #1ace98;
+}
