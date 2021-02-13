@@ -63,16 +63,16 @@ public class TaskService {
 	
 	
 	@Transactional
-	public TaskContainer createTaskContainer(long id, Date completionDate, TaskStatus status, Task task) {
+	public TaskContainer createTaskContainer(long id, Date completionDate, TaskStatus status, long taskId) {
 		TaskContainer taskContainer = new TaskContainer();
 		
-		System.out.println("Hello");
-
+		Task task = taskRepository.findBytaskId(taskId);
+		
 		taskContainer.setCompletionDate(completionDate);
 		taskContainer.setStatus(status);
 		taskContainer.setTask(task);
 		taskContainer.setTaskContainerId(id);
-		
+
 		taskContainerRepository.save(taskContainer);
 
 		return taskContainer;
@@ -82,10 +82,9 @@ public class TaskService {
 	@Transactional
 	public Task getTask(long id) throws Exception {
 		
-		Task task;
-		try {
-			task = taskRepository.findBytaskId(id);
-		} catch (Exception e) {
+		Task task = taskRepository.findBytaskId(id);
+		
+		if(task == null) {
 			throw new Exception("Invalid Task Id");
 		}
 		
@@ -95,11 +94,9 @@ public class TaskService {
 	@Transactional
 	public TaskContainer getTaskContainer(long id) throws Exception {
 		
-		TaskContainer taskContainer;
+		TaskContainer taskContainer = taskContainerRepository.findBytaskContainerId(id);
 		
-		try {
-			taskContainer = taskContainerRepository.findBytaskContainerId(id);
-		} catch (Exception e) {
+		if(taskContainer == null){
 			throw new Exception("Invalid Task Container Id");
 		}
 		

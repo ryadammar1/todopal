@@ -1,6 +1,7 @@
 package todopal.service;
 
 import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.anyInt;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -26,7 +27,14 @@ public class TestTaskService {
 	private TaskRepository taskRepository;
 	@Mock
 	private TaskContainerRepository taskContainerRepository;
-
+	
+	private final boolean TASK_MANDATORY = true;
+	private final String TASK_TAG = "MATH";
+	private final String TASK_CATEGORY = "HOMEWORK";
+	private final int TASK_POINTS = 5;
+	private final String TASK_NAME = "MATH PROBLEM";
+	private final String TASK_DESCRIPTION = "DO PROBLEM 1.1";
+	private final int TASK_ID = 1;
 
 	@InjectMocks
 	private TaskService service;
@@ -52,7 +60,18 @@ public class TestTaskService {
 			}
 			return null;
 		}).when(taskContainerRepository).save(any(TaskContainer.class));
-
+		
+		//taskRepository.findBytaskId(anyInt())
+		lenient().when(taskRepository.findBytaskId(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
+			System.err.println("Fail");
+			if ((Integer) invocation.getArgument(0) == (TASK_ID)) {	 
+				 Task task = makeTestingTask();
+		        return task;
+            } else {
+            	return null;
+            }
+		});
+		
 	}
 
 
@@ -73,14 +92,26 @@ public class TestTaskService {
 	}
 	
 	@Test 
-	public void testCreateTaskContainer() {
-		Task task = service.createTask(1, true, "Math", "Homework", 5, "Problem 1.1", "Complete the problem");
-		TaskContainer taskContainer = service.createTaskContainer(3, null, TaskStatus.TODO, task);	
+	public void testCreateTaskContainer() throws Exception {
+		
+		TaskContainer taskContainer = service.createTaskContainer(3, null, TaskStatus.TODO, TASK_ID);	
 
 		assertNotNull(taskContainer);
 		assertEquals(3, taskContainer.getTaskContainerId());
 		assertEquals(TaskStatus.TODO, taskContainer.getStatus());
-		assertEquals(task, taskContainer.getTask());
-
+		assertNotNull(taskContainer.getTask());
 	}
+	
+	//Helpers
+	private Task makeTestingTask() {
+        Task task = new Task();
+        task.setTaskId(TASK_ID);
+        task.setIsMandatory(TASK_MANDATORY);
+        task.setTag(TASK_TAG);
+        task.setCategory(TASK_CATEGORY);
+        task.setPointCount(TASK_POINTS);
+        task.setName(TASK_NAME);
+        task.setDescription(TASK_DESCRIPTION);
+        return task;
+    }
 }
