@@ -16,6 +16,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	runtimeOnly 'org.postgresql:postgresql'
+
+	// Cucumber
+  	testCompile 'io.cucumber:cucumber-java:6.8.1'
+  	testCompile 'io.cucumber:cucumber-junit:6.8.1'
+  	testCompile 'io.cucumber:cucumber-spring:6.8.1'
+  	testCompile 'io.cucumber:cucumber-junit-platform-engine:6.8.1'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
     	testImplementation 'io.cucumber:cucumber-java:6.8.1'
 		testImplementation 'io.cucumber:cucumber-junit:6.8.1'
@@ -31,10 +38,11 @@ dependencies {
 }
 
 test {
-	useJUnitPlatform()
+	//useJUnitPlatform()
+	useJUnit()
 }
 
-task cucumber() {
+/*task cucumber() {
     dependsOn assemble, testClasses
     doLast {
         javaexec {
@@ -49,5 +57,5 @@ configurations {
     cucumberRuntime {
         extendsFrom testImplementation
     }
-}
+}*/
 
