@@ -1,47 +1,49 @@
 package todopal.model;
 
-import javax.persistence.Entity;
 import java.time.LocalDate;
 
-import javax.persistence.OneToOne;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
-public class TaskContainer{
-   private LocalDate completionDate;
+public class TaskContainer {
+    private LocalDate completionDate;
+    private TaskStatus status;
+    private Task task;
+    private long taskContainerId;
 
-public void setCompletionDate(LocalDate value) {
-    this.completionDate = value;
-}
-public LocalDate getCompletionDate() {
-    return this.completionDate;
-}
-private TaskStatus status;
+    public void setCompletionDate(LocalDate value) {
+        this.completionDate = value;
+    }
 
-public void setStatus(TaskStatus value) {
-    this.status = value;
-}
-public TaskStatus getStatus() {
-    return this.status;
-}
-private Task task;
+    public LocalDate getCompletionDate() {
+        return this.completionDate;
+    }
 
-@OneToOne(optional=false)
-public Task getTask() {
-   return this.task;
-}
+    public void setStatus(TaskStatus value) {
+        this.status = value;
+    }
 
-public void setTask(Task task) {
-   this.task = task;
-}
+    public TaskStatus getStatus() {
+        return this.status;
+    }
 
-private long taskContainerId;
+    @OneToOne(optional = false)
+    public Task getTask() {
+        return this.task;
+    }
 
-public void setTaskContainerId(long value) {
-    this.taskContainerId = value;
-}
-@Id
-public long getTaskContainerId() {
-    return this.taskContainerId;
-}
+    public void setTask(Task task) {
+        this.task = task;
+    }
+
+    public void setTaskContainerId(long value) {
+        this.taskContainerId = value;
+    }
+
+    @Id
+    public long getTaskContainerId() {
+        return this.taskContainerId;
+    }
 }

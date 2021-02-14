@@ -1,6 +1,5 @@
 package todopal.model;
 
-
-public enum TaskStatus{
-TODO, DONE, CLOSED, PROGRESS;
+public enum TaskStatus {
+    TODO, DONE, CLOSED, PROGRESS;
 }
