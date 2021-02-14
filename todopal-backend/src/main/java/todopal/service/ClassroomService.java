@@ -28,10 +28,10 @@ public class ClassroomService {
 
 		Random rand = new Random();
 
-		long id = rand.nextLong();
+		long id = rand.nextInt(9000000) + 1000000;
 
 		while (classroomRepository.findByClassroomId(id) != null)
-			id = rand.nextLong();
+			id = rand.nextInt(9000000) + 1000000;
 
 		if (name.length() == 0)
 			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
