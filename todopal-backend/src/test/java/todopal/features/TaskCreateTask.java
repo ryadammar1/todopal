@@ -54,9 +54,10 @@ public class TaskCreateTask {
 
         for (Map<String, String> taskInfo : tasksInfo) {
             try {
-                taskService.createTask((long)taskInfo.get("description").hashCode(), true, taskInfo.get("tag"), taskInfo.get("list"), Integer.parseInt(taskInfo.get("points")), taskInfo.get("name"), taskInfo.get("description"));
+                taskService.createTask((long)taskInfo.get("description").hashCode(), true, taskInfo.get("tag"), taskInfo.get("list"), Integer.parseInt(taskInfo.get("points")), taskInfo.get("name"), taskInfo.get("description"), taskInfo.get("start date"), taskInfo.get("due date"));
             } catch (Exception e) {
-                errorThrown = e;
+                Ressources.message = e.getMessage();
+
             }
         }
     }
@@ -76,6 +77,7 @@ public class TaskCreateTask {
         boolean found = false;
         for (Map<String, String> taskInfo : tasksInfo) {
             for (Task task : tasks) {
+                System.err.println(task.getName());
                 if (taskInfo.get("name").equals(task.getName())) {
                     found = true;
                     break;

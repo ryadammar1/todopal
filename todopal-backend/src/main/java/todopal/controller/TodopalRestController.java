@@ -45,8 +45,9 @@ public class TodopalRestController {
 	public TaskDto createTask(@RequestParam("id") long taskId, @RequestParam("mandatory") boolean isMandatory,
 			@RequestParam("tag") String tag, @RequestParam("category") String category,
 			@RequestParam("points") int pointCount, @RequestParam("name") String name,
-			@RequestParam("description") String description) throws Exception {
-		Task task = taskService.createTask(taskId, isMandatory, tag, category, pointCount, name, description);
+			@RequestParam("description") String description, @RequestParam("start-date") String startDate,
+							  @RequestParam("due-date") String dueDate) throws Exception {
+		Task task = taskService.createTask(taskId, isMandatory, tag, category, pointCount, name, description, startDate, dueDate);
 		return convertToDto(task);
 	}
 
