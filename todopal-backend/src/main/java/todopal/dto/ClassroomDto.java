@@ -53,6 +53,8 @@ public class ClassroomDto {
 	public String getImagePath() {
 		return this.imagePath;
 	}
+
+	//TODO set string
 	private ArrayList taskCategories;
 
 	public void setTaskCategories(ArrayList value) {
