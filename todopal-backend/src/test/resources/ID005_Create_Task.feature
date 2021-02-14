@@ -13,7 +13,7 @@ Feature: Create Task
         When a task with the following information is created
             | name  | description               | points | startDate  | dueDate    | tag   | List  |
             | new   | this is a new task        | 2      | 2021-01-24 | 2021-01-24 | math  | Bonus |
-        Then the following tasks exist
+        Then the following tasks exist now
             | name  | description               | points | startDate  | dueDate    | tag   | list  |
             | exist | this is an existing task  | 1      | 2021-01-23 | 2021-01-23 | math  | Bonus |
             | new   | this is a new task        | 2      | 2021-01-24 | 2021-01-24 | math  | Bonus |
@@ -24,7 +24,7 @@ Feature: Create Task
         When a task with the following information is created
             | name  | description               | points | start date | due date   | tag   | list  |
             | exist | this is an existing task  | 1      | 2021-01-23 | 2021-01-23 | math  | Bonus |
-        Then the following tasks exist
+        Then the following tasks exist now
             | name  | description               | points | start date | due date   | tag   | list  |
             | exist | this is an existing task  | 1      | 2021-01-23 | 2021-01-23 | math  | Bonus |
 
@@ -34,7 +34,7 @@ Feature: Create Task
         When a task with the following information is created
             | name  | description               | points | start date | due date   | tag   | list  |
             | exist | this is an existing task  | 1      |            | 2021-01-23 | math  | Bonus |
-        Then the following tasks exist
+        Then the following tasks exist now
             | name  | description               | points | start date | due date   | tag   | list  |
             | exist | this is an existing task  | 1      |            | 2021-01-23 | math  | Bonus |
 
@@ -44,7 +44,7 @@ Feature: Create Task
         When a task with the following information is created
             | name  | description               | points | start date | due date   | tag   | list  |
             | exist | this is an existing task  | 1      | 2021-01-23 |            | math  | Bonus |
-        Then the following tasks exist
+        Then the following tasks exist now
             | name  | description               | points | start date | due date   | tag   | list  |
             | exist | this is an existing task  | 1      | 2021-01-23 |            | math  | Bonus |
 
@@ -54,7 +54,7 @@ Feature: Create Task
         When a task with the following information is created
             | name  | description               | points | start date | due date   | tag   | list  |
             | exist | this is an existing task  | 1      | 2021-01-23 | 2021-01-23 |       | Bonus |
-        Then the following tasks exist
+        Then the following tasks exist now
             | name  | description               | points | start date | due date   | tag   | list  |
             | exist | this is an existing task  | 1      | 2021-01-23 | 2021-01-23 | Other | Bonus |
 
