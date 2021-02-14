@@ -6,24 +6,16 @@ So that I can add new tasks to it and publish it later for students to see
 
 Scenario Outline: Teacher creating task list with a list name (Normal Flow)
 
-Given teacher <name> with teacher email <email> is logged in
-When teacher <name> creates a weekly mandatory task list with list name <list_name>， start date <start_date> and end date <end_date>
-Then the weekly mandatory task list with list name <list_name>, start date <start_date> and end date <end_date> is created under teacher <name>
-
-| name	       | email             	    | list_name		| start_date    	| end_date  	|
-| John Bob     | john.bob@gmail.com  	| math_work 	| 2020-01-01	    | 2020-02-01	|
-| Peter Parker | peter.parker@gmail.com	| french_work 	| 2020-01-10       	| 2020-02-10	|
+Given teacher "John Bob" with teacher email "john.bob@gmail.com" is logged in
+When teacher "John Bob" creates a weekly mandatory task list with list name "math_work"， start date "2020-01-01" and end date "2020-02-01"
+Then the weekly mandatory task list with list name "math_work", start date "2020-01-01 and end date "2020-02-01" is created under teacher "john.bob@gmail.com"
 
 Scenario Outline: Teacher creating task list with an existing list name (Error Flow)
 
-Given teacher <name> with teacher email <email> is logged in
-And a weekly mandatory task list with list name <list_name> exists
-When teacher <name> creates a weekly mandatory task list with list name <list_name>， start date <start_date> and end date <end_date>
+Given teacher "John Bob" with teacher email "john.bob@gmail.com" is logged in
+And a weekly mandatory task list with list name "math_work" exists
+When teacher "John Bob" creates a weekly mandatory task list with list name "math_work"， start date "2020-01-01" and end date "2020-02-01"
 Then a "Task list already exists" message is issued
-
-| name	       | email             	    | list_name		| start_date    	| end_date  	|
-| John Bob     | john.bob@gmail.com  	| math_work 	| 2020-01-01	    | 2020-02-01	|
-| Peter Parker | peter.parker@gmail.com	| french_work 	| 2020-01-10       	| 2020-02-10	|
 
 Scenario Outline: Teacher creating task list without a list name (Error Flow)
 
