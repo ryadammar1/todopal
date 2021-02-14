@@ -1,25 +1,33 @@
 package todopal.dto;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 public class ClassroomDto {
-	
 	private long classroomId;
+	private String classroomName;
+	private String subject;
+	private String description;
+	private String imagePath;
+	private TeacherDto teacher;
+	private ArrayList<String> taskCategories;
+	private ArrayList<String> taskTags;
 
-	public ClassroomDto() {
-	}
-
-	public ClassroomDto(String name) {
-		this.name = name;
-	}
-
-	public ClassroomDto(String name, TeacherDto teacher, String imagePath, String subject, long classroomId) {
-		this.name = name;
-		this.teacher = teacher;
-		this.imagePath = imagePath;
-		this.subject = subject;
+	public ClassroomDto(long classroomId, String classroomName, String subject, String description, TeacherDto teacher,
+			String imagePath) {
 		this.classroomId = classroomId;
+		this.classroomName = classroomName;
+		this.subject = subject;
+		this.description = description;
+		this.imagePath = imagePath;
+		this.teacher = teacher;
+	}
+
+	public ClassroomDto(long classroomId, String classroomName, String subject, TeacherDto teacher, String imagePath) {
+		this(classroomId, classroomName, subject, null, teacher, imagePath);
+	}
+
+	public ClassroomDto(String classroomName) {
+		this(0, classroomName, null, null, null, null);
 	}
 
 	public void setClassroomDtoId(long value) {
@@ -29,56 +37,38 @@ public class ClassroomDto {
 	public long getClassroomDtoId() {
 		return this.classroomId;
 	}
-	private String name;
 
-	public void setName(String value) {
-		this.name = value;
+	public void setClassroomName(String value) {
+		this.classroomName = value;
 	}
-	public String getName() {
-		return this.name;
-	}
-	private String description;
 
-	public void setDescription(String value) {
-		this.description = value;
+	public String getClassroomName() {
+		return this.classroomName;
 	}
-	public String getDescription() {
-		return this.description;
-	}
-	private String imagePath;
-
-	public void setImagePath(String value) {
-		this.imagePath = value;
-	}
-	public String getImagePath() {
-		return this.imagePath;
-	}
-	private ArrayList taskCategories;
-
-	public void setTaskCategories(ArrayList value) {
-		this.taskCategories = value;
-	}
-	public ArrayList getTaskCategories() {
-		return this.taskCategories;
-	}
-	private ArrayList taskTags;
-
-	public void setTaskTags(ArrayList value) {
-		this.taskTags = value;
-	}
-	public ArrayList getTaskTags() {
-		return this.taskTags;
-	}
-	private String subject;
 
 	public void setSubject(String value) {
 		this.subject = value;
 	}
+
 	public String getSubject() {
 		return this.subject;
 	}
-	private TeacherDto teacher;
 
+	public void setDescription(String value) {
+		this.description = value;
+	}
+
+	public String getDescription() {
+		return this.description;
+	}
+
+	public void setImagePath(String value) {
+		this.imagePath = value;
+	}
+
+	public String getImagePath() {
+		return this.imagePath;
+	}
 
 	public TeacherDto getTeacher() {
 		return this.teacher;
@@ -88,24 +78,19 @@ public class ClassroomDto {
 		this.teacher = teacher;
 	}
 
-//	private Set<StudentDto> student;
-//
-//	public Set<StudentDto> getStudent() {
-//		return this.student;
-//	}
-//
-//	public void setStudent(Set<StudentDto> students) {
-//		this.student = students;
-//	}
-//
-//	private Set<TaskDto> task;
-//
-//	public Set<TaskDto> getTask() {
-//		return this.task;
-//	}
-//
-//	public void setTask(Set<TaskDto> tasks) {
-//		this.task = tasks;
-//	}
+	public void setTaskCategories(ArrayList<String> value) {
+		this.taskCategories = value;
+	}
 
+	public ArrayList<String> getTaskCategories() {
+		return this.taskCategories;
+	}
+
+	public void setTaskTags(ArrayList<String> value) {
+		this.taskTags = value;
+	}
+
+	public ArrayList<String> getTaskTags() {
+		return this.taskTags;
+	}
 }
