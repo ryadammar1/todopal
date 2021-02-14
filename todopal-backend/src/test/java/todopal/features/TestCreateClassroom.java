@@ -37,6 +37,9 @@ public class TestCreateClassroom {
         String approvalCode = "123";
         String password = "123";
         String bio = "Hello!";
+        if(teacherService.getTeacher(email) != null) {
+            teacherService.deleteTeacher(email);
+        }
         teacher = teacherService.createTeacher(approvalCode, name, email, password, bio);
     }
 
@@ -45,7 +48,7 @@ public class TestCreateClassroom {
         try {
             todopalRestController.createClassroom(teacher.getEmail(), imagePath, subject, classroomName);
         } catch (Exception e) {
-            errorThrown = e;
+            Ressources.message = e.getMessage();
         }
     }
 
@@ -60,7 +63,7 @@ public class TestCreateClassroom {
         try{
             todopalRestController.createClassroom(teacher.getEmail(), "image/path", "Math", classroomName);
         } catch (Exception e) {
-            errorThrown = e;
+            Ressources.message = e.getMessage();
         }
 
         HashSet<Classroom> classrooms = new HashSet<>();
@@ -76,6 +79,6 @@ public class TestCreateClassroom {
 
     @Then("a {string} message is issued")
     public void aMessageIsIssued(String classroomAlreadyCreatedError) {
-        Assertions.assertEquals(classroomAlreadyCreatedError, errorThrown.getMessage());
+        Assertions.assertEquals(classroomAlreadyCreatedError, Ressources.message);
     }
 }
