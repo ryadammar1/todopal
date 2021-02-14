@@ -8,13 +8,6 @@ import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import io.cucumber.spring.CucumberContextConfiguration;
 
-/*@RunWith(Cucumber.class)
-@CucumberOptions(
-    plugin = "pretty",
-    features = "src/test/resources/",
-    glue={"todopal.features"}
-)*/
-
 @CucumberContextConfiguration
 @RunWith(Cucumber.class)
 @CucumberOptions(
