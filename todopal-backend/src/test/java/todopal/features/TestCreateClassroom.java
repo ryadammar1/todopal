@@ -49,15 +49,20 @@ public class TestCreateClassroom {
         }
     }
 
-    @Then("a new classroom with name {string} and a randomized unique {int}-digit classroom id is created")
-    public void aNewClassroomWithNameAndARandomizedUniqueDigitClassroomIdIsCreated(String classroomName, int classroomId) {
-        Classroom classroom = classroomService.getClassroom(9796469);
+    @Then("a new classroom with name {string} and a randomized unique {int}-digit classroom id is created with teacher email {string}")
+    public void aNewClassroomWithNameAndARandomizedUniqueDigitClassroomIdIsCreated(String classroomName, int classroomId, String email) {
+        Classroom classroom = classroomService.getClassroom(classroomName, email);
         Assertions.assertEquals(classroomName, classroom.getName());
-        //how about the id assertion?
     }
 
     @Given("{string} is responsible for classroom {string}")
     public void isResponsibleForClassroom(String name, String classroomName) {
+        try{
+            todopalRestController.createClassroom(teacher.getEmail(), "image/path", "Math", classroomName);
+        } catch (Exception e) {
+            errorThrown = e;
+        }
+
         HashSet<Classroom> classrooms = new HashSet<>();
         Classroom classroom = classroomService.getClassroom(name, classroomName);
         classrooms.add(classroom);

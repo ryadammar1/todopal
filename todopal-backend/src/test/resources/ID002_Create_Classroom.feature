@@ -8,7 +8,7 @@ Scenario Outline: Create empty classroom (Normal Flow)
 
     Given user "Michael Scott" with "michael.scott@gmail.com" is logged in as a teacher
     When "Michael Scott" creates a classroom with name "ecse428" and image with path "img.jpg" and subject "math"
-    Then a new classroom with name "ecse428" and a randomized unique 7-digit classroom id is created
+    Then a new classroom with name "ecse428" and a randomized unique 7-digit classroom id is created with teacher email "michael.scott@gmail.com"
 
 Scenario Outline: Create classroom with already existing name (Error flow)
 
