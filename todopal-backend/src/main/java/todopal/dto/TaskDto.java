@@ -3,122 +3,122 @@ package todopal.dto;
 import java.time.LocalDate;
 
 public class TaskDto {
-
-	private boolean isMandatory;
-	private String tag;
-	private String category;
-	private int pointCount;
+	private long taskId;
 	private String name;
 	private String description;
+	private String tag;
+	private String category;
+	private boolean isMandatory;
+	private int pointCount;
 	private LocalDate startDate;
 	private LocalDate dueDate;
-	private long taskId;
 	private ClassroomDto classroom;
 
-
-	public TaskDto(long id, boolean isMandatory, String tag, String category, int pointCount, String name,
-			String description, LocalDate startDate, LocalDate dueDate, ClassroomDto classroom) {
-		this.taskId = id;
-		this.isMandatory = isMandatory;
-		this.tag = tag;
-		this.category = category;
-		this.pointCount = pointCount;
+	public TaskDto(long taskId, String name, String description, String tag, String category, boolean isMandatory,
+			int pointCount, LocalDate startDate, LocalDate dueDate, ClassroomDto classroom) {
+		this.taskId = taskId;
 		this.name = name;
 		this.description = description;
+		this.tag = tag;
+		this.category = category;
+		this.isMandatory = isMandatory;
+		this.pointCount = pointCount;
 		this.startDate = startDate;
 		this.dueDate = dueDate;
-		this.classroom = classroom;	
-	}
-	
-	public TaskDto(long id, boolean isMandatory, String tag, String category, int pointCount, String name,
-			String description, LocalDate startDate, LocalDate dueDate) {
-		this.taskId = id;
-		this.isMandatory = isMandatory;
-		this.tag = tag;
-		this.category = category;
-		this.pointCount = pointCount;
-		this.name = name;
-		this.description = description;
-		this.startDate = startDate;
-		this.dueDate = dueDate;
-		this.classroom = null;	
-	}
-	
-	public TaskDto(long id, boolean isMandatory, String tag, String category, int pointCount, String name,
-			String description, ClassroomDto classroom) {
-		this.taskId = id;
-		this.isMandatory = isMandatory;
-		this.tag = tag;
-		this.category = category;
-		this.pointCount = pointCount;
-		this.name = name;
-		this.description = description;
-		this.startDate = null;
-		this.dueDate = null;
-		this.classroom = classroom;
-	}
-	
-	public TaskDto(long id, boolean isMandatory, String tag, String category, int pointCount, String name,
-			String description) {
-		this.taskId = id;
-		this.isMandatory = isMandatory;
-		this.tag = tag;
-		this.category = category;
-		this.pointCount = pointCount;
-		this.name = name;
-		this.description = description;
-		this.startDate = null;
-		this.dueDate = null;
-		this.classroom = null;
-	}
-	
-	
-	public boolean getIsMandatory() {
-		return this.isMandatory;
 	}
 
-	public String getTag() {
-		return this.tag;
+	public TaskDto(long taskId, String name, String description, String tag, String category, boolean isMandatory,
+			int pointCount, LocalDate startDate, LocalDate dueDate) {
+		this(taskId, name, description, tag, category, isMandatory, pointCount, startDate, dueDate, null);
 	}
 
-	public String getCategory() {
-		return this.category;
+	public TaskDto(long taskId, String name, String description, String tag, String category, boolean isMandatory,
+			int pointCount, ClassroomDto classroom) {
+		this(taskId, name, description, tag, category, isMandatory, pointCount, null, null, classroom);
 	}
 
-
-	public int getPointCount() {
-		return this.pointCount;
+	public TaskDto(long taskId, String name, String description, String tag, String category, boolean isMandatory,
+			int pointCount) {
+		this(taskId, name, description, tag, category, isMandatory, pointCount, null, null, null);
 	}
 
-	public String getName() {
-		return this.name;
+	public void setTaskId(long taskId) {
+		this.taskId = taskId;
 	}
-
-
-	public String getDescription() {
-		return this.description;
-	}
-
-
-	public LocalDate getStartDate() {
-		return this.startDate;
-	}
-
-
-	public LocalDate getDueDate() {
-		return this.dueDate;
-	}
-
 
 	public long getTaskId() {
 		return this.taskId;
 	}
 
-
-
-	public ClassroomDto getClassroom() {
-		return this.classroom;
+	public void setName(String name) {
+		this.name = name;
 	}
 
+	public String getName() {
+		return name;
+	}
 
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
+	public String getTag() {
+		return tag;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setMandatory(boolean isMandatory) {
+		this.isMandatory = isMandatory;
+	}
+
+	public boolean getMandatoryStatus() {
+		return this.isMandatory;
+	}
+
+	public void setPointCount(int pointCount) {
+		this.pointCount = pointCount;
+	}
+
+	public int getPointCount() {
+		return pointCount;
+	}
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public void setDueDate(LocalDate dueDate) {
+		this.dueDate = dueDate;
+	}
+
+	public LocalDate getDueDate() {
+		return dueDate;
+	}
+
+	public void setClassroom(ClassroomDto classroom) {
+		this.classroom = classroom;
+	}
+
+	public ClassroomDto getClassroom() {
+		return classroom;
+	}
 }
