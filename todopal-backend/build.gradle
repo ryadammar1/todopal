@@ -40,3 +40,9 @@ dependencies {
 test {
 	useJUnit()
 }
+
+configurations {
+	cucumberRuntime {
+		extendsFrom testImplementation
+	}
+}
