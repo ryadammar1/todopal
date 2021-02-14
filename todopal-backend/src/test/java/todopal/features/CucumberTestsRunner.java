@@ -1,14 +1,20 @@
 package todopal.features;
 
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
-import org.junit.runner.RunWith;
+import io.cucumber.spring.CucumberContextConfiguration;
 
+@CucumberContextConfiguration
 @RunWith(Cucumber.class)
 @CucumberOptions(
-    plugin = "pretty",
-    features = "src/test/resources/",
-    glue={"todopal.features"}
+        plugin = {"pretty", "junit:build/cucumber-junit.xml", "html:build/cucumber.html"},
+        features = "src/test/resources/ID002_Create_Classroom.feature"
 )
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@AutoConfigureMockMvc
 public class CucumberTestsRunner {
 }

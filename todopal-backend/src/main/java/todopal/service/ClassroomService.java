@@ -20,7 +20,7 @@ public class ClassroomService {
 
 	private final String NULL_CLASSROOM_EXCEPTION = "[error] Classroom with id does not exist";
 	private final String EMPTY_STRING_EXCEPTION = "[error] String argument is empty";
-	private final String ALREADY_EXIST_EXCEPTION = "[error] Classroom with same name already created";
+	private final String ALREADY_EXIST_EXCEPTION = "Classroom with same name already created";
 
 	@Transactional
 	public Classroom createClassroom(Teacher teacher, String name, String imagePath, String subject) {
