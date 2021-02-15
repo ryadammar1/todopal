@@ -2,7 +2,6 @@ package todopal.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import todopal.dto.ClassroomDto;
-import todopal.dto.PersonDto;
 import todopal.dto.TaskContainerDto;
 import todopal.dto.TaskDto;
 import todopal.dto.TeacherDto;
 import todopal.model.Classroom;
-import todopal.model.Person;
 import todopal.model.Task;
 import todopal.model.TaskContainer;
 import todopal.model.TaskStatus;
 import todopal.model.Teacher;
-
-import todopal.service.TeacherService;
 import todopal.service.ClassroomService;
 import todopal.service.TaskService;
 import todopal.service.TeacherService;
@@ -46,7 +41,7 @@ public class TodopalRestController {
 			@RequestParam("tag") String tag, @RequestParam("category") String category,
 			@RequestParam("points") int pointCount, @RequestParam("name") String name,
 			@RequestParam("description") String description) throws Exception {
-		Task task = taskService.createTask(taskId, isMandatory, tag, category, pointCount, name, description);
+		Task task = taskService.createTask(taskId, name, description, tag, category, isMandatory, pointCount);
 		return convertToDto(task);
 	}
 
@@ -60,8 +55,9 @@ public class TodopalRestController {
 		LocalDate realStartDate = LocalDate.parse(startDate);
 		LocalDate realDueDate = LocalDate.parse(dueDate);
 
-		Task task = taskService.createTask(taskId, isMandatory, tag, category, pointCount, name, description,
+		Task task = taskService.createTask(taskId, name, description, tag, category, isMandatory, pointCount,
 				realStartDate, realDueDate);
+
 		return convertToDto(task);
 	}
 

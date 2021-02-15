@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import todopal.dao.ClassroomRepository;
-import todopal.dao.TeacherRepository;
 import todopal.model.Classroom;
 import todopal.model.Teacher;
 
@@ -26,21 +25,12 @@ public class ClassroomService {
 	public Classroom createClassroom(Teacher teacher, String name, String imagePath, String subject) {
 		Classroom classroom = new Classroom();
 
-		Random rand = new Random();
+		checkForEmptyString(name);
+		checkForEmptyString(imagePath);
+		checkForEmptyString(subject);
 
-		long id = rand.nextInt(9000000) + 1000000;
-
-		while (classroomRepository.findByClassroomId(id) != null)
-			id = rand.nextInt(9000000) + 1000000;
-
-		if (name.length() == 0)
-			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
-		if (imagePath.length() == 0)
-			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
-		if (subject.length() == 0)
-			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
-
-		classroom.setClassroomId(id);
+		long classId = generateUniqueClassId();
+		classroom.setClassroomId(classId);
 		classroom.setTeacher(teacher);
 		classroom.setName(name);
 		classroom.setImagePath(imagePath);
@@ -48,26 +38,20 @@ public class ClassroomService {
 
 		if (classroomRepository.findByNameAndTeacherEmail(name, teacher.getEmail()) != null) {
 			throw new IllegalArgumentException(ALREADY_EXIST_EXCEPTION);
-		} else {
-			classroomRepository.save(classroom);
-			return classroom;
 		}
+
+		classroomRepository.save(classroom);
+		return classroom;
 	}
 
 	@Transactional
 	public Classroom setClassroomName(long id, String name) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
-		if (classroom == null)
-			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
-
-		if (name.length() == 0)
-			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		checkForEmptyString(name);
 
 		classroom.setName(name);
-
 		classroomRepository.save(classroom);
-
 		return classroom;
 	}
 
@@ -75,16 +59,10 @@ public class ClassroomService {
 	public Classroom setClassroomDescription(long id, String description) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
-		if (classroom == null)
-			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
-
-		if (description.length() == 0)
-			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		checkForEmptyString(description);
 
 		classroom.setDescription(description);
-
 		classroomRepository.save(classroom);
-
 		return classroom;
 	}
 
@@ -92,16 +70,10 @@ public class ClassroomService {
 	public Classroom setClassroomSubject(long id, String subject) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
-		if (classroom == null)
-			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
-
-		if (subject.length() == 0)
-			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		checkForEmptyString(subject);
 
 		classroom.setSubject(subject);
-
 		classroomRepository.save(classroom);
-
 		return classroom;
 	}
 
@@ -109,16 +81,10 @@ public class ClassroomService {
 	public Classroom setClassroomImage(long id, String imagePath) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
-		if (classroom == null)
-			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
-
-		if (imagePath.length() == 0)
-			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		checkForEmptyString(imagePath);
 
 		classroom.setImagePath(imagePath);
-
 		classroomRepository.save(classroom);
-
 		return classroom;
 	}
 
@@ -126,70 +92,48 @@ public class ClassroomService {
 	public Classroom setClassroomTaskCategories(long id, ArrayList<String> taskCategories)
 			throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
-
-		if (classroom == null)
-			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
-
 		classroom.setTaskCategories(taskCategories);
-
 		classroomRepository.save(classroom);
-
 		return classroom;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Transactional
 	public Classroom addToClassroomTaskCategories(long id, String taskCategory) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
-		if (classroom == null)
-			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
-
-		if (taskCategory.length() == 0)
-			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		checkForEmptyString(taskCategory);
 
 		classroom.getTaskCategories().add(taskCategory);
-
 		classroomRepository.save(classroom);
-
 		return classroom;
 	}
 
 	@Transactional
 	public Classroom setClassroomTaskTags(long id, ArrayList<String> taskTags) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
-
-		if (classroom == null)
-			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
-
 		classroom.setTaskTags(taskTags);
-
 		classroomRepository.save(classroom);
-
 		return classroom;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Transactional
 	public Classroom addToClassroomTaskTag(long id, String taskTag) throws IllegalArgumentException {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 
-		if (classroom == null)
-			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
-
-		if (taskTag.length() == 0)
-			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		checkForEmptyString(taskTag);
 
 		classroom.getTaskTags().add(taskTag);
-
 		classroomRepository.save(classroom);
-
 		return classroom;
 	}
 
 	@Transactional
 	public Classroom getClassroom(long id) {
-		return classroomRepository.findByClassroomId(id);
+		Classroom classroom = classroomRepository.findByClassroomId(id);
+		if (classroom == null) {
+			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
+		}
+		return classroom;
 	}
 
 	@Transactional
@@ -210,4 +154,19 @@ public class ClassroomService {
 		return resultList;
 	}
 
+	private long generateUniqueClassId() {
+		Random rand = new Random();
+		long id = 0;
+
+		do {
+			id = rand.nextInt(9000000) + 1000000;
+		} while (classroomRepository.findByClassroomId(id) != null);
+		return id;
+	}
+
+	private void checkForEmptyString(String parameterValue) {
+		if (parameterValue.trim().length() == 0) {
+			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		}
+	}
 }
