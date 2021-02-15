@@ -44,8 +44,26 @@ public class TaskService {
 	
 	@Transactional
 	public Task createTask(long id, boolean isMandatory, String tag, String category, int pointCount, 
-			String name, String description) {
-		
+			String name, String description, String startDate, String dueDate) {
+
+
+		if(taskRepository.findBytaskId(id) != null){
+			throw new IllegalArgumentException("The task was already created");
+		}
+
+		if(name == null || name.trim().length()==0 ){
+			throw new IllegalArgumentException("Tasks cannot have an empty name");
+		}
+
+		if(pointCount < 0){
+			throw new IllegalArgumentException("Tasks cannot have negative point values");
+		}
+
+		if((dueDate != null && dueDate.trim().length() != 0) && (startDate != null && startDate.trim().length() !=0)
+				&& LocalDate.parse(dueDate).isBefore(LocalDate.parse(startDate))){
+			throw new IllegalArgumentException("Tasks cannot have due date before the starting date");
+		}
+
 		Task task = new Task();
 		
 		task.setTaskId(id);
@@ -54,8 +72,20 @@ public class TaskService {
 		task.setCategory(category);
 		task.setPointCount(pointCount);
 		task.setName(name);
+
 		task.setDescription(description);
-		
+		if(startDate != null && startDate.trim().length() !=0){
+			task.setStartDate(LocalDate.parse(startDate));
+		}else{
+			task.setStartDate(LocalDate.now());
+		}
+
+		if(dueDate != null && dueDate.trim().length() != 0){
+			task.setDueDate(LocalDate.parse(dueDate));
+		}else{
+			task.setDueDate(LocalDate.parse("9999-12-12"));
+		}
+
 		taskRepository.save(task);
 
 		return task;

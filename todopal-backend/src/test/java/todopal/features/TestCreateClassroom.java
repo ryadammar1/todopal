@@ -37,6 +37,9 @@ public class TestCreateClassroom {
         String approvalCode = "123";
         String password = "123";
         String bio = "Hello!";
+        if(teacherService.getTeacher(email) != null) {
+            teacherService.deleteTeacher(email);
+        }
         teacher = teacherService.createTeacher(approvalCode, name, email, password, bio);
     }
 
@@ -45,19 +48,24 @@ public class TestCreateClassroom {
         try {
             todopalRestController.createClassroom(teacher.getEmail(), imagePath, subject, classroomName);
         } catch (Exception e) {
-            errorThrown = e;
+            Ressources.message = e.getMessage();
         }
     }
 
-    @Then("a new classroom with name {string} and a randomized unique {int}-digit classroom id is created")
-    public void aNewClassroomWithNameAndARandomizedUniqueDigitClassroomIdIsCreated(String classroomName, int classroomId) {
-        Classroom classroom = classroomService.getClassroom(9796469);
+    @Then("a new classroom with name {string} and a randomized unique {int}-digit classroom id is created with teacher email {string}")
+    public void aNewClassroomWithNameAndARandomizedUniqueDigitClassroomIdIsCreated(String classroomName, int classroomId, String email) {
+        Classroom classroom = classroomService.getClassroom(classroomName, email);
         Assertions.assertEquals(classroomName, classroom.getName());
-        //how about the id assertion?
     }
 
     @Given("{string} is responsible for classroom {string}")
     public void isResponsibleForClassroom(String name, String classroomName) {
+        try{
+            todopalRestController.createClassroom(teacher.getEmail(), "image/path", "Math", classroomName);
+        } catch (Exception e) {
+            Ressources.message = e.getMessage();
+        }
+
         HashSet<Classroom> classrooms = new HashSet<>();
         Classroom classroom = classroomService.getClassroom(name, classroomName);
         classrooms.add(classroom);
@@ -71,6 +79,6 @@ public class TestCreateClassroom {
 
     @Then("a {string} message is issued")
     public void aMessageIsIssued(String classroomAlreadyCreatedError) {
-        Assertions.assertEquals(classroomAlreadyCreatedError, errorThrown.getMessage());
+        Assertions.assertEquals(classroomAlreadyCreatedError, Ressources.message);
     }
 }

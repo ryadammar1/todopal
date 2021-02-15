@@ -46,6 +46,13 @@ public class TeacherService {
 	public Teacher createTeacher(String APPROVAL_CODE, String TEACHER_NAME, String TEACHER_EMAIL,
 			String TEACHER_PASSWORD, String TEACHER_BIO) {
 		// TODO Auto-generated method stub
+		if(!TEACHER_EMAIL.contains("@")){
+			throw new IllegalArgumentException("Invalid email is used");
+		}
+
+		if(teacherRepository.findTeacherByEmail(TEACHER_EMAIL) != null){
+			throw new IllegalArgumentException("Already registered");
+		}
 		Teacher teacher = new Teacher();
 		teacher.setApprovalCode(APPROVAL_CODE);
 		teacher.setName(TEACHER_NAME);

@@ -28,10 +28,6 @@ public class CucumberHooks {
     @Before
     public void beforeScenario() {
         System.out.println("------------- Starting scenario -------------");
-        /*taskContainerRepository.deleteAll();
-        taskRepository.deleteAll();
-        classroomRepository.deleteAll();
-        teacherRepository.deleteAll();*/
     }
 
     @After
@@ -39,10 +35,10 @@ public class CucumberHooks {
 
         System.out.println("Clearing database for next scenario");
 
-        /*taskContainerRepository.deleteAll();
+        taskContainerRepository.deleteAll();
         taskRepository.deleteAll();
         classroomRepository.deleteAll();
-        teacherRepository.deleteAll();*/
+        teacherRepository.deleteAll();
     }
 
 }
