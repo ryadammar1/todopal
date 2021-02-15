@@ -54,7 +54,7 @@ public class TaskCreateTask {
 
         for (Map<String, String> taskInfo : tasksInfo) {
             try {
-                taskService.createTask((long)taskInfo.get("description").hashCode(), true, taskInfo.get("tag"), taskInfo.get("list"), Integer.parseInt(taskInfo.get("points")), taskInfo.get("name"), taskInfo.get("description"), taskInfo.get("start date"), taskInfo.get("due date"));
+                taskService.createTask((long)taskInfo.get("description").hashCode(), taskInfo.get("name"), taskInfo.get("description"), taskInfo.get("tag"), taskInfo.get("list"), true, Integer.parseInt(taskInfo.get("points")), taskInfo.get("start date"), taskInfo.get("due date"));
             } catch (Exception e) {
                 Ressources.message = e.getMessage();
 

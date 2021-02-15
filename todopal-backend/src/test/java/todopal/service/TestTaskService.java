@@ -81,8 +81,7 @@ public class TestTaskService {
 		LocalDate realStartDate = LocalDate.parse("2021-02-13");		
 		LocalDate realDueDate = LocalDate.parse("2021-02-16");
 
-		Task task = service.createTask(1, true, "Math", "Homework", 5, "Problem 1.1", "Complete the problem",
-				realStartDate, realDueDate);	
+		Task task = service.createTask(1, "Problem 1.1", "Complete the problem", "Math", "Homework", true, 5, realStartDate, realDueDate);
 
 		assertNotNull(task);
 		assertEquals(1, task.getTaskId());
