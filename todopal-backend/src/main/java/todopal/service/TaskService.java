@@ -41,6 +41,11 @@ public class TaskService {
 			throw new IllegalArgumentException("Tasks cannot have due date before the starting date");
 		}
 
+		if(startDate == null || dueDate == null)
+		{
+			throw new IllegalArgumentException("Tasks cannot have due null dates");
+		}
+
 		Task task = new Task();
 
 		task.setTaskId(taskId);
