@@ -89,9 +89,9 @@ public class TestClassroomService {
 	}
 
 	@Test
-	public void testCreateClassroomIllegalArgument() {
+	public void testCreateClassroomIllegalArgument1() {
 		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-			service.createClassroom(null, "", "", "");
+			service.createClassroom(null, "", "image", "subject");
 		});
 
 		String expectedMessage = "String argument is empty";
@@ -100,6 +100,30 @@ public class TestClassroomService {
 		assertEquals(true, actualMessage.contains(expectedMessage));
 	}
 
+	@Test
+	public void testCreateClassroomIllegalArgument2() {
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.createClassroom(null, "group", "", "subject");
+		});
+
+		String expectedMessage = "String argument is empty";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+	}
+	
+	@Test
+	public void testCreateClassroomIllegalArgument3() {
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.createClassroom(null, "group", "image", "");
+		});
+
+		String expectedMessage = "String argument is empty";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+	}
+	
 	@Test
 	public void testSetClassroomField() {
 		Classroom classroom = service.setClassroomName(TEST_ID, "group2");
