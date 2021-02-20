@@ -33,10 +33,10 @@ Feature: Create Task
         But There are no tasks for teacher "Michael Scott" in the mandatory list "Bonus"
         When a task with the following information is created
             | name  | description               | points | start date | due date   | tag   | list  |
-            | exist | this is an existing task  | 1      |            | 2021-01-23 | math  | Bonus |
+            | exist | this is an existing task  | 1      |            | 9999-12-12 | math  | Bonus |
         Then the following tasks exist now
             | name  | description               | points | start date | due date   | tag   | list  |
-            | exist | this is an existing task  | 1      |            | 2021-01-23 | math  | Bonus |
+            | exist | this is an existing task  | 1      |            | 9999-12-12 | math  | Bonus |
 
     Scenario: Create a task with due date not specified (Alternate flow)
         Given teacher "Michael Scott" is logged in
