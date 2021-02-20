@@ -43,6 +43,7 @@ public class TestTeacherService {
     private final String APPROVAL_CODE = "appr123";
     private final String TEACHER_NAME = "testTeacher";
     private final String TEACHER_EMAIL = "testTeacher@email.com";
+    private final String SECONDARY_TEACHER_EMAIL = "test2teacher@pass.com";
     private final String WRONG_TEACHER_EMAIL = "bad";
     private final String TEACHER_PASSWORD = "testTeacherpassword";
     private final String TEACHER_BIO = "testTeacherBio";
@@ -62,7 +63,7 @@ public class TestTeacherService {
 		lenient().when(teacherRepository.findTeacherByEmail(any(String.class))).thenAnswer((InvocationOnMock invocation) -> {
 			if (invocation.getArgument(0).equals(null)) {
 				throw new IllegalArgumentException();
-            } else if ((String) invocation.getArgument(0) == WRONG_TEACHER_EMAIL) {
+            } else if (((String) invocation.getArgument(0)).equals(WRONG_TEACHER_EMAIL) || ((String) invocation.getArgument(0)).equals(SECONDARY_TEACHER_EMAIL)) {
                 return null;
             }
             return makeTestingTeacher();
@@ -77,12 +78,12 @@ public class TestTeacherService {
 
     @Test 
     public void WithTeacherService_GivenNoTeacher_WhenCreatingTeacher_ThenTeacherIsSaved() {
-        Teacher teacher = teacherService.createTeacher(APPROVAL_CODE, TEACHER_NAME, WRONG_TEACHER_EMAIL, TEACHER_PASSWORD, TEACHER_BIO);
+        Teacher teacher = teacherService.createTeacher(APPROVAL_CODE, TEACHER_NAME, SECONDARY_TEACHER_EMAIL, TEACHER_PASSWORD, TEACHER_BIO);
 
         assertNotNull(teacher);
         assertEquals(APPROVAL_CODE, teacher.getApprovalCode());
         assertEquals(TEACHER_NAME, teacher.getName());
-        assertEquals(WRONG_TEACHER_EMAIL, teacher.getEmail());
+        assertEquals(SECONDARY_TEACHER_EMAIL, teacher.getEmail());
         assertEquals(TEACHER_PASSWORD, teacher.getPassword());
         assertEquals(TEACHER_BIO, teacher.getBio());
     }
@@ -108,13 +109,12 @@ public class TestTeacherService {
 
     @Test 
     public void WithTeacherService_GivenExistTeacher_WhenUpdatingTeacher_ThenTeacherIsUpdated() {
-        Teacher teacher = teacherService.createTeacher(APPROVAL_CODE, TEACHER_NAME, WRONG_TEACHER_EMAIL, TEACHER_PASSWORD, TEACHER_BIO);
-        teacher = teacherService.updateTeacher(WRONG_TEACHER_EMAIL, APPROVAL_CODE, "New Teacher", TEACHER_PASSWORD, TEACHER_BIO);
+        Teacher teacher = teacherService.updateTeacher(TEACHER_EMAIL, APPROVAL_CODE, "New Teacher", TEACHER_PASSWORD, TEACHER_BIO);
 
         assertNotNull(teacher);
         assertEquals(APPROVAL_CODE, teacher.getApprovalCode());
         assertEquals("New Teacher", teacher.getName());
-        assertEquals(WRONG_TEACHER_EMAIL, teacher.getEmail());
+        assertEquals(TEACHER_EMAIL, teacher.getEmail());
         assertEquals(TEACHER_PASSWORD, teacher.getPassword());
         assertEquals(TEACHER_BIO, teacher.getBio());
     }
