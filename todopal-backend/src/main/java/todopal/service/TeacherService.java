@@ -28,23 +28,16 @@ public class TeacherService {
 		return toList(teacherRepository.findAll());
 	}
 
-	private <T> List<T> toList(Iterable<T> iterable) {
-		List<T> resultList = new ArrayList<T>();
-		for (T t : iterable) {
-			resultList.add(t);
-		}
-		return resultList;
-	}
-
+	@Transactional
 	public Teacher createTeacher(String approvalCode, String teacherName, String teacherEmail, String teacherPassword,
 			String teacherBio) {
 		Teacher teacher = new Teacher();
 
-		if(!teacherEmail.contains("@")){
+		if (!teacherEmail.contains("@")) {
 			throw new IllegalArgumentException("Invalid email is used");
 		}
 
-		if(teacherRepository.findTeacherByEmail(teacherEmail) != null){
+		if (teacherRepository.findTeacherByEmail(teacherEmail) != null) {
 			throw new IllegalArgumentException("Already registered");
 		}
 
@@ -58,11 +51,24 @@ public class TeacherService {
 		return teacher;
 	}
 
-	public Teacher updateTeacher(String approvalCode, String teacherName, String teacherEmail, String teacherPassword,
-			String teacherBio) {
-		return createTeacher(approvalCode, teacherName, teacherEmail, teacherPassword, teacherBio);
+	@Transactional
+	public Teacher updateTeacher(String teacherEmail, String newApprovalCode, String newTeacherName,
+			String newTeacherPassword, String newTeacherBio) {
+		Teacher teacher = teacherRepository.findTeacherByEmail(teacherEmail);
+		if (teacher == null) {
+			throw new IllegalArgumentException("Email cannot be changed!");
+		}
+
+		teacher.setApprovalCode(newApprovalCode);
+		teacher.setName(newTeacherName);
+		teacher.setPassword(newTeacherPassword);
+		teacher.setBio(newTeacherBio);
+
+		teacherRepository.save(teacher);
+		return teacher;
 	}
 
+	@Transactional
 	public boolean deleteTeacher(String teacherEmail) {
 		Teacher teacher = teacherRepository.findTeacherByEmail(teacherEmail);
 
@@ -70,6 +76,13 @@ public class TeacherService {
 			teacherRepository.delete(teacher);
 			return true;
 		}
+
 		return false;
+	}
+
+	private <T> List<T> toList(Iterable<T> iterable) {
+		List<T> resultList = new ArrayList<T>();
+		iterable.forEach(resultList::add);
+		return resultList;
 	}
 }

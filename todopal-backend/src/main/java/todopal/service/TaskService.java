@@ -27,27 +27,17 @@ public class TaskService {
 
 		if (taskRepository.findBytaskId(taskId) != null) {
 			throw new IllegalArgumentException("The task was already created");
-		}
-
-		if (name == null || name.trim().length() == 0) {
+		} else if (isEmptyString(name)) {
 			throw new IllegalArgumentException("Tasks cannot have an empty name");
-		}
-
-		if (pointCount < 0) {
+		} else if (pointCount < 0) {
 			throw new IllegalArgumentException("Tasks cannot have negative point values");
-		}
-
-		if (dueDate.isBefore(startDate)) {
+		} else if (startDate == null || dueDate == null) {
+			throw new IllegalArgumentException("Tasks cannot have due null dates");
+		} else if (dueDate.isBefore(startDate)) {
 			throw new IllegalArgumentException("Tasks cannot have due date before the starting date");
 		}
 
-		if(startDate == null || dueDate == null)
-		{
-			throw new IllegalArgumentException("Tasks cannot have due null dates");
-		}
-
 		Task task = new Task();
-
 		task.setTaskId(taskId);
 		task.setIsMandatory(isMandatory);
 		task.setTag(tag);
@@ -66,20 +56,10 @@ public class TaskService {
 	@Transactional
 	public Task createTask(long taskId, String name, String description, String tag, String category,
 			boolean isMandatory, int pointCount, String startDate, String dueDate) {
-		LocalDate localStartDate = null;
-		LocalDate localDueDate = null;
 
-		if (startDate != null && startDate.trim().length() != 0) {
-			localStartDate = LocalDate.parse(startDate);
-		} else {
-			localStartDate = LocalDate.now();
-		}
+		LocalDate localStartDate = isEmptyString(startDate) ? LocalDate.now() : LocalDate.parse(startDate);
+		LocalDate localDueDate = isEmptyString(dueDate) ? LocalDate.parse("9999-12-12") : LocalDate.parse(dueDate);
 
-		if (dueDate != null && dueDate.trim().length() != 0) {
-			localDueDate = LocalDate.parse(dueDate);
-		} else {
-			localDueDate = LocalDate.parse("9999-12-12");
-		}
 		return createTask(taskId, name, description, tag, category, isMandatory, pointCount, localStartDate,
 				localDueDate);
 	}
@@ -95,7 +75,6 @@ public class TaskService {
 		taskContainer.setTaskContainerId(id);
 
 		taskContainerRepository.save(taskContainer);
-
 		return taskContainer;
 	}
 
@@ -131,9 +110,11 @@ public class TaskService {
 
 	private <T> ArrayList<T> toArrayList(Iterable<T> iterable) {
 		ArrayList<T> resultList = new ArrayList<T>();
-		for (T t : iterable) {
-			resultList.add(t);
-		}
+		iterable.forEach(resultList::add);
 		return resultList;
+	}
+
+	private boolean isEmptyString(String value) {
+		return (value == null || value.trim().length() == 0);
 	}
 }

@@ -119,7 +119,7 @@ public class TestTeacherService {
     @Test 
     public void WithTeacherService_GivenExistTeacher_WhenUpdatingTeacher_ThenTeacherIsUpdated() {
         Teacher teacher = teacherService.createTeacher(APPROVAL_CODE, TEACHER_NAME, TEACHER_EMAIL, TEACHER_PASSWORD, TEACHER_BIO);
-        teacher = teacherService.updateTeacher(APPROVAL_CODE, "New Teacher", TEACHER_EMAIL, TEACHER_PASSWORD, TEACHER_BIO);
+        teacher = teacherService.updateTeacher(TEACHER_EMAIL, APPROVAL_CODE, "New Teacher", TEACHER_PASSWORD, TEACHER_BIO);
 
         assertNotNull(teacher);
         assertEquals(APPROVAL_CODE, teacher.getApprovalCode());

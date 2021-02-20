@@ -13,23 +13,22 @@ import todopal.model.Teacher;
 
 @Service
 public class ClassroomService {
-
-	@Autowired
-	ClassroomRepository classroomRepository;
-
 	private final String NULL_CLASSROOM_EXCEPTION = "[error] Classroom with id does not exist";
 	private final String EMPTY_STRING_EXCEPTION = "[error] String argument is empty";
 	private final String ALREADY_EXIST_EXCEPTION = "Classroom with same name already created";
 
+	@Autowired
+	ClassroomRepository classroomRepository;
+
 	@Transactional
 	public Classroom createClassroom(Teacher teacher, String name, String imagePath, String subject) {
-		Classroom classroom = new Classroom();
-
 		checkForEmptyString(name);
 		checkForEmptyString(imagePath);
 		checkForEmptyString(subject);
 
 		long classId = generateUniqueClassId();
+
+		Classroom classroom = new Classroom();
 		classroom.setClassroomId(classId);
 		classroom.setTeacher(teacher);
 		classroom.setName(name);
@@ -46,10 +45,9 @@ public class ClassroomService {
 
 	@Transactional
 	public Classroom setClassroomName(long id, String name) throws IllegalArgumentException {
-		Classroom classroom = classroomRepository.findByClassroomId(id);
-
 		checkForEmptyString(name);
 
+		Classroom classroom = classroomRepository.findByClassroomId(id);
 		classroom.setName(name);
 		classroomRepository.save(classroom);
 		return classroom;
@@ -57,10 +55,9 @@ public class ClassroomService {
 
 	@Transactional
 	public Classroom setClassroomDescription(long id, String description) throws IllegalArgumentException {
-		Classroom classroom = classroomRepository.findByClassroomId(id);
-
 		checkForEmptyString(description);
 
+		Classroom classroom = classroomRepository.findByClassroomId(id);
 		classroom.setDescription(description);
 		classroomRepository.save(classroom);
 		return classroom;
@@ -68,10 +65,9 @@ public class ClassroomService {
 
 	@Transactional
 	public Classroom setClassroomSubject(long id, String subject) throws IllegalArgumentException {
-		Classroom classroom = classroomRepository.findByClassroomId(id);
-
 		checkForEmptyString(subject);
 
+		Classroom classroom = classroomRepository.findByClassroomId(id);
 		classroom.setSubject(subject);
 		classroomRepository.save(classroom);
 		return classroom;
@@ -79,10 +75,9 @@ public class ClassroomService {
 
 	@Transactional
 	public Classroom setClassroomImage(long id, String imagePath) throws IllegalArgumentException {
-		Classroom classroom = classroomRepository.findByClassroomId(id);
-
 		checkForEmptyString(imagePath);
 
+		Classroom classroom = classroomRepository.findByClassroomId(id);
 		classroom.setImagePath(imagePath);
 		classroomRepository.save(classroom);
 		return classroom;
@@ -99,10 +94,9 @@ public class ClassroomService {
 
 	@Transactional
 	public Classroom addToClassroomTaskCategories(long id, String taskCategory) throws IllegalArgumentException {
-		Classroom classroom = classroomRepository.findByClassroomId(id);
-
 		checkForEmptyString(taskCategory);
 
+		Classroom classroom = classroomRepository.findByClassroomId(id);
 		classroom.getTaskCategories().add(taskCategory);
 		classroomRepository.save(classroom);
 		return classroom;
@@ -118,10 +112,9 @@ public class ClassroomService {
 
 	@Transactional
 	public Classroom addToClassroomTaskTag(long id, String taskTag) throws IllegalArgumentException {
-		Classroom classroom = classroomRepository.findByClassroomId(id);
-
 		checkForEmptyString(taskTag);
 
+		Classroom classroom = classroomRepository.findByClassroomId(id);
 		classroom.getTaskTags().add(taskTag);
 		classroomRepository.save(classroom);
 		return classroom;
@@ -148,9 +141,7 @@ public class ClassroomService {
 
 	private <T> ArrayList<T> toArrayList(Iterable<T> iterable) {
 		ArrayList<T> resultList = new ArrayList<T>();
-		for (T t : iterable) {
-			resultList.add(t);
-		}
+		iterable.forEach(resultList :: add);
 		return resultList;
 	}
 
