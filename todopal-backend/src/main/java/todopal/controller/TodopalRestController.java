@@ -28,8 +28,6 @@ import todopal.service.TeacherService;
 public class TodopalRestController {
 
 	@Autowired
-	private TeacherService teacherservice;
-	@Autowired
 	private ClassroomService classroomService;
 	@Autowired
 	private TaskService taskService;
@@ -44,7 +42,7 @@ public class TodopalRestController {
 			@RequestParam("due-date") String dueDate) throws Exception {
 		Task task = taskService.createTask(taskId, name, description, tag, category, isMandatory, pointCount, startDate,
 				dueDate);
-		return convertToDto(task);
+		return Converter.convertToDto(task);
 	}
 
 	@PostMapping(value = { "/create-task/{startDate}/{dueDate}", "/create-task/{startDate}/{dueDate}/" })
@@ -56,11 +54,10 @@ public class TodopalRestController {
 
 		LocalDate realStartDate = LocalDate.parse(startDate);
 		LocalDate realDueDate = LocalDate.parse(dueDate);
-
 		Task task = taskService.createTask(taskId, name, description, tag, category, isMandatory, pointCount,
 				realStartDate, realDueDate);
 
-		return convertToDto(task);
+		return Converter.convertToDto(task);
 	}
 
 	@PostMapping(value = { "/create-task-container", "/create-task-container/" })
@@ -69,10 +66,9 @@ public class TodopalRestController {
 			@RequestParam("taskId") long taskId) throws Exception {
 
 		LocalDate realCompletionDate = LocalDate.parse(completionDate);
-
 		TaskContainer taskContainer = taskService.createTaskContainer(taskContainerId, realCompletionDate, status,
 				taskId);
-		return convertToDto(taskContainer);
+		return Converter.convertToDto(taskContainer);
 	}
 
 	@PostMapping(value = { "/create-classroom/{name}", "/create-classroom/{name}/" })
@@ -81,36 +77,32 @@ public class TodopalRestController {
 			@PathVariable("name") String name) throws Exception {
 		Teacher teacher = teacherService.getTeacher(teacherEmail);
 		Classroom classroom = classroomService.createClassroom(teacher, name, imagePath, subject);
-		return converDto(classroom);
+		return Converter.converDto(classroom);
 	}
 
 	@GetMapping(value = { "/task", "/task/" })
 	public TaskDto getTask(@RequestParam("id") long taskId) throws Exception {
 		Task task = taskService.getTask(taskId);
-		return convertToDto(task);
+		return Converter.convertToDto(task);
 	}
 
 	@GetMapping(value = { "/all-tasks", "/all-tasks/" })
 	public List<TaskDto> getTasks() throws Exception {
 		List<TaskDto> tasks = new ArrayList<TaskDto>();
-		for (Task task : taskService.getAllTasks()) {
-			tasks.add(convertToDto(task));
-		}
+		taskService.getAllTasks().forEach(taskEntry -> tasks.add(Converter.convertToDto(taskEntry)));
 		return tasks;
 	}
 
 	@GetMapping(value = { "/task-container", "/task-container/" })
 	public TaskContainerDto getTaskContainer(@RequestParam("id") long taskContainerId) throws Exception {
 		TaskContainer taskContainer = taskService.getTaskContainer(taskContainerId);
-		return convertToDto(taskContainer);
+		return Converter.convertToDto(taskContainer);
 	}
 
 	@GetMapping(value = { "/all-task-containers", "/all-task-containers/" })
 	public List<TaskContainerDto> getTaskContainers() throws Exception {
 		List<TaskContainerDto> taskContainers = new ArrayList<TaskContainerDto>();
-		for (TaskContainer taskContainer : taskService.getAllTaskContainers()) {
-			taskContainers.add(convertToDto(taskContainer));
-		}
+		taskService.getAllTaskContainers().forEach(container -> taskContainers.add(Converter.convertToDto(container)));
 		return taskContainers;
 	}
 
@@ -119,60 +111,19 @@ public class TodopalRestController {
 			@RequestParam("email") String email, @RequestParam("password") String password,
 			@RequestParam("bio") String bio) throws IllegalArgumentException {
 
-		Teacher teacher = teacherservice.createTeacher(appCode, name, email, password, bio);
-		return convertToDto(teacher);
+		Teacher teacher = teacherService.createTeacher(appCode, name, email, password, bio);
+		return Converter.convertToDto(teacher);
 	}
 
 	@GetMapping(value = { "/teachers/{email}", "/teachers/{email}/" })
 	public TeacherDto getTeacherByName(@PathVariable("email") String email) throws IllegalArgumentException {
-		return convertToDto(teacherservice.getTeacher(email));
+		return Converter.convertToDto(teacherService.getTeacher(email));
 	}
 
 	@GetMapping(value = { "/teachers", "/teachers/" })
 	public List<TeacherDto> getAllTeachers() {
 		List<TeacherDto> teachers = new ArrayList<>();
-		for (Teacher teacher : teacherservice.getAllTeachers()) {
-			teachers.add(convertToDto(teacher));
-		}
+		teacherService.getAllTeachers().forEach(teacher -> teachers.add(Converter.convertToDto(teacher)));
 		return teachers;
 	}
-
-	private TeacherDto convertToDto(Teacher t) {
-		if (t == null) {
-			throw new IllegalArgumentException("There is no such Teacher!");
-		}
-		TeacherDto teacherDto = new TeacherDto(t.getName());
-		return teacherDto;
-	}
-
-	private TaskDto convertToDto(Task task) {
-		if (task == null) {
-			throw new IllegalArgumentException("There is no such Task!");
-		}
-		TaskDto taskDto = new TaskDto(task.getTaskId(), task.getName(), task.getDescription(), task.getTag(),
-				task.getCategory(), task.isIsMandatory(), task.getPointCount(), task.getStartDate(), task.getDueDate());
-		return taskDto;
-	}
-
-	private TaskContainerDto convertToDto(TaskContainer taskContainer) {
-		if (taskContainer == null) {
-			throw new IllegalArgumentException("There is no such Task Container!");
-		}
-		TaskDto taskDto = convertToDto(taskContainer.getTask());
-		TaskContainerDto taskContainerDto = new TaskContainerDto(taskContainer.getTaskContainerId(),
-				taskContainer.getCompletionDate(), taskContainer.getStatus(), taskDto);
-		return taskContainerDto;
-	}
-
-	private ClassroomDto converDto(Classroom classroom) {
-		if (classroom == null) {
-			throw new IllegalArgumentException("There is no such Classroom!");
-		}
-		TeacherDto teacherDto = convertToDto(classroom.getTeacher());
-
-		ClassroomDto classroomDto = new ClassroomDto(classroom.getClassroomId(), classroom.getName(),
-				classroom.getSubject(), teacherDto, classroom.getImagePath());
-		return classroomDto;
-	}
-
 }
