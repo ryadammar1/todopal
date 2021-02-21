@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.lenient;
 
 import java.time.LocalDate;
@@ -40,6 +41,7 @@ public class TestTaskService {
 	private final String TASK_DESCRIPTION = "DO PROBLEM 1.1";
 	private final long TASK_ID = 1;
 	private final long TASK_CONTAINER_ID = 2;
+	private final long TEST_DENY = 3;
 
 	@InjectMocks
 	private TaskService service;
@@ -76,7 +78,7 @@ public class TestTaskService {
 			}
 		});
 		
-		//taskRepository.findBytaskId(anyInt())
+		//taskRepository.findBytaskId(anyLong())
 				lenient().when(taskContainerRepository.findBytaskContainerId(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
 					if ((Long) invocation.getArgument(0) == (TASK_CONTAINER_ID)) {	 
 						Task task = makeTestingTask();
@@ -219,7 +221,21 @@ public class TestTaskService {
 		assertEquals(true, actualMessage.contains(expectedMessage));
 	}
 
+	@Test
+	public void testDenyTaskStatus() {
+		
+	}
+	
 	//Helpers
+	private TaskContainer makeTestingTaskContainer() {
+		TaskContainer taskContainer = new TaskContainer();
+		taskContainer.setTaskContainerId(TEST_DENY);
+		taskContainer.setStatus(TaskStatus.DONE);
+		taskContainer.setCompletionDate(LocalDate.parse("2021-02-13"));
+		
+		return taskContainer;
+	}
+	
 	private Task makeTestingTask() {
 		Task task = new Task();
 		task.setTaskId(TASK_ID);
