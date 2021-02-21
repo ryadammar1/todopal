@@ -24,7 +24,6 @@ public class TaskService {
 	@Transactional
 	public Task createTask(long taskId, String name, String description, String tag, String category,
 			boolean isMandatory, int pointCount, LocalDate startDate, LocalDate dueDate) {
-
 		if (taskRepository.findBytaskId(taskId) != null) {
 			throw new IllegalArgumentException("The task was already created");
 		} else if (isEmptyString(name)) {
@@ -66,9 +65,18 @@ public class TaskService {
 
 	@Transactional
 	public TaskContainer createTaskContainer(long id, LocalDate completionDate, TaskStatus status, long taskId) {
+		
+		if (taskContainerRepository.findBytaskContainerId(id) != null) {
+			throw new IllegalArgumentException("The task container was already created");
+		} else if (taskRepository.findBytaskId(taskId) == null) {
+			throw new IllegalArgumentException("Invalid Task Id");
+		} else if (status == null) {
+			throw new IllegalArgumentException("Task container cannot have null status");
+		}
+		
 		TaskContainer taskContainer = new TaskContainer();
 		Task task = taskRepository.findBytaskId(taskId);
-
+		
 		taskContainer.setCompletionDate(completionDate);
 		taskContainer.setStatus(status);
 		taskContainer.setTask(task);

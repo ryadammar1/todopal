@@ -3,6 +3,8 @@ package todopal.service;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.anyLong;
 import org.junit.jupiter.api.extension.ExtendWith;
+
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.lenient;
@@ -37,6 +39,7 @@ public class TestTaskService {
 	private final String TASK_NAME = "MATH PROBLEM";
 	private final String TASK_DESCRIPTION = "DO PROBLEM 1.1";
 	private final long TASK_ID = 1;
+	private final long TASK_CONTAINER_ID = 2;
 
 	@InjectMocks
 	private TaskService service;
@@ -72,6 +75,22 @@ public class TestTaskService {
 				return null;
 			}
 		});
+		
+		//taskRepository.findBytaskId(anyInt())
+				lenient().when(taskContainerRepository.findBytaskContainerId(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
+					if ((Long) invocation.getArgument(0) == (TASK_CONTAINER_ID)) {	 
+						Task task = makeTestingTask();
+						LocalDate realCompletionDate = LocalDate.parse("2021-02-13");
+						TaskContainer container = new TaskContainer();
+						container.setTaskContainerId(TASK_CONTAINER_ID);
+						container.setStatus(TaskStatus.TODO);
+						container.setCompletionDate(realCompletionDate);
+						container.setTask(task);
+						return container;
+					} else {
+						return null;
+					}
+				});
 	}
 
 
@@ -87,7 +106,7 @@ public class TestTaskService {
 		assertEquals(2, task.getTaskId());
 		assertEquals(true, task.isIsMandatory());
 		assertEquals("Math", task.getTag());
-		assertEquals("Homework", task.getCategory());
+		assertEquals("Homework", task.getCategory()); 
 		assertEquals(5, task.getPointCount());
 		assertEquals("Problem 1.1", task.getName());
 		assertEquals("Complete the problem", task.getDescription());
@@ -107,6 +126,97 @@ public class TestTaskService {
 		assertEquals(TaskStatus.TODO, taskContainer.getStatus());
 		assertEquals(realCompletionDate, taskContainer.getCompletionDate());
 		assertNotNull(taskContainer.getTask());
+	}
+	
+	
+	@Test
+	public void testCreateTaskContainerIllegalArgument1() {
+		LocalDate realCompletionDate = LocalDate.parse("2021-02-13");
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.createTaskContainer(TASK_CONTAINER_ID, realCompletionDate, TaskStatus.TODO, TASK_ID);
+		});
+
+		String expectedMessage = "The task container was already created";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+	}
+	
+	
+	@Test
+	public void testCreateTaskContainerIllegalArgument2() {
+		LocalDate realCompletionDate = LocalDate.parse("2021-02-13");
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.createTaskContainer(3, realCompletionDate, TaskStatus.TODO, 5);
+		});
+
+		String expectedMessage = "Invalid Task Id";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+	}
+	
+	
+	@Test
+	public void testCreateTaskContainerIllegalArgument3() {
+		LocalDate realCompletionDate = LocalDate.parse("2021-02-13");
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.createTaskContainer(3, realCompletionDate, null, TASK_ID);
+		});
+
+		String expectedMessage = "Task container cannot have null status";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+	}
+	
+	
+	@Test
+	public void testCreateTaskIllegalArgument1() {
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.createTask(TASK_ID, "Problem 1.1", "Complete the problem", "Math", "Homework", true, 5, "2021-02-13", "2021-02-16");
+		});
+
+		String expectedMessage = "The task was already created";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+	}
+	
+	@Test
+	public void testCreateTaskIllegalArgument2() {
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.createTask(2, "", "Complete the problem", "Math", "Homework", true, 5, "2021-02-13", "2021-02-16");
+		});
+
+		String expectedMessage = "Tasks cannot have an empty name";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+	}
+	
+	@Test
+	public void testCreateTaskIllegalArgument3() {
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.createTask(2, "Problem 1.1", "Complete the problem", "Math", "Homework", true, -5, "2021-02-13", "2021-02-16");
+		});
+
+		String expectedMessage = "Tasks cannot have negative point values";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+	}
+	
+	@Test
+	public void testCreateTaskIllegalArgument4() {
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.createTask(2, "Problem 1.1", "Complete the problem", "Math", "Homework", true, 5, "2021-02-13", "2021-02-10");
+		});
+
+		String expectedMessage = "Tasks cannot have due date before the starting date";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
 	}
 
 	//Helpers
