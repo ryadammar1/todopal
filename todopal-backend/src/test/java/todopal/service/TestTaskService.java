@@ -52,6 +52,7 @@ public class TestTaskService {
 	private final long TASK_CONTAINER_ID = 2;
 	private final long TC_TEST_DENY = 256;
 	private final String SD_TEST_DENY = "denytestSD@email.com";
+	private final String SD_TEST_DENY2 = "denytestSD@email.com2";
 
 	@InjectMocks
 	private TaskService service;
@@ -88,7 +89,7 @@ public class TestTaskService {
 			}
 		});
 
-		// taskRepository.findBytaskId(anyInt())
+		// taskRepository.findByStudentEmail(anyInt())
 		lenient().when(studentRepository.findStudentByEmail(any())).thenAnswer((InvocationOnMock invocation) -> {
 			if (invocation.getArgument(0).equals(SD_TEST_DENY)) {
 				return makeTestingStudent(SD_TEST_DENY);
@@ -243,6 +244,19 @@ public class TestTaskService {
 		assertNull(taskContainer.getCompletionDate());
 
 	}
+	
+	@Test
+	public void testDenyTaskStatusIllegalArgument() throws Exception {
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.denyTask(TC_TEST_DENY, SD_TEST_DENY2);
+		});
+
+		String expectedMessage = "The specified student doesn't have this task";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+
+	}
 
 	// Helpers
 	private TaskContainer makeTestingTaskContainer(long id, TaskStatus status) {
@@ -257,9 +271,10 @@ public class TestTaskService {
 	
 	private Student makeTestingStudent(String email) {
 		Student student = new Student();
-		student.setEmail(SD_TEST_DENY);
+		student.setEmail(email);
 		student.setSchoolTask(new HashSet<TaskContainer>());
-		student.getSchoolTask().add(makeTestingTaskContainer(TC_TEST_DENY, TaskStatus.DONE));
+		if(email.equals(SD_TEST_DENY))
+			student.getSchoolTask().add(makeTestingTaskContainer(TC_TEST_DENY, TaskStatus.DONE));
 
 		return student;
 	}
