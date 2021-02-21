@@ -12,6 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.lenient;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
@@ -20,8 +24,10 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.ArgumentMatchers.any;
 
+import todopal.dao.StudentRepository;
 import todopal.dao.TaskContainerRepository;
 import todopal.dao.TaskRepository;
+import todopal.model.Student;
 import todopal.model.Task;
 import todopal.model.TaskContainer;
 import todopal.model.TaskStatus;
@@ -31,6 +37,8 @@ public class TestTaskService {
 
 	@Mock
 	private TaskRepository taskRepository;
+	@Mock
+	private StudentRepository studentRepository;
 	@Mock
 	private TaskContainerRepository taskContainerRepository;
 
@@ -43,6 +51,7 @@ public class TestTaskService {
 	private final long TASK_ID = 1;
 	private final long TASK_CONTAINER_ID = 2;
 	private final long TC_TEST_DENY = 256;
+	private final String SD_TEST_DENY = "denytestSD@email.com";
 
 	@InjectMocks
 	private TaskService service;
@@ -74,6 +83,15 @@ public class TestTaskService {
 			if ((Long) invocation.getArgument(0) == (TASK_ID)) {
 				Task task = makeTestingTask();
 				return task;
+			} else {
+				return null;
+			}
+		});
+
+		// taskRepository.findBytaskId(anyInt())
+		lenient().when(studentRepository.findStudentByEmail(any())).thenAnswer((InvocationOnMock invocation) -> {
+			if (invocation.getArgument(0).equals(SD_TEST_DENY)) {
+				return makeTestingStudent(SD_TEST_DENY);
 			} else {
 				return null;
 			}
@@ -219,11 +237,11 @@ public class TestTaskService {
 	}
 
 	@Test
-	public void testDenyTaskStatus() {
-		TaskContainer taskContainer = service.denyTask(TC_TEST_DENY);
+	public void testDenyTaskStatus() throws Exception {
+		TaskContainer taskContainer = service.denyTask(TC_TEST_DENY, SD_TEST_DENY);
 		assertEquals(taskContainer.getStatus(), TaskStatus.PROGRESS);
 		assertNull(taskContainer.getCompletionDate());
-		
+
 	}
 
 	// Helpers
@@ -235,6 +253,15 @@ public class TestTaskService {
 		taskContainer.setCompletionDate(LocalDate.parse("2021-02-13"));
 
 		return taskContainer;
+	}
+	
+	private Student makeTestingStudent(String email) {
+		Student student = new Student();
+		student.setEmail(SD_TEST_DENY);
+		student.setSchoolTask(new HashSet<TaskContainer>());
+		student.getSchoolTask().add(makeTestingTaskContainer(TC_TEST_DENY, TaskStatus.DONE));
+
+		return student;
 	}
 
 	private Task makeTestingTask() {
