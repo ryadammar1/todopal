@@ -221,8 +221,8 @@ public class TestTaskService {
 	}
 
 	@Test
-	public void testDenyTaskStatus() {
-		TaskContainer taskContainer = service.denyTask(TC_TEST_DENY);
+	public void testDenyTaskStatus() throws Exception {
+		TaskContainer taskContainer = service.denyTask(TC_TEST_DENY, "");
 		assertEquals(taskContainer.getStatus(), TaskStatus.PROGRESS);
 		assertNull(taskContainer.getCompletionDate());
 		

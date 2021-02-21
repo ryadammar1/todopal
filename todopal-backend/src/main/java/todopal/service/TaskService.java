@@ -2,13 +2,16 @@ package todopal.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import todopal.dao.StudentRepository;
 import todopal.dao.TaskContainerRepository;
 import todopal.dao.TaskRepository;
+import todopal.model.Student;
 import todopal.model.Task;
 import todopal.model.TaskContainer;
 import todopal.model.TaskStatus;
@@ -20,6 +23,8 @@ public class TaskService {
 	private TaskRepository taskRepository;
 	@Autowired
 	private TaskContainerRepository taskContainerRepository;
+	@Autowired
+	private StudentRepository studentRepository;
 
 	@Transactional
 	public Task createTask(long taskId, String name, String description, String tag, String category,
@@ -106,10 +111,35 @@ public class TaskService {
 
 		TaskContainer oldTaskContainer = getTaskContainer(taskContainerId);
 		oldTaskContainer = taskContainer;
-		
+
 		taskContainerRepository.save(oldTaskContainer);
 
 		return oldTaskContainer;
+	}
+	@Transactional
+	public TaskContainer denyTask(long taskContainerId, String studentEmail) throws Exception {
+		
+		if (getTaskContainer(taskContainerId) == null) {
+			throw new IllegalArgumentException("Invalid Task Container Id");
+		} else if (studentRepository.findStudentByEmail(studentEmail) == null) {
+			throw new IllegalArgumentException("Non-existant Student");
+		} 
+		
+		Student student = studentRepository.findStudentByEmail(studentEmail);
+		TaskContainer taskContainer = getTaskContainer(taskContainerId);
+		
+		Set<TaskContainer> schoolTasks = student.getSchoolTask();
+		Set<TaskContainer> personalTasks = student.getPersonalTask();
+		
+		if(!schoolTasks.contains(taskContainer) || !personalTasks.contains(taskContainer)) {
+			throw new IllegalArgumentException("The specified student doesn't have this task");
+		}	
+		
+		taskContainer.setStatus(TaskStatus.PROGRESS);
+		taskContainerRepository.save(taskContainer);
+		studentRepository.save(student);
+
+		return taskContainer;
 	}
 
 	@Transactional
