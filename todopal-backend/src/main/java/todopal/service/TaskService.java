@@ -136,6 +136,7 @@ public class TaskService {
 		}	
 		
 		taskContainer.setStatus(TaskStatus.PROGRESS);
+		taskContainer.setCompletionDate(null);
 		taskContainerRepository.save(taskContainer);
 		studentRepository.save(student);
 
