@@ -32,6 +32,15 @@ public class StudentService {
 	@Transactional
 	public Student createStudent (String name, String email, String password) {
 		Student student = new Student();
+		if (name == null || name == "") {
+			throw new IllegalArgumentException("Student cannot have an empty name");
+		}
+		if (email == null || email == "") {
+			throw new IllegalArgumentException("Student cannot have an empty email");
+		}
+		if (password == null || password == "") {
+			throw new IllegalArgumentException("Student cannot have an empty password");
+		}
 		
 		if (!email.contains("@")) {
 			throw new IllegalArgumentException("Invalid email is used");
@@ -45,6 +54,7 @@ public class StudentService {
 		student.setEmail(email);
 		student.setPassword(password);
 		student.setTotalPoints(0);
+	
 		student.setPersonalTask(new HashSet<TaskContainer>());
 		student.setSchoolTask(new HashSet<TaskContainer>());
 		student.setTaskCategories(new ArrayList<String>());
