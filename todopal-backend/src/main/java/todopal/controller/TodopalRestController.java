@@ -12,15 +12,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import todopal.dto.ClassroomDto;
+import todopal.dto.StudentDto;
 import todopal.dto.TaskContainerDto;
 import todopal.dto.TaskDto;
 import todopal.dto.TeacherDto;
 import todopal.model.Classroom;
+import todopal.model.Student;
 import todopal.model.Task;
 import todopal.model.TaskContainer;
 import todopal.model.TaskStatus;
 import todopal.model.Teacher;
 import todopal.service.ClassroomService;
+import todopal.service.StudentService;
 import todopal.service.TaskService;
 import todopal.service.TeacherService;
 
@@ -33,6 +36,8 @@ public class TodopalRestController {
 	private TaskService taskService;
 	@Autowired
 	private TeacherService teacherService;
+	@Autowired
+	private StudentService studentService;
 
 	@PostMapping(value = { "/create-task", "/create-task/" })
 	public TaskDto createTask(@RequestParam("id") long taskId, @RequestParam("mandatory") boolean isMandatory,
@@ -126,4 +131,28 @@ public class TodopalRestController {
 		teacherService.getAllTeachers().forEach(teacher -> teachers.add(Converter.convertToDto(teacher)));
 		return teachers;
 	}
+	
+	@PostMapping(value = { "/students/{name}", "/studentss/{name}/" })
+	public StudentDto createStudent(@PathVariable("name") String name,
+			@RequestParam("email") String email, 
+			@RequestParam("password") String password) throws IllegalArgumentException {
+
+		Student student = studentService.createStudent(name, email, password);
+		return Converter.convertToDto(student);
+	}
+	
+	@GetMapping(value = { "/students/{email}", "/students/{email}/" })
+	public StudentDto getStudentByEmail(@PathVariable("email") String email) throws IllegalArgumentException {
+		Student student = studentService.getStudent(email);
+		return Converter.convertToDto(student);
+	}
+	
+	@GetMapping(value = { "/students", "/students/" })
+	public List<StudentDto> getAllStudents() {
+		List<StudentDto> students = new ArrayList<>();
+		studentService.getAllStudents().forEach(student -> students.add(Converter.convertToDto(student)));
+		return students;
+	}
+	
+	
 }

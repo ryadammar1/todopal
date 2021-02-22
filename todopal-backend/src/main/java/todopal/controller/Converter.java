@@ -1,10 +1,12 @@
 package todopal.controller;
 
 import todopal.dto.ClassroomDto;
+import todopal.dto.StudentDto;
 import todopal.dto.TaskContainerDto;
 import todopal.dto.TaskDto;
 import todopal.dto.TeacherDto;
 import todopal.model.Classroom;
+import todopal.model.Student;
 import todopal.model.Task;
 import todopal.model.TaskContainer;
 import todopal.model.Teacher;
@@ -45,5 +47,12 @@ public class Converter {
 
         return new ClassroomDto(classroom.getClassroomId(), classroom.getName(), classroom.getSubject(), teacherDto,
                 classroom.getImagePath());
+    }
+    
+    protected static StudentDto convertToDto (Student student) {
+    	if (student == null) {
+    		throw new IllegalArgumentException("There is no such Teacher!");
+    	}
+    	return new StudentDto(student.getName(), student.getEmail(), student.getPassword());
     }
 }
