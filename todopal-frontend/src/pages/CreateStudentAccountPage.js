@@ -9,7 +9,6 @@ const [state, setState] = new useState({
     email:'',
     password:'',
     passConfirm:'',
-    classroomId: 0,
 });
 
 let person = {
@@ -17,7 +16,6 @@ let person = {
     email:'',
     password:'',
     passConfirm:'',
-    classroomId: 0,
 }
 
 function submitEvent () {
@@ -42,8 +40,8 @@ function submitEvent () {
             <input onChange={event => person.name = event.target.value }/>
           </div>
           <div className="name-subject">
-            <div>Classroom ID</div>
-            <input onChange={event => person.classroomId = event.target.value }/>
+            <div>Email</div>
+            <input onChange={event => person.email = event.target.value }/>
           </div>
         </div>
 
@@ -56,10 +54,6 @@ function submitEvent () {
             <div>Confirm Password</div>
             <input onChange={event => person.passConfirm = event.target.value }/>
           </div>
-        </div>
-        <div className="row-create-class">
-          <div>Email</div>
-          <input onChange={event => person.email = event.target.value }/>
         </div>
       <button onClick={()=>submitEvent()}>Create Account</button>
       </section>
