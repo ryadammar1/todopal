@@ -131,7 +131,7 @@ public class TaskService {
 		Set<TaskContainer> schoolTasks = student.getSchoolTask();
 		Set<TaskContainer> personalTasks = student.getPersonalTask();
 		
-		if(!schoolTasks.contains(taskContainer) || !personalTasks.contains(taskContainer)) {
+		if(!checkTaskContainer(schoolTasks, taskContainerId) && !checkTaskContainer(personalTasks, taskContainerId)) {
 			throw new IllegalArgumentException("The specified student doesn't have this task");
 		}	
 		
@@ -181,5 +181,16 @@ public class TaskService {
 
 	private boolean isEmptyString(String value) {
 		return (value == null || value.trim().length() == 0);
+	}
+	
+	private boolean checkTaskContainer(Set<TaskContainer> taskContainers, long taskContainerId) {
+		boolean hasTask = false;
+		
+		for(TaskContainer task : taskContainers) {
+			if(task.getTaskContainerId() == taskContainerId) {
+				hasTask = true;
+			}
+		}
+		return hasTask;
 	}
 }
