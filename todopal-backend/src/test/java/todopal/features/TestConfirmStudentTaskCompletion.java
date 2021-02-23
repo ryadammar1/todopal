@@ -48,7 +48,7 @@ public class TestConfirmStudentTaskCompletion {
     public void there_is_a_class_task_called_that_is_worth_points(String taskName, String points) {
         final Task task = taskService.createTask(1, taskName, "", "chem", "mandatory", true, Integer.parseInt(points),
                 LocalDate.now(), LocalDate.parse("9999-12-12"));
-        taskService.createTaskContainer(1, LocalDate.parse("9999-12-12"), TaskStatus.PROGRESS, task.getTaskId());
+        taskService.createTaskContainer(1, null, TaskStatus.PROGRESS, task.getTaskId());
     }
 
     @Given("a task {string} is marked as {string} by {string}, with email {string}")
