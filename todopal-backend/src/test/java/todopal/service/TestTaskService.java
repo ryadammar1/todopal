@@ -53,6 +53,7 @@ public class TestTaskService {
 	private final long TC_TEST_DENY = 256;
 	private final String SD_TEST_DENY = "denytestSD@email.com";
 	private final String SD_TEST_DENY2 = "denytestSD@email.com2";
+	private final String SD_TEST_DENY3 = "nonexistant@email.com2";
 
 	@InjectMocks
 	private TaskService service;
@@ -94,6 +95,9 @@ public class TestTaskService {
 			if (invocation.getArgument(0).equals(SD_TEST_DENY)) {
 				return makeTestingStudent(SD_TEST_DENY);
 			} else {
+				if(invocation.getArgument(0).equals(SD_TEST_DENY2)) {
+					return makeTestingStudent(SD_TEST_DENY2);
+				}
 				return null;
 			}
 		});
@@ -257,6 +261,19 @@ public class TestTaskService {
 		assertEquals(true, actualMessage.contains(expectedMessage));
 
 	}
+	
+	@Test
+	public void testDenyTaskStatusIllegalArgument_2() throws Exception {
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.denyTask(TC_TEST_DENY, SD_TEST_DENY3);
+		});
+
+		String expectedMessage = "Non-existant Student";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+
+	}
 
 	// Helpers
 	private TaskContainer makeTestingTaskContainer(long id, TaskStatus status) {
@@ -273,6 +290,7 @@ public class TestTaskService {
 		Student student = new Student();
 		student.setEmail(email);
 		student.setSchoolTask(new HashSet<TaskContainer>());
+		student.setPersonalTask(new HashSet<TaskContainer>());
 		if(email.equals(SD_TEST_DENY))
 			student.getSchoolTask().add(makeTestingTaskContainer(TC_TEST_DENY, TaskStatus.DONE));
 
