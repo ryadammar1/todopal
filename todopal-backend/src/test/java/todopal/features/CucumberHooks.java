@@ -6,6 +6,7 @@ import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import todopal.dao.ClassroomRepository;
+import todopal.dao.StudentRepository;
 import todopal.dao.TaskContainerRepository;
 import todopal.dao.TaskRepository;
 import todopal.dao.TeacherRepository;
@@ -25,6 +26,9 @@ public class CucumberHooks {
     @Autowired
     private TeacherRepository teacherRepository;
 
+    @Autowired
+    private StudentRepository studentRepository;
+
     @Before
     public void beforeScenario() {
         System.out.println("------------- Starting scenario -------------");
@@ -35,6 +39,7 @@ public class CucumberHooks {
 
         System.out.println("Clearing database for next scenario");
 
+        studentRepository.deleteAll();
         taskContainerRepository.deleteAll();
         taskRepository.deleteAll();
         classroomRepository.deleteAll();
