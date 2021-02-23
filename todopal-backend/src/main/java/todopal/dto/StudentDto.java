@@ -5,15 +5,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class StudentDto {
+	private String name;
+	private String email;
+	private String password;
 	private int totalPoints;
 	private ArrayList<String> taskCategories;
 	private ArrayList<String> taskTags;
 	private Set<TaskContainerDto> schoolTask;
 	private Set<TaskContainerDto> personalTask;
 	private ClassroomDto classroom;
-	private String name;
-	private String email;
-	private String password;
 
 	public StudentDto(String name, String email, String password) {
 		this.name = name;
@@ -25,6 +25,7 @@ public class StudentDto {
 		this.schoolTask = new HashSet<TaskContainerDto>();
 		this.personalTask = new HashSet<TaskContainerDto>();
 	}
+
 	public void setName(String value) {
 		this.name = value;
 	}
@@ -96,5 +97,4 @@ public class StudentDto {
 	public void setClassroom(ClassroomDto classrooms) {
 		this.classroom = classrooms;
 	}
-
 }
