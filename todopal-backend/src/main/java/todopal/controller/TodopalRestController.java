@@ -122,6 +122,13 @@ public class TodopalRestController {
 		return Converter.convertToDto(taskContainer);
 	}
 
+	@PostMapping(value = { "approve/{email}/{task}", "/approve/{email}/{task}" })
+	public TaskContainerDto approveTask(@PathVariable("email") String email, @PathVariable("task") long taskId)
+			throws Exception {
+		TaskContainer taskContainer = taskService.approveTask(taskId, email);
+		return Converter.convertToDto(taskContainer);
+	}
+
 	@GetMapping(value = { "/teachers/{email}", "/teachers/{email}/" })
 	public TeacherDto getTeacherByName(@PathVariable("email") String email) throws IllegalArgumentException {
 		return Converter.convertToDto(teacherService.getTeacher(email));
