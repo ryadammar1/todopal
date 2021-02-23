@@ -61,8 +61,10 @@ public class TestConfirmStudentTaskCompletion {
 
     @Then("{string} will be marked as {string}")
     public void will_be_marked_as(String string, String string2) {
+        throw new io.cucumber.java.PendingException();
     }
     @Then("{string} points will be added to the tally of student {string}")
     public void points_will_be_added_to_the_tally_of_student(String string, String string2) {
+        throw new io.cucumber.java.PendingException();
     }
 }
