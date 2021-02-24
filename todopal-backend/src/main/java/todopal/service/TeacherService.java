@@ -85,15 +85,6 @@ public class TeacherService {
 	}
 
 	@Transactional
-	public Teacher setMandatoryLists(String teacherEmail, ArrayList<String> mandatoryLists)
-		throws IllegalArgumentException {
-			Teacher teacher = teacherRepository.findTeacherByEmail(teacherEmail);
-			teacher.setMandatoryLists(mandatoryLists);
-			teacherRepository.save(teacher);
-			return teacher;
-	}
-
-	@Transactional
 	public Teacher addToMandatoryLists(String teacherEmail, String mandatoryList)
 		throws IllegalArgumentException {
 			checkForEmptyString(mandatoryList);
@@ -110,15 +101,6 @@ public class TeacherService {
 			}
 			teacherRepository.save(teacher);
 			return teacher;
-	}
-
-	@Transactional
-	public Teacher setOptionalLists(String teacherEmail, ArrayList<String> optionalLists)
-			throws IllegalArgumentException {
-		Teacher teacher = teacherRepository.findTeacherByEmail(teacherEmail);
-		teacher.setMandatoryLists(optionalLists);
-		teacherRepository.save(teacher);
-		return teacher;
 	}
 
 	@Transactional

@@ -152,4 +152,9 @@ public class TodopalRestController {
 		return students;
 	}
 
+	@PostMapping(value = { "/create-task-list/optional/{name}", "/create-task-list/optional/{name}/" })
+	public TeacherDto createOptionalList(@RequestParam("teacherEmail") String teacherEmail, @PathVariable("name") String name) {
+		Teacher teacher = teacherService.addToOptionalLists(teacherEmail, name);
+		return Converter.convertToDto(teacher);
+	}
 }
