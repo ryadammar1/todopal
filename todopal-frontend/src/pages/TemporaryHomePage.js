@@ -4,8 +4,11 @@ function TemporaryHomePage({ setState }) {
   }
 
   function CreateTeacherAccountOnClick() {
-    console.log("hello");
     setState({ currentPage: "CreateTeacherAccountPage" });
+  }
+
+  function ViewAllTasksInClassroomOnClick() {
+    setState({ currentPage: "ViewAllTasksInClassroomPage" });
   }
 
   return (
@@ -21,6 +24,10 @@ function TemporaryHomePage({ setState }) {
         Create Teacher Account
       </button>
 
+      <div>Join TodoPal As a Teacher</div>
+      <button onClick={() => ViewAllTasksInClassroomOnClick()}>
+        View All Tasks In Classroom
+      </button>
     </>
   );
 }

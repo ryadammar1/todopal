@@ -1,0 +1,10 @@
+#task-list-wrapper {
+  background-color: #eafff5;
+  padding: 1.5rem;
+  border-radius: 2rem;
+
+  border: 2px solid #1ace98;
+
+  width: 25%;
+  flex-direction: column;
+}

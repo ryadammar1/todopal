@@ -1,0 +1,14 @@
+#view-all-task-in-class-page-wrapper {
+  padding: 1rem;
+
+  width: 95%;
+  margin: auto;
+  margin-top: 3rem;
+
+  border-radius: 4rem;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  color: #1ace98;
+}
