@@ -3,7 +3,6 @@ package todopal.service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import todopal.dao.StudentRepository;
 import todopal.model.Student;
-import todopal.model.Task;
 import todopal.model.TaskContainer;
 
 
@@ -67,17 +65,25 @@ public class StudentService {
 	
 	@Transactional
 	public List<Student> getAllStudents() {
+		if (toList(studentRepository.findAll()).isEmpty()) {
+			throw new IllegalArgumentException("There are no students registered!");
+		}
 		return toList(studentRepository.findAll());
 		
 	}
 	
 	@Transactional
 	public boolean deleteStudent(String email) {
+		if (email == null || email.trim().length() == 0) {
+			throw new IllegalArgumentException("Student email cannot be empty!");
+		}
+		
 		Student student = studentRepository.findStudentByEmail(email);
 		if (student != null) {
 			studentRepository.delete(student);;
 			return true;
 		}
+		
 		return false;
 	}
 	
