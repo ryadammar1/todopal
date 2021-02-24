@@ -11,6 +11,7 @@ public class TaskContainer {
     private LocalDate completionDate;
     private TaskStatus status;
     private Task task;
+    private String feedback;
     private long taskContainerId;
 
     public void setCompletionDate(LocalDate value) {
@@ -27,6 +28,14 @@ public class TaskContainer {
 
     public TaskStatus getStatus() {
         return this.status;
+    }
+    
+    public void setFeedback(String value) {
+        this.feedback = value;
+    }
+
+    public String getFeedback() {
+        return this.feedback;
     }
 
     @OneToOne(optional = false)
