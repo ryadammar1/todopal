@@ -119,7 +119,7 @@ public class TestTaskService {
 	public void testCreateTaskContainer() throws Exception {
 		LocalDate realCompletionDate = LocalDate.parse("2021-02-13");
 
-		TaskContainer taskContainer = service.createTaskContainer(3, realCompletionDate, TaskStatus.TODO, TASK_ID);	
+		TaskContainer taskContainer = service.createTaskContainer(3, realCompletionDate, TaskStatus.TODO, TASK_ID, "Hi");	
 
 		assertNotNull(taskContainer);
 		assertEquals(3, taskContainer.getTaskContainerId());
@@ -133,7 +133,7 @@ public class TestTaskService {
 	public void testCreateTaskContainerIllegalArgument1() {
 		LocalDate realCompletionDate = LocalDate.parse("2021-02-13");
 		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-			service.createTaskContainer(TASK_CONTAINER_ID, realCompletionDate, TaskStatus.TODO, TASK_ID);
+			service.createTaskContainer(TASK_CONTAINER_ID, realCompletionDate, TaskStatus.TODO, TASK_ID, null);
 		});
 
 		String expectedMessage = "The task container was already created";
@@ -147,7 +147,7 @@ public class TestTaskService {
 	public void testCreateTaskContainerIllegalArgument2() {
 		LocalDate realCompletionDate = LocalDate.parse("2021-02-13");
 		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-			service.createTaskContainer(3, realCompletionDate, TaskStatus.TODO, 5);
+			service.createTaskContainer(3, realCompletionDate, TaskStatus.TODO, 5, null);
 		});
 
 		String expectedMessage = "Invalid Task Id";
@@ -161,7 +161,7 @@ public class TestTaskService {
 	public void testCreateTaskContainerIllegalArgument3() {
 		LocalDate realCompletionDate = LocalDate.parse("2021-02-13");
 		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-			service.createTaskContainer(3, realCompletionDate, null, TASK_ID);
+			service.createTaskContainer(3, realCompletionDate, null, TASK_ID, null);
 		});
 
 		String expectedMessage = "Task container cannot have null status";
