@@ -1,10 +1,8 @@
 package todopal.service;
 
-import static org.mockito.ArgumentMatchers.any; 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.lenient;
 
 import java.util.*;
@@ -45,8 +43,11 @@ public class TestTeacherService {
     private final String TEACHER_EMAIL = "testTeacher@email.com";
     private final String SECONDARY_TEACHER_EMAIL = "test2teacher@pass.com";
     private final String WRONG_TEACHER_EMAIL = "bad";
+    private final String EXISTING_LIST_TEACHER_EMAIL = "existing@list.com";
     private final String TEACHER_PASSWORD = "testTeacherpassword";
     private final String TEACHER_BIO = "testTeacherBio";
+    private final String MANDATORY_LIST = "mandatorylist";
+    private final String OPTIONAL_LIST = "optionallist";
 
     // tests
     @BeforeEach
@@ -65,6 +66,8 @@ public class TestTeacherService {
 				throw new IllegalArgumentException();
             } else if (((String) invocation.getArgument(0)).equals(WRONG_TEACHER_EMAIL) || ((String) invocation.getArgument(0)).equals(SECONDARY_TEACHER_EMAIL)) {
                 return null;
+            } else if (((String) invocation.getArgument(0)).equals(EXISTING_LIST_TEACHER_EMAIL)) {
+			    return makeExistingListTestingTeacher();
             }
             return makeTestingTeacher();
 		});
@@ -126,6 +129,67 @@ public class TestTeacherService {
         assertEquals(true, deleted);
     }
 
+    @Test
+    public void testCreateMandatoryListSuccessful() {
+        Teacher teacher = teacherService.addToMandatoryLists(TEACHER_EMAIL, MANDATORY_LIST);
+
+        assertEquals(MANDATORY_LIST, teacher.getMandatoryLists().get(0));
+    }
+
+    @Test
+    public void testCreateMandatoryListExistingName() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            teacherService.addToMandatoryLists(EXISTING_LIST_TEACHER_EMAIL, MANDATORY_LIST);
+        });
+
+        String expectedMessage = "Task list already exists";
+        String actualMessage = exception.getMessage();
+
+        assertEquals(true, actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void testCreateMandatoryListNoName() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            teacherService.addToMandatoryLists(TEACHER_EMAIL, "");
+        });
+
+        String expectedMessage = "List name is not provided";
+        String actualMessage = exception.getMessage();
+
+        assertEquals(true, actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void testCreateOptionalListSuccessful() {
+        Teacher teacher = teacherService.addToOptionalLists(TEACHER_EMAIL, OPTIONAL_LIST);
+
+        assertEquals(OPTIONAL_LIST, teacher.getOptionalLists().get(0));
+    }
+
+    @Test
+    public void testCreateOptionalListExistingName() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            teacherService.addToOptionalLists(EXISTING_LIST_TEACHER_EMAIL, OPTIONAL_LIST);
+        });
+
+        String expectedMessage = "Task list already exists";
+        String actualMessage = exception.getMessage();
+
+        assertEquals(true, actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void testCreateOptionalListNoName() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            teacherService.addToOptionalLists(TEACHER_EMAIL, "");
+        });
+
+        String expectedMessage = "List name is not provided";
+        String actualMessage = exception.getMessage();
+
+        assertEquals(true, actualMessage.contains(expectedMessage));
+    }
 
     // helpers
     private Teacher makeTestingTeacher() {
@@ -135,6 +199,22 @@ public class TestTeacherService {
         teacher.setEmail(TEACHER_EMAIL);
         teacher.setPassword(TEACHER_PASSWORD);
         teacher.setBio(TEACHER_BIO);
+        return teacher;
+    }
+
+    private Teacher makeExistingListTestingTeacher() {
+        Teacher teacher = new Teacher();
+        ArrayList<String> mandatoryLists = new ArrayList<>();
+        ArrayList<String> optionalLists = new ArrayList<>();
+        mandatoryLists.add(MANDATORY_LIST);
+        optionalLists.add(OPTIONAL_LIST);
+        teacher.setApprovalCode(APPROVAL_CODE);
+        teacher.setName(TEACHER_NAME);
+        teacher.setEmail(EXISTING_LIST_TEACHER_EMAIL);
+        teacher.setPassword(TEACHER_PASSWORD);
+        teacher.setBio(TEACHER_BIO);
+        teacher.setMandatoryLists(mandatoryLists);
+        teacher.setOptionalLists(optionalLists);
         return teacher;
     }
 }

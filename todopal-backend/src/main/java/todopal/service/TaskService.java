@@ -12,9 +12,13 @@ import todopal.dao.TaskRepository;
 import todopal.model.Task;
 import todopal.model.TaskContainer;
 import todopal.model.TaskStatus;
+import todopal.model.Teacher;
 
 @Service
 public class TaskService {
+
+	private final String EMPTY_STRING_EXCEPTION = "[error] String argument is empty";
+	private final String ALREADY_EXIST_EXCEPTION = "Classroom with same name already created";
 
 	@Autowired
 	private TaskRepository taskRepository;
@@ -150,5 +154,11 @@ public class TaskService {
 
 	private boolean isEmptyString(String value) {
 		return (value == null || value.trim().length() == 0);
+	}
+
+	private void checkForEmptyString(String parameterValue) {
+		if (parameterValue.trim().length() == 0) {
+			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		}
 	}
 }
