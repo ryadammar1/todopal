@@ -34,7 +34,7 @@ public class Converter {
 
         TaskDto taskDto = convertToDto(taskContainer.getTask());
         return new TaskContainerDto(taskContainer.getTaskContainerId(), taskContainer.getCompletionDate(),
-                taskContainer.getStatus(), taskDto);
+                taskContainer.getStatus(), taskDto, taskContainer.getFeedback());
     }
 
     protected static ClassroomDto converDto(Classroom classroom) {

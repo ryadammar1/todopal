@@ -63,11 +63,11 @@ public class TodopalRestController {
 	@PostMapping(value = { "/create-task-container", "/create-task-container/" })
 	public TaskContainerDto createTaskContainer(@RequestParam("id") long taskContainerId,
 			@RequestParam("date") String completionDate, @RequestParam("status") TaskStatus status,
-			@RequestParam("taskId") long taskId) throws Exception {
+			@RequestParam("taskId") long taskId, @RequestParam("feedback") String feedback) throws Exception {
 
 		LocalDate realCompletionDate = LocalDate.parse(completionDate);
 		TaskContainer taskContainer = taskService.createTaskContainer(taskContainerId, realCompletionDate, status,
-				taskId);
+				taskId, feedback);
 		return Converter.convertToDto(taskContainer);
 	}
 
