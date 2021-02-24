@@ -12,7 +12,7 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         plugin = {"pretty", "junit:build/cucumber-junit.xml", "html:build/cucumber.html"},
-        features = "src/test/resources/ID002_Create_Classroom.feature"
+        features = "src/test/resources/ID009_Confirm_Student_Task_Completion.feature"
 )
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureMockMvc

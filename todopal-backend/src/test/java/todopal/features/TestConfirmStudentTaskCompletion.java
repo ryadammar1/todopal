@@ -1,41 +1,29 @@
 package todopal.features;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
+import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.jupiter.api.Assertions;
 import todopal.controller.TodopalRestController;
 import todopal.dao.StudentRepository;
 import todopal.dao.TaskContainerRepository;
-import todopal.dao.TaskRepository;
 import todopal.model.Student;
 import todopal.model.Task;
 import todopal.model.TaskContainer;
 import todopal.model.TaskStatus;
-import todopal.model.Teacher;
-import todopal.service.ClassroomService;
 import todopal.service.StudentService;
 import todopal.service.TaskService;
-import todopal.service.TeacherService;
 
 public class TestConfirmStudentTaskCompletion {
     @Autowired
     TodopalRestController todopalRestController;
     @Autowired
-    private TeacherService teacherService;
-    @Autowired
     private StudentService studentService;
-    @Autowired
-    private ClassroomService classroomService;
     @Autowired
     private TaskService taskService;
 
@@ -56,8 +44,8 @@ public class TestConfirmStudentTaskCompletion {
             String studentEmail) {
         try {
             final TaskContainer taskContainer = taskService.getTaskContainer(1);
-
             final Student student = studentService.createStudent(studentName, studentEmail, "password");
+
             Set<TaskContainer> schoolTasks = student.getSchoolTask();
             schoolTasks.add(taskContainer);
             studentRepository.save(student);
@@ -74,12 +62,11 @@ public class TestConfirmStudentTaskCompletion {
         try {
             TaskContainer taskContainer = taskService.getTaskContainer(1);
             final Student student = studentService.createStudent(studentName, studentEmail, "password");
-        
+
             Set<TaskContainer> schoolTasks = student.getSchoolTask();
             schoolTasks.add(taskContainer);
             studentRepository.save(student);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -105,9 +92,7 @@ public class TestConfirmStudentTaskCompletion {
             Student student = studentService.getStudent("taha@pattomail.com");
             Assertions.assertEquals(Integer.parseInt(point), student.getTotalPoints());
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
     }
 }
