@@ -137,6 +137,7 @@ public class TaskService {
 		}	
 		
 		taskContainer.setStatus(TaskStatus.CLOSED);
+		taskContainer.setCompletionDate(LocalDate.now());
 		taskContainerRepository.save(taskContainer);
 
 		student.setTotalPoints(student.getTotalPoints() + taskContainer.getTask().getPointCount());
