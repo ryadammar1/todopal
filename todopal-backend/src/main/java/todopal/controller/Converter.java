@@ -48,11 +48,12 @@ public class Converter {
         return new ClassroomDto(classroom.getClassroomId(), classroom.getName(), classroom.getSubject(), teacherDto,
                 classroom.getImagePath());
     }
-    
-    protected static StudentDto convertToDto (Student student) {
-    	if (student == null) {
-    		throw new IllegalArgumentException("There is no such Teacher!");
-    	}
-    	return new StudentDto(student.getName(), student.getEmail(), student.getPassword());
+
+    protected static StudentDto convertToDto(Student student) {
+        if (student == null) {
+            throw new IllegalArgumentException("There is no such Teacher!");
+        }
+
+        return new StudentDto(student.getName(), student.getEmail(), student.getPassword());
     }
 }
