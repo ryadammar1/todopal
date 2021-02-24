@@ -305,7 +305,7 @@ public class TestTaskService {
 	@Test
 	public void testApproveTaskStatusIllegalArgument() throws Exception {
 		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-			service.denyTask(TC_TEST_APPROVE, SD_TEST_APPROVE2);
+			service.approveTask(TC_TEST_APPROVE, SD_TEST_APPROVE2);
 		});
 
 		String expectedMessage = "The specified student doesn't have this task";
@@ -318,7 +318,7 @@ public class TestTaskService {
 	@Test
 	public void testApproveTaskStatusIllegalArgument_2() throws Exception {
 		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-			service.denyTask(TC_TEST_APPROVE, SD_TEST_APPROVE3);
+			service.approveTask(TC_TEST_APPROVE, SD_TEST_APPROVE3);
 		});
 
 		String expectedMessage = "Non-existant Student";
