@@ -57,7 +57,9 @@ public class TestTaskService {
 	private final String SD_TEST_DENY = "denytestSD@email.com";
 	private final String SD_TEST_DENY2 = "denytestSD@email.com2";
 	private final String SD_TEST_DENY3 = "nonexistant@email.com2";
+
 	private final long TC_TEST_APPROVE = 257;
+	private Student approvedStudent;
 	private final String SD_TEST_APPROVE = "approvetestSD@email.com";
 	private final String SD_TEST_APPROVE2 = "approvetestSD@email.com2";
 	private final String SD_TEST_APPROVE3 = "approvenonexistant@email.com2";
@@ -70,6 +72,7 @@ public class TestTaskService {
 	 * Setting up the mocks
 	 */
 	public void setMockOutput() {
+		approvedStudent = null;
 
 		// taskRepository.save();
 		lenient().doAnswer((InvocationOnMock invocation) -> {
@@ -106,9 +109,15 @@ public class TestTaskService {
 			}
 			
 			else if (invocation.getArgument(0).equals(SD_TEST_APPROVE)) {
-				return makeTestingStudent(SD_TEST_APPROVE);
+				if (approvedStudent == null) {
+					approvedStudent = makeTestingStudent(SD_TEST_APPROVE);
+				}
+				return approvedStudent;
 			} else if (invocation.getArgument(0).equals(SD_TEST_APPROVE2)) {
-				return makeTestingStudent(SD_TEST_APPROVE2);
+				if (approvedStudent == null) {
+					approvedStudent = makeTestingStudent(SD_TEST_APPROVE2);
+				}
+				return approvedStudent;
 			}
 			
 			else {
@@ -296,10 +305,11 @@ public class TestTaskService {
 	}
 
 	@Test
-	public void testApproveTaskStatus() throws Exception {
+	public void testApproveTaskStatusAndPoints() throws Exception {
 		TaskContainer taskContainer = service.approveTask(TC_TEST_APPROVE, SD_TEST_APPROVE);
 		assertEquals(taskContainer.getStatus(), TaskStatus.CLOSED);
 		assertNotNull(taskContainer.getCompletionDate());
+		assertEquals(5, studentRepository.findStudentByEmail(SD_TEST_APPROVE).getTotalPoints());
 	}
 	
 	@Test
