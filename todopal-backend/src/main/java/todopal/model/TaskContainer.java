@@ -11,10 +11,19 @@ public class TaskContainer {
     private LocalDate completionDate;
     private TaskStatus status;
     private Task task;
+    private String feedback;
     private long taskContainerId;
 
     public void setCompletionDate(LocalDate value) {
         this.completionDate = value;
+    }
+    
+    public void setFeedback(String value) {
+        this.feedback = value;
+    }
+
+    public String getFeedback() {
+        return this.feedback;
     }
 
     public LocalDate getCompletionDate() {

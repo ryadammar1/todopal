@@ -9,18 +9,24 @@ public class TaskContainerDto {
 	private TaskStatus status;
 	private TaskDto task;
 	private long taskContainerId;
+	private String feedback;
 
-	public TaskContainerDto(long id, LocalDate completionDate, TaskStatus status, TaskDto task) {
+	public TaskContainerDto(long id, LocalDate completionDate, TaskStatus status, TaskDto task, String feedback) {
 		this.taskContainerId = id;
 		this.completionDate = completionDate;
 		this.status = status;
 		this.task = task;
+		this.feedback = feedback;
 	}
 
 	public void setCompletionDate(LocalDate completionDate) {
 		this.completionDate = completionDate;
 	}
-
+	
+	public String getFeedback() {
+		return this.feedback;
+	}
+	
 	public LocalDate getCompletionDate() {
 		return this.completionDate;
 	}
