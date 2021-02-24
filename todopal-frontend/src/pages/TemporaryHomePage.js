@@ -4,8 +4,11 @@ function TemporaryHomePage({ setState }) {
   }
 
   function CreateTeacherAccountOnClick() {
-    console.log("hello");
     setState({ currentPage: "CreateTeacherAccountPage" });
+  }
+
+  function ViewStudentTasksOnClick() {
+    setState({ currentPage: "ViewStudentTasksPage" });
   }
 
   return (
@@ -21,6 +24,10 @@ function TemporaryHomePage({ setState }) {
         Create Teacher Account
       </button>
 
+      <div>View a student's Tasks</div>
+      <button onClick={() => ViewStudentTasksOnClick()}>
+        Create Teacher Account
+      </button>
     </>
   );
 }

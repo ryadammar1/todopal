@@ -1,0 +1,53 @@
+#task-wrapper {
+  width: 95%;
+  margin: auto;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: #1ace98;
+  padding: 0.7rem;
+  font-size: 1.5rem;
+  border-radius: 0.8rem;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+#task-wrapper:hover {
+  background-color: #1ace98;
+  color: white;
+}
+
+#task-info-wrapper {
+  width: 90%;
+  margin: auto;
+}
+
+#confirm-button {
+  width: 5rem;
+  height: 2rem;
+  border: none;
+  outline: none;
+  border-radius: 1rem;
+  background-color: #1ace98;
+  transition: 0.3s;
+}
+
+#confirm-button:hover {
+  background-color: #87ebcb;
+}
+
+#deny-button {
+  border-radius: 1rem;
+  margin-left: 2rem;
+  width: 5rem;
+  height: 2rem;
+  border: none;
+  outline: none;
+  background-color: #fd3762;
+  transition: 0.3s;
+}
+
+#deny-button:hover {
+  background-color: #ff8ea6;
+}
