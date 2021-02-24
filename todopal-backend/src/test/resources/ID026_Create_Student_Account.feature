@@ -4,19 +4,11 @@ Feature: Create Student User
     I would like to become a user of the TodoPal System
     So that I can take part in activities from my teacher's TodoPal lists
 
-    Scenario Outline: Different Students (Normal Flow)
+    Scenario Outline: Student attempts to become user (Normal Flow)
 
         Given an unregistered student wants to register for a new account
-        When user <student_name> with email <student_email> registers for a student account with name <name> and password <password>
-        Then an account for <student_name> is created under the email <student_email> with name <name> and password <password>
-
-            | student_name   | student_email            | name    | password |
-            | Jake Peralta   | jake.peralta@gmail.com   | Jake_P  | aa001    |
-            | Amy Santiago   | amy.santiago@gmail.com   | Amy_S   | cb002    |
-            | Terry Jeffords | terry.jeffords@gmail.com | Terry_J | jj003    |
-            | Rosa Diaz      | rosa.diaz@gmail.com      | Rosa_D  | lv004    |
-
-
+        When user "Jake Peralta" with email "jake.peralta@gmail.com" registers for a student account with name "Jake_P" and password "aa001"
+        Then an account for "jake.peralta@gmail.com" is created under the email "jake.peralta@gmail.com" with name "Jake_P" and password "aa001"
 
     Scenario Outline: Student attempts to become user with an invalid email (Error Flow)
 
