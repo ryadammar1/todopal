@@ -1,28 +1,23 @@
 package todopal.service;
 
-import org.junit.jupiter.api.Test;
-import static org.mockito.ArgumentMatchers.anyLong;
-import org.junit.jupiter.api.extension.ExtendWith;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.lenient;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static org.mockito.ArgumentMatchers.any;
 
 import todopal.dao.StudentRepository;
 import todopal.dao.TaskContainerRepository;
@@ -85,21 +80,18 @@ public class TestTaskService {
 			if ((Long) invocation.getArgument(0) == (TASK_ID)) {
 				Task task = makeTestingTask();
 				return task;
-			} else {
-				return null;
 			}
+			return null;
 		});
 
 		// studentRepository.findByStudentEmail(any())
 		lenient().when(studentRepository.findStudentByEmail(any())).thenAnswer((InvocationOnMock invocation) -> {
 			if (invocation.getArgument(0).equals(SD_TEST_DENY)) {
 				return makeTestingStudent(SD_TEST_DENY);
-			} else {
-				if(invocation.getArgument(0).equals(SD_TEST_DENY2)) {
-					return makeTestingStudent(SD_TEST_DENY2);
-				}
-				return null;
+			} else if (invocation.getArgument(0).equals(SD_TEST_DENY2)) {
+				return makeTestingStudent(SD_TEST_DENY2);
 			}
+			return null;
 		});
 
 		// taskRepository.findBytaskId(anyLong())
@@ -107,12 +99,10 @@ public class TestTaskService {
 				.thenAnswer((InvocationOnMock invocation) -> {
 					if ((Long) invocation.getArgument(0) == (TASK_CONTAINER_ID)) {
 						return makeTestingTaskContainer(TASK_CONTAINER_ID, TaskStatus.TODO);
-					} else {
-						if ((Long) invocation.getArgument(0) == (TC_TEST_DENY)) {
-							return makeTestingTaskContainer(TC_TEST_DENY, TaskStatus.DONE);
-						}
-						return null;
+					} else if ((Long) invocation.getArgument(0) == (TC_TEST_DENY)) {
+						return makeTestingTaskContainer(TC_TEST_DENY, TaskStatus.DONE);
 					}
+					return null;
 				});
 	}
 
@@ -135,7 +125,6 @@ public class TestTaskService {
 		assertEquals("Complete the problem", task.getDescription());
 		assertEquals(realStartDate, task.getStartDate());
 		assertEquals(realDueDate, task.getDueDate());
-
 	}
 
 	@Test
@@ -248,9 +237,8 @@ public class TestTaskService {
 		TaskContainer taskContainer = service.denyTask(TC_TEST_DENY, SD_TEST_DENY);
 		assertEquals(taskContainer.getStatus(), TaskStatus.PROGRESS);
 		assertNull(taskContainer.getCompletionDate());
-
 	}
-	
+
 	@Test
 	public void testDenyTaskStatusIllegalArgument() throws Exception {
 		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -261,9 +249,8 @@ public class TestTaskService {
 		String actualMessage = exception.getMessage();
 
 		assertEquals(true, actualMessage.contains(expectedMessage));
-
 	}
-	
+
 	@Test
 	public void testDenyTaskStatusIllegalArgument_2() throws Exception {
 		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -274,7 +261,6 @@ public class TestTaskService {
 		String actualMessage = exception.getMessage();
 
 		assertEquals(true, actualMessage.contains(expectedMessage));
-
 	}
 
 	// Helpers
@@ -287,14 +273,15 @@ public class TestTaskService {
 
 		return taskContainer;
 	}
-	
+
 	private Student makeTestingStudent(String email) {
 		Student student = new Student();
 		student.setEmail(email);
 		student.setSchoolTask(new HashSet<TaskContainer>());
 		student.setPersonalTask(new HashSet<TaskContainer>());
-		if(email.equals(SD_TEST_DENY))
+		if (email.equals(SD_TEST_DENY)) {
 			student.getSchoolTask().add(makeTestingTaskContainer(TC_TEST_DENY, TaskStatus.DONE));
+		}
 
 		return student;
 	}
