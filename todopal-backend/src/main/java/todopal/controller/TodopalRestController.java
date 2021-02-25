@@ -84,6 +84,18 @@ public class TodopalRestController {
 		Classroom classroom = classroomService.createClassroom(teacher, name, imagePath, subject);
 		return Converter.converDto(classroom);
 	}
+	
+	@PostMapping(value = {"/add-to-mandatory-list","/add-to-mandatory-list/"})
+	public TeacherDto addToMandatoryList(@RequestParam("teacherEmail") String teacherEmail,
+			@RequestParam("imagePath") String mandatoryLists) {
+		return Converter.convertToDto(teacherService.addToMandatoryLists(teacherEmail, mandatoryLists));
+	}
+	
+	@PostMapping(value = {"/add-to-optional-list","/add-to-optional-list/"})
+	public TeacherDto addToOptionalList(@RequestParam("teacherEmail") String teacherEmail,
+			@RequestParam("imagePath") String optionalLists) {
+		return Converter.convertToDto(teacherService.addToOptionalLists(teacherEmail, optionalLists));
+	}
 
 	@GetMapping(value = { "/task", "/task/" })
 	public TaskDto getTask(@RequestParam("id") long taskId) throws Exception {
