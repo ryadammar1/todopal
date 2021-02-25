@@ -319,6 +319,18 @@ public class TestTaskService {
 
 	}
 
+	@Test
+	public void testDoNotApproveInvalidTaskId() throws Exception {
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.approveTask(TC_TEST_APPROVE+1, SD_TEST_APPROVE);
+		});
+
+		String expectedMessage = "Invalid Task Container Id";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+	}
+
 	// Helpers
 	private TaskContainer makeTestingTaskContainer(long id, TaskStatus status, LocalDate completionDate) {
 		TaskContainer taskContainer = new TaskContainer();
