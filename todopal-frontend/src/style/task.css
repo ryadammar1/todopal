@@ -22,3 +22,41 @@
   width: 90%;
   margin: auto;
 }
+
+#confirm-button {
+  width: 5rem;
+  height: 2rem;
+  border: none;
+  outline: none;
+  border-radius: 1rem;
+  background-color: #1ace98;
+  transition: 0.3s;
+}
+
+#confirm-button:hover {
+  background-color: #87ebcb;
+}
+
+#deny-button {
+  border-radius: 1rem;
+  margin-left: 2rem;
+  width: 5rem;
+  height: 2rem;
+  border: none;
+  outline: none;
+  background-color: #fd3762;
+  transition: 0.3s;
+}
+
+#deny-button:hover {
+  background-color: #ff8ea6;
+}
+
+#close-button {
+  float: right;
+  transition: 0.2s;
+}
+
+#close-button:hover {
+  color: red;
+}

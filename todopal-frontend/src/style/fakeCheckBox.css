@@ -1,0 +1,9 @@
+#fake-box {
+  float: left;
+  margin-right: 1rem;
+  transition: 0.3s;
+}
+
+#fake-box:hover {
+  color: #472de2;
+}
