@@ -142,6 +142,33 @@ public class TaskService {
 
 		return taskContainer;
 	}
+	
+	@Transactional
+	public TaskContainer denyTask(long taskContainerId, String studentEmail) throws Exception {
+		
+		if (getTaskContainer(taskContainerId) == null) {
+			throw new IllegalArgumentException("Invalid Task Container Id");
+		} else if (studentRepository.findStudentByEmail(studentEmail) == null) {
+			throw new IllegalArgumentException("Non-existant Student");
+		} 
+		
+		Student student = studentRepository.findStudentByEmail(studentEmail);
+		TaskContainer taskContainer = getTaskContainer(taskContainerId);
+		
+		Set<TaskContainer> schoolTasks = student.getSchoolTask();
+		Set<TaskContainer> personalTasks = student.getPersonalTask();
+		
+		if(!checkTaskContainer(schoolTasks, taskContainerId) && !checkTaskContainer(personalTasks, taskContainerId)) {
+			throw new IllegalArgumentException("The specified student doesn't have this task");
+		}	
+		
+		taskContainer.setStatus(TaskStatus.PROGRESS);
+		taskContainer.setCompletionDate(null);
+		taskContainerRepository.save(taskContainer);
+		studentRepository.save(student);
+
+		return taskContainer;
+	}
 
 	@Transactional
 	public Task getTask(long id) throws Exception {

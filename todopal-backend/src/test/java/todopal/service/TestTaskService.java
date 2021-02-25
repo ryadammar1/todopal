@@ -93,7 +93,7 @@ public class TestTaskService {
 			}
 			return null;
 		});
-
+		
 		// taskRepository.findBytaskId(anyLong())
 		lenient().when(taskContainerRepository.findBytaskContainerId(anyLong()))
 				.thenAnswer((InvocationOnMock invocation) -> {
@@ -130,7 +130,6 @@ public class TestTaskService {
 	@Test
 	public void testCreateTaskContainer() throws Exception {
 		LocalDate realCompletionDate = LocalDate.parse("2021-02-13");
-
 
 		TaskContainer taskContainer = service.createTaskContainer(3, realCompletionDate, TaskStatus.TODO, TASK_ID, "Hi");	
 

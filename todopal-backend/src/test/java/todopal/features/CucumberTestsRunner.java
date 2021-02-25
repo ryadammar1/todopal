@@ -12,7 +12,6 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         plugin = {"pretty", "junit:build/cucumber-junit.xml", "html:build/cucumber.html"},
-
         features = "src/test/resources/ID010_Deny_Student_Task_Completion.feature"
 
 )
