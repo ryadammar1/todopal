@@ -51,3 +51,16 @@
 #deny-button:hover {
   background-color: #ff8ea6;
 }
+
+#close-button {
+  float: right;
+  transition: 0.2s;
+}
+
+#close-button:hover {
+  color: red;
+}
+
+#task-name-lable {
+  padding-right: 40%;
+}

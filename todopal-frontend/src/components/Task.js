@@ -33,16 +33,18 @@ function Task({ taskInfo, isTeacher }) {
 
   return (
     <>
-      <div id="task-wrapper" onClick={() => taskOnClickHandler()}>
-        {taskInfo.taskName}
+      <div id="task-wrapper">
+        <lable id="task-name-lable" onClick={() => taskOnClickHandler()}>
+          {taskInfo.taskName}
+        </lable>
         {isTeacher ? (
           <></>
         ) : (
           <>
             <FakeCheckBox action={() => checkBoxOnClick()} />
-            <lable style={{ float: "right" }} onclick={() => deleteOnClick()}>
+            <div id="close-button" onClick={() => deleteOnClick()}>
               &#10006;
-            </lable>
+            </div>
           </>
         )}
       </div>

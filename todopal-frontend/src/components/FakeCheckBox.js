@@ -1,14 +1,11 @@
-import { useState } from "react";
+import "../style/fakeCheckBox.css";
 
-function Task({ action }) {
+function FakeCheckBox({ action }) {
   return (
-    <div
-      style={{ float: "left", marginRight: "1rem" }}
-      onClick={() => action()}
-    >
+    <div id="fake-box" onClick={() => action()}>
       &#9634;
     </div>
   );
 }
 
-export default Task;
+export default FakeCheckBox;
