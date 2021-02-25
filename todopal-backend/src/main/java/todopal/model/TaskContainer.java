@@ -37,14 +37,6 @@ public class TaskContainer {
     public TaskStatus getStatus() {
         return this.status;
     }
-    
-    public void setFeedback(String value) {
-        this.feedback = value;
-    }
-
-    public String getFeedback() {
-        return this.feedback;
-    }
 
     @OneToOne(optional = false)
     public Task getTask() {

@@ -1,6 +1,7 @@
 package todopal.features;
 
 import io.cucumber.java.en.*;
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import todopal.controller.TodopalRestController;
@@ -19,8 +20,6 @@ import java.util.Set;
 
 public class TestDenyStudentTaskCompletion {
 
-    //TODO finish after TaskContainer is completed + task update service method
-    //+1h
     @Autowired
     TodopalRestController todopalRestController;
     @Autowired
@@ -35,8 +34,9 @@ public class TestDenyStudentTaskCompletion {
         Student student = studentService.createStudent(studentName, studentEmail, "1234");
         taskService.createTask(1, taskName, " ", "math","math", true, 0, LocalDate.now(), LocalDate.now());
         Set<TaskContainer> tasks = new HashSet<>();
-        tasks.add(taskService.createTaskContainer(1, LocalDate.now(), TaskStatus.DONE, 1));
+        tasks.add(taskService.createTaskContainer(1, LocalDate.now(), TaskStatus.DONE, 1, "u r da bst"));
         student.setSchoolTask(tasks);
+        studentService.updateStudent(student);
     }
 
     @Given("task {string} is worth {string} points")
@@ -44,7 +44,7 @@ public class TestDenyStudentTaskCompletion {
         try {
             Task task = taskService.getTask(1);
             task.setPointCount(Integer.parseInt(points));
-            throw new io.cucumber.java.PendingException();
+            taskService.updateTask(task.getTaskId(), task);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,15 +59,24 @@ public class TestDenyStudentTaskCompletion {
     public void marks_as_incomplete_with_message(String teacher, String task, String studentEmail,  String message) {
         TaskContainer currentTask = null;
         Student student = studentService.getStudent(studentEmail);
+
         for(TaskContainer task1 : student.getSchoolTask()){
-            if(task1.getTask().getName() == task){
+
+            System.out.println(task1.getTask().getName());
+            if(task1.getTask().getName().equals(task)){
                 currentTask = task1;
                 break;
             }
         }
+
         currentTask.setStatus(TaskStatus.PROGRESS);
-        //TODO update task container details string when added
-        throw new io.cucumber.java.PendingException();
+        currentTask.setFeedback(message);
+        try {
+            taskService.updateTaskContainer(currentTask.getTaskContainerId(), currentTask);
+        } catch (Exception e) {
+            Assert.fail();
+        }
+        Ressources.message = currentTask.getFeedback();
     }
 
     @Then("{string} will be marked as {string} for student {string}")
@@ -75,7 +84,7 @@ public class TestDenyStudentTaskCompletion {
         TaskContainer currentTask = null;
         Student student = studentService.getStudent(studentEmail);
         for(TaskContainer task1 : student.getSchoolTask()){
-            if(task1.getTask().getName() == taskName){
+            if(task1.getTask().getName().equals(taskName)){
                 currentTask = task1;
                 break;
             }
@@ -86,7 +95,6 @@ public class TestDenyStudentTaskCompletion {
 
     @Then("the message {string} will be displayed in the task details")
     public void the_message_will_be_displayed_in_the_task_details(String string) {
-        //TODO once the model is fixed to have task details as a field
-        throw new io.cucumber.java.PendingException();
+        Assert.assertEquals(string, Ressources.message);
     }
 }
