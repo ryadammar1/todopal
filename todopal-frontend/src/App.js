@@ -5,6 +5,7 @@ import CreateTeacherAccountPage from "./pages/CreateTeacherAccountPage";
 import ViewAllTasksInClassroomPage from "./pages/ViewAllTasksInClassroomPage";
 import Topbar from "./components/Topbar.js";
 import CreateStudentAccountPage from "./pages/CreateStudentAccountPage";
+import CreateTaskListPage from "./pages/CreateTaskListPage";
 import "./style/global/__font.css";
 
 class App extends React.Component {
@@ -104,6 +105,15 @@ class App extends React.Component {
         <Fragment>
           <Topbar setState={this.setState} name="Student" />
           <CreateStudentAccountPage setState={this.setState} />
+        </Fragment>
+      );
+    }
+
+    if (this.state.currentPage === "CreateTaskListPage") {
+      return (
+        <Fragment>
+          <Topbar setState={this.setState} name="Teacher" />
+          <CreateTaskListPage />
         </Fragment>
       );
     }
