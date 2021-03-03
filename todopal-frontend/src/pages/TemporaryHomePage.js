@@ -10,9 +10,13 @@ function TemporaryHomePage({ setState }) {
   function ViewAllTasksInClassroomOnClick() {
     setState({ currentPage: "ViewAllTasksInClassroomPage" });
   }
-  
+
   function CreateStudentAccountOnClick() {
     setState({ currentPage: "CreateStudentAccountPage" });
+  }
+
+  function CreateCategoryOnClick() {
+    setState({ currentPage: "CreateCategoryPage" });
   }
 
   return (
@@ -32,12 +36,14 @@ function TemporaryHomePage({ setState }) {
       <button onClick={() => ViewAllTasksInClassroomOnClick()}>
         View All Tasks In Classroom
       </button>
-      
+
       <div>Join TodoPal As a Student</div>
       <button onClick={() => CreateStudentAccountOnClick()}>
         Create Student Account
       </button>
 
+      <div>Create Category</div>
+      <button onClick={() => CreateCategoryOnClick()}>Create Category</button>
     </>
   );
 }
