@@ -35,6 +35,10 @@
   cursor: pointer;
 }
 
+#create-task-list-page-name {
+  font-size: 2rem;
+}
+
 #create-task-list-button {
   color: white;
   font-size: 1.3rem;
