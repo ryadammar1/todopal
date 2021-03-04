@@ -129,6 +129,12 @@ public class TestStudentService {
 		assertEquals(true, actualMessage.contains(expectedMessage));
 	}
 
+        @Test
+	public void testStudentLogin() {
+		final Student student = makeTestingStudent("student@mail.mcgill.ca");
+		assertEquals(student, service.logInStudent(SD_EMAIL, SD_PASSWORD));
+	}
+
 	private Student makeTestingStudent(String email) {
 		Student student = new Student();
 		student.setEmail(email);
