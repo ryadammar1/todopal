@@ -1,25 +1,28 @@
 package todopal.service;
 
-import org.junit.jupiter.api.Test;
-import static org.mockito.ArgumentMatchers.anyLong;
-import org.junit.jupiter.api.extension.ExtendWith;
-
-import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.lenient;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static org.mockito.ArgumentMatchers.any;
 
+import todopal.dao.StudentRepository;
 import todopal.dao.TaskContainerRepository;
 import todopal.dao.TaskRepository;
+import todopal.model.Student;
 import todopal.model.Task;
 import todopal.model.TaskContainer;
 import todopal.model.TaskStatus;
@@ -29,6 +32,8 @@ public class TestTaskService {
 
 	@Mock
 	private TaskRepository taskRepository;
+	@Mock
+	private StudentRepository studentRepository;
 	@Mock
 	private TaskContainerRepository taskContainerRepository;
 
@@ -40,13 +45,17 @@ public class TestTaskService {
 	private final String TASK_DESCRIPTION = "DO PROBLEM 1.1";
 	private final long TASK_ID = 1;
 	private final long TASK_CONTAINER_ID = 2;
+	private final long TC_TEST_DENY = 256;
+	private final String SD_TEST_DENY = "denytestSD@email.com";
+	private final String SD_TEST_DENY2 = "denytestSD@email.com2";
+	private final String SD_TEST_DENY3 = "nonexistant@email.com2";
 
 	@InjectMocks
 	private TaskService service;
 
 	@BeforeEach
 	/**
-	 * Setting up the mocks 
+	 * Setting up the mocks
 	 */
 	public void setMockOutput() {
 
@@ -66,60 +75,64 @@ public class TestTaskService {
 			return null;
 		}).when(taskContainerRepository).save(any(TaskContainer.class));
 
-		//taskRepository.findBytaskId(anyInt())
+		// taskRepository.findBytaskId(anyInt())
 		lenient().when(taskRepository.findBytaskId(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
-			if ((Long) invocation.getArgument(0) == (TASK_ID)) {	 
+			if ((Long) invocation.getArgument(0) == (TASK_ID)) {
 				Task task = makeTestingTask();
 				return task;
-			} else {
-				return null;
 			}
+			return null;
 		});
-		
-		//taskRepository.findBytaskId(anyInt())
-				lenient().when(taskContainerRepository.findBytaskContainerId(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
-					if ((Long) invocation.getArgument(0) == (TASK_CONTAINER_ID)) {	 
-						Task task = makeTestingTask();
-						LocalDate realCompletionDate = LocalDate.parse("2021-02-13");
-						TaskContainer container = new TaskContainer();
-						container.setTaskContainerId(TASK_CONTAINER_ID);
-						container.setStatus(TaskStatus.TODO);
-						container.setCompletionDate(realCompletionDate);
-						container.setTask(task);
-						return container;
-					} else {
-						return null;
+
+		// studentRepository.findByStudentEmail(any())
+		lenient().when(studentRepository.findStudentByEmail(any())).thenAnswer((InvocationOnMock invocation) -> {
+			if (invocation.getArgument(0).equals(SD_TEST_DENY)) {
+				return makeTestingStudent(SD_TEST_DENY);
+			} else if (invocation.getArgument(0).equals(SD_TEST_DENY2)) {
+				return makeTestingStudent(SD_TEST_DENY2);
+			}
+			return null;
+		});
+
+		// taskRepository.findBytaskId(anyLong())
+		lenient().when(taskContainerRepository.findBytaskContainerId(anyLong()))
+				.thenAnswer((InvocationOnMock invocation) -> {
+					if ((Long) invocation.getArgument(0) == (TASK_CONTAINER_ID)) {
+						return makeTestingTaskContainer(TASK_CONTAINER_ID, TaskStatus.TODO);
+					} else if ((Long) invocation.getArgument(0) == (TC_TEST_DENY)) {
+						return makeTestingTaskContainer(TC_TEST_DENY, TaskStatus.DONE);
 					}
+					return null;
 				});
 	}
 
-
-	@Test 
+	@Test
 	public void testCreateTask() {
 
-		LocalDate realStartDate = LocalDate.parse("2021-02-13");		
+		LocalDate realStartDate = LocalDate.parse("2021-02-13");
 		LocalDate realDueDate = LocalDate.parse("2021-02-16");
 
-		Task task = service.createTask(2, "Problem 1.1", "Complete the problem", "Math", "Homework", true, 5, realStartDate, realDueDate);
+		Task task = service.createTask(2, "Problem 1.1", "Complete the problem", "Math", "Homework", true, 5,
+				realStartDate, realDueDate);
 
 		assertNotNull(task);
 		assertEquals(2, task.getTaskId());
 		assertEquals(true, task.isIsMandatory());
 		assertEquals("Math", task.getTag());
-		assertEquals("Homework", task.getCategory()); 
+		assertEquals("Homework", task.getCategory());
 		assertEquals(5, task.getPointCount());
 		assertEquals("Problem 1.1", task.getName());
 		assertEquals("Complete the problem", task.getDescription());
 		assertEquals(realStartDate, task.getStartDate());
 		assertEquals(realDueDate, task.getDueDate());
-
 	}
 
-	@Test 
+	@Test
 	public void testCreateTaskContainer() throws Exception {
 		LocalDate realCompletionDate = LocalDate.parse("2021-02-13");
 
 		TaskContainer taskContainer = service.createTaskContainer(3, realCompletionDate, TaskStatus.TODO, TASK_ID, "Hi");	
+
 
 		assertNotNull(taskContainer);
 		assertEquals(3, taskContainer.getTaskContainerId());
@@ -127,8 +140,7 @@ public class TestTaskService {
 		assertEquals(realCompletionDate, taskContainer.getCompletionDate());
 		assertNotNull(taskContainer.getTask());
 	}
-	
-	
+
 	@Test
 	public void testCreateTaskContainerIllegalArgument1() {
 		LocalDate realCompletionDate = LocalDate.parse("2021-02-13");
@@ -141,8 +153,7 @@ public class TestTaskService {
 
 		assertEquals(true, actualMessage.contains(expectedMessage));
 	}
-	
-	
+
 	@Test
 	public void testCreateTaskContainerIllegalArgument2() {
 		LocalDate realCompletionDate = LocalDate.parse("2021-02-13");
@@ -155,8 +166,7 @@ public class TestTaskService {
 
 		assertEquals(true, actualMessage.contains(expectedMessage));
 	}
-	
-	
+
 	@Test
 	public void testCreateTaskContainerIllegalArgument3() {
 		LocalDate realCompletionDate = LocalDate.parse("2021-02-13");
@@ -169,12 +179,12 @@ public class TestTaskService {
 
 		assertEquals(true, actualMessage.contains(expectedMessage));
 	}
-	
-	
+
 	@Test
 	public void testCreateTaskIllegalArgument1() {
 		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-			service.createTask(TASK_ID, "Problem 1.1", "Complete the problem", "Math", "Homework", true, 5, "2021-02-13", "2021-02-16");
+			service.createTask(TASK_ID, "Problem 1.1", "Complete the problem", "Math", "Homework", true, 5,
+					"2021-02-13", "2021-02-16");
 		});
 
 		String expectedMessage = "The task was already created";
@@ -182,7 +192,7 @@ public class TestTaskService {
 
 		assertEquals(true, actualMessage.contains(expectedMessage));
 	}
-	
+
 	@Test
 	public void testCreateTaskIllegalArgument2() {
 		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -194,11 +204,12 @@ public class TestTaskService {
 
 		assertEquals(true, actualMessage.contains(expectedMessage));
 	}
-	
+
 	@Test
 	public void testCreateTaskIllegalArgument3() {
 		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-			service.createTask(2, "Problem 1.1", "Complete the problem", "Math", "Homework", true, -5, "2021-02-13", "2021-02-16");
+			service.createTask(2, "Problem 1.1", "Complete the problem", "Math", "Homework", true, -5, "2021-02-13",
+					"2021-02-16");
 		});
 
 		String expectedMessage = "Tasks cannot have negative point values";
@@ -206,11 +217,12 @@ public class TestTaskService {
 
 		assertEquals(true, actualMessage.contains(expectedMessage));
 	}
-	
+
 	@Test
 	public void testCreateTaskIllegalArgument4() {
 		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-			service.createTask(2, "Problem 1.1", "Complete the problem", "Math", "Homework", true, 5, "2021-02-13", "2021-02-10");
+			service.createTask(2, "Problem 1.1", "Complete the problem", "Math", "Homework", true, 5, "2021-02-13",
+					"2021-02-10");
 		});
 
 		String expectedMessage = "Tasks cannot have due date before the starting date";
@@ -219,7 +231,60 @@ public class TestTaskService {
 		assertEquals(true, actualMessage.contains(expectedMessage));
 	}
 
-	//Helpers
+	@Test
+	public void testDenyTaskStatus() throws Exception {
+		TaskContainer taskContainer = service.denyTask(TC_TEST_DENY, SD_TEST_DENY);
+		assertEquals(taskContainer.getStatus(), TaskStatus.PROGRESS);
+		assertNull(taskContainer.getCompletionDate());
+	}
+
+	@Test
+	public void testDenyTaskStatusIllegalArgument() throws Exception {
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.denyTask(TC_TEST_DENY, SD_TEST_DENY2);
+		});
+
+		String expectedMessage = "The specified student doesn't have this task";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+	}
+
+	@Test
+	public void testDenyTaskStatusIllegalArgument_2() throws Exception {
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.denyTask(TC_TEST_DENY, SD_TEST_DENY3);
+		});
+
+		String expectedMessage = "Non-existant Student";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+	}
+
+	// Helpers
+	private TaskContainer makeTestingTaskContainer(long id, TaskStatus status) {
+		TaskContainer taskContainer = new TaskContainer();
+		taskContainer.setTaskContainerId(id);
+		taskContainer.setStatus(status);
+		taskContainer.setTask(makeTestingTask());
+		taskContainer.setCompletionDate(LocalDate.parse("2021-02-13"));
+
+		return taskContainer;
+	}
+
+	private Student makeTestingStudent(String email) {
+		Student student = new Student();
+		student.setEmail(email);
+		student.setSchoolTask(new HashSet<TaskContainer>());
+		student.setPersonalTask(new HashSet<TaskContainer>());
+		if (email.equals(SD_TEST_DENY)) {
+			student.getSchoolTask().add(makeTestingTaskContainer(TC_TEST_DENY, TaskStatus.DONE));
+		}
+
+		return student;
+	}
+
 	private Task makeTestingTask() {
 		Task task = new Task();
 		task.setTaskId(TASK_ID);

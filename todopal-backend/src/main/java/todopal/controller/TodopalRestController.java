@@ -119,6 +119,13 @@ public class TodopalRestController {
 		Teacher teacher = teacherService.createTeacher(appCode, name, email, password, bio);
 		return Converter.convertToDto(teacher);
 	}
+	
+	@PostMapping(value = { "deny/{email}/{task}", "/deny/{email}/{task}" })
+	public TaskContainerDto denyTask(@PathVariable("email") String email, @PathVariable("task") long taskId)
+			throws Exception {
+		TaskContainer taskContainer = taskService.denyTask(taskId, email);
+		return Converter.convertToDto(taskContainer);
+	}
 
 	@GetMapping(value = { "/teachers/{email}", "/teachers/{email}/" })
 	public TeacherDto getTeacherByName(@PathVariable("email") String email) throws IllegalArgumentException {
