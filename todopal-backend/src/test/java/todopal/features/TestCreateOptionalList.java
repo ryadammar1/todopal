@@ -25,19 +25,19 @@ public class TestCreateOptionalList {
 
     @Given("teacher <name> with teacher email <email> is logged in")
     public void teacherNameWithTeacherEmailEmailIsLoggedIn(String name, String email) {
-        System.out.println(name);
+        System.out.println(name + email);
     }
 
     @When("teacher <name> creates a term-long optional task list with list name <list_name>")
-    public void teacherNameCreatesATermLongOptionalTaskListWithListNameList_name(String teacherName, String listName) {
+    public void teacherNameCreatesATermLongOptionalTaskListWithListNameList_name() {
     }
 
     @Then("the term long optional task list with list name <list_name> is created under teacher <name>")
-    public void theTermLongOptionalTaskListWithListNameList_nameIsCreatedUnderTeacherName(String listName, String teacherName) {
+    public void theTermLongOptionalTaskListWithListNameList_nameIsCreatedUnderTeacherName() {
     }
 
     @And("weekly optional task list with list name <list_name> exists")
-    public void weeklyOptionalTaskListWithListNameList_nameExists(String listName) {
+    public void weeklyOptionalTaskListWithListNameList_nameExists() {
     }
 
     @Given("teacher {string} with teacher email {string} is logged in")
