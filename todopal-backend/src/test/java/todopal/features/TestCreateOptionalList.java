@@ -4,6 +4,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import todopal.controller.TodopalRestController;
 import todopal.service.ClassroomService;
@@ -23,28 +24,36 @@ public class TestCreateOptionalList {
 
     Exception errorThrown = new IllegalArgumentException("");
 
-    @Given("teacher <name> with teacher email <email> is logged in")
-    public void teacherNameWithTeacherEmailEmailIsLoggedIn(String name, String email) {
-        System.out.println(name + email);
-    }
-
-    @When("teacher <name> creates a term-long optional task list with list name <list_name>")
-    public void teacherNameCreatesATermLongOptionalTaskListWithListNameList_name() {
-    }
-
-    @Then("the term long optional task list with list name <list_name> is created under teacher <name>")
-    public void theTermLongOptionalTaskListWithListNameList_nameIsCreatedUnderTeacherName() {
-    }
-
-    @And("weekly optional task list with list name <list_name> exists")
-    public void weeklyOptionalTaskListWithListNameList_nameExists() {
-    }
-
     @Given("teacher {string} with teacher email {string} is logged in")
-    public void teacherWithTeacherEmailIsLoggedIn(String arg0, String arg1) {
+    public void teacherWithTeacherEmailIsLoggedIn(String name, String email) {
+        try {
+            teacherService.createTeacher("123", name, email, "password", "bio");
+        } catch (Exception e) {
+            Ressources.message = e.getMessage();
+        }
     }
 
-    @When("teacher {string} creates a weekly optional task list with list name {string}")
-    public void teacherCreatesAWeeklyOptionalTaskListWithListName(String arg0, String arg1) {
+    @When("teacher {string} creates a term-long optional task list with list name {string}")
+    public void teacherJohnBobCreatesATermLongOptionalTaskListWithListNameMath_work(String email, String listName) {
+        try {
+            teacherService.addToOptionalLists(email, listName);
+        } catch (Exception e) {
+            Ressources.message = e.getMessage();
+        }
+    }
+
+    @Then("the term long optional task list with list name {string} is created under teacher {string}")
+    public void theTermLongOptionalTaskListWithListNameMath_workIsCreatedUnderTeacherJohnBob(String listName, String email) {
+            String list = teacherService.getTeacher(email).getOptionalLists().get(0);
+        Assertions.assertEquals(listName, list);
+    }
+
+    @And("weekly optional task list with list name {string} exists for teacher {string}")
+    public void weeklyOptionalTaskListWithListNameMath_workExistsForTeacherJohnBobGmailCom(String listName, String email) {
+        try {
+            teacherService.addToOptionalLists(email, listName);
+        } catch (Exception e) {
+            Ressources.message = e.getMessage();
+        }
     }
 }
