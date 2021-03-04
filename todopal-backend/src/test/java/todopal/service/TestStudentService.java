@@ -131,7 +131,7 @@ public class TestStudentService {
 
         @Test
 	public void testStudentLogin() {
-		final Student student = makeTestingStudent("student@mail.mcgill.ca");
+		final Student student = makeTestingStudent(SD_EMAIL);
 		assertEquals(student, service.logInStudent(SD_EMAIL, SD_PASSWORD));
 	}
 
