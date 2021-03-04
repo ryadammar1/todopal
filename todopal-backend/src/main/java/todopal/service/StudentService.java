@@ -46,7 +46,7 @@ public class StudentService {
 		Student student = studentRepository.findStudentByEmail(email);
 
 		if (student == null) {
-			throw new IllegalArgumentException("Student email does not exist!");
+			throw new IllegalArgumentException("Invalid email");
 		}
 
 		if (student.getPassword().equals(password))
