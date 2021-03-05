@@ -33,10 +33,9 @@ function Task({ taskInfo, isTeacher }) {
 
   return (
     <>
-      <div id="task-wrapper">
-        <lable id="task-name-lable" onClick={() => taskOnClickHandler()}>
-          {taskInfo.taskName}
-        </lable>
+      <div id="task-wrapper" onClick={() => taskOnClickHandler()}>
+        {taskInfo.taskName}
+
         {isTeacher ? (
           <></>
         ) : (
