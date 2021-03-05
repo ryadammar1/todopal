@@ -30,11 +30,11 @@ public class TestDenyStudentTaskCompletion {
     private TaskService taskService;
 
     @Given("a task {string} is marked as {string} by {string}, with email {string}")
-    public void a_task_is_marked_as_by_with_email(String taskName, String done, String studentName, String studentEmail) {
+    public void a_task_is_marked_as_by_with_email(String taskName, String status, String studentName, String studentEmail) {
         Student student = studentService.createStudent(studentName, studentEmail, "1234");
         taskService.createTask(1, taskName, " ", "math","math", true, 0, LocalDate.now(), LocalDate.now());
         Set<TaskContainer> tasks = new HashSet<>();
-        tasks.add(taskService.createTaskContainer(1, LocalDate.now(), TaskStatus.DONE, 1, "u r da bst"));
+        tasks.add(taskService.createTaskContainer(1, LocalDate.now(), TaskStatus.valueOf(status.toUpperCase()), 1, "u r da bst"));
         student.setSchoolTask(tasks);
         studentService.updateStudent(student);
     }
