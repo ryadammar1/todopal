@@ -7,8 +7,8 @@ function TemporaryHomePage({ setState }) {
     setState({ currentPage: "CreateTeacherAccountPage" });
   }
 
-  function ViewStudentTasksOnClick() {
-    setState({ currentPage: "ViewStudentTasksPage" });
+  function CreateStudentAccountOnClick() {
+    setState({ currentPage: "CreateStudentAccountPage" });
   }
 
   return (
@@ -24,10 +24,11 @@ function TemporaryHomePage({ setState }) {
         Create Teacher Account
       </button>
 
-      <div>View a student's Tasks</div>
-      <button onClick={() => ViewStudentTasksOnClick()}>
-        Create Teacher Account
+      <div>Join TodoPal As a Student</div>
+      <button onClick={() => CreateStudentAccountOnClick()}>
+        Create Student Account
       </button>
+
     </>
   );
 }

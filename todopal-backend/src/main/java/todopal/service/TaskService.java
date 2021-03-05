@@ -67,9 +67,21 @@ public class TaskService {
 		return createTask(taskId, name, description, tag, category, isMandatory, pointCount, localStartDate,
 				localDueDate);
 	}
+	
+	@Transactional
+	public Task updateTask(long taskId, Task task) throws Exception {
+
+		Task oldTask = getTask(taskId);
+		oldTask = task;
+		
+		taskRepository.save(oldTask);
+
+		return oldTask;
+	}
 
 	@Transactional
-	public TaskContainer createTaskContainer(long id, LocalDate completionDate, TaskStatus status, long taskId) {
+	public TaskContainer createTaskContainer(long id, LocalDate completionDate, TaskStatus status, long taskId,
+			String feedback) {
 		
 		if (taskContainerRepository.findBytaskContainerId(id) != null) {
 			throw new IllegalArgumentException("The task container was already created");
@@ -77,6 +89,8 @@ public class TaskService {
 			throw new IllegalArgumentException("Invalid Task Id");
 		} else if (status == null) {
 			throw new IllegalArgumentException("Task container cannot have null status");
+		} else if(isEmptyString(feedback)) {
+			throw new IllegalArgumentException("Task Container cannot have empty feedback");
 		}
 		
 		TaskContainer taskContainer = new TaskContainer();
@@ -86,11 +100,22 @@ public class TaskService {
 		taskContainer.setStatus(status);
 		taskContainer.setTask(task);
 		taskContainer.setTaskContainerId(id);
+		taskContainer.setFeedback(feedback);
 
 		taskContainerRepository.save(taskContainer);
 		return taskContainer;
 	}
 	
+	@Transactional
+	public TaskContainer updateTaskContainer(long taskContainerId, TaskContainer taskContainer) throws Exception {
+
+		TaskContainer oldTaskContainer = getTaskContainer(taskContainerId);
+		oldTaskContainer = taskContainer;
+
+		taskContainerRepository.save(oldTaskContainer);
+
+		return oldTaskContainer;
+	}
 	@Transactional
 	public TaskContainer denyTask(long taskContainerId, String studentEmail) throws Exception {
 		
@@ -117,7 +142,8 @@ public class TaskService {
 
 		return taskContainer;
 	}
-
+	
+	
 	@Transactional
 	public TaskContainer approveTask(long taskContainerId, String studentEmail) throws Exception {
 		if (getTaskContainer(taskContainerId) == null) {

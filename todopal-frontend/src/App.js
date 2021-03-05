@@ -4,6 +4,7 @@ import CreateClassroomPage from "./pages/CreateClassroomPage";
 import CreateTeacherAccountPage from "./pages/CreateTeacherAccountPage";
 import ViewStudentTasksPage from "./pages/ViewStudentTasksPage";
 import Topbar from "./components/Topbar.js";
+import CreateStudentAccountPage from "./pages/CreateStudentAccountPage";
 import "./style/global/__font.css";
 
 class App extends React.Component {
@@ -83,6 +84,15 @@ class App extends React.Component {
               },
             ]}
           />
+        </Fragment>
+      );
+    }
+
+    if (this.state.currentPage === "CreateStudentAccountPage") {
+      return (
+        <Fragment>
+          <Topbar setState={this.setState} name="Student" />
+          <CreateStudentAccountPage setState={this.setState} />
         </Fragment>
       );
     }
