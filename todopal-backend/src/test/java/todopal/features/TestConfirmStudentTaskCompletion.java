@@ -32,31 +32,6 @@ public class TestConfirmStudentTaskCompletion {
     @Autowired
     private TaskContainerRepository taskContainerRepository;
 
-    @Given("there is a class task called {string} that is worth {string} points")
-    public void there_is_a_class_task_called_that_is_worth_points(String taskName, String points) {
-        final Task task = taskService.createTask(1, taskName, "", "chem", "mandatory", true, Integer.parseInt(points),
-                LocalDate.now(), LocalDate.parse("9999-12-12"));
-        taskService.createTaskContainer(1, null, TaskStatus.PROGRESS, task.getTaskId());
-    }
-
-    @Given("a task {string} is marked as {string} by {string}, with email {string}")
-    public void a_task_is_marked_as_by_with_email(String taskName, String status, String studentName,
-            String studentEmail) {
-        try {
-            final TaskContainer taskContainer = taskService.getTaskContainer(1);
-            final Student student = studentService.createStudent(studentName, studentEmail, "password");
-
-            Set<TaskContainer> schoolTasks = student.getSchoolTask();
-            schoolTasks.add(taskContainer);
-            studentRepository.save(student);
-
-            taskContainer.setStatus(TaskStatus.valueOf(status.toUpperCase()));
-            taskContainerRepository.save(taskContainer);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Given("a task {string} is not marked as done by {string}, with email {string}")
     public void a_task_is_not_marked_as_done_by_with_email(String taskName, String studentName, String studentEmail) {
         try {
