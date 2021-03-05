@@ -1,6 +1,7 @@
 package todopal.features;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
@@ -35,12 +36,12 @@ public class TestConfirmStudentTaskCompletion {
     @Given("a task {string} is not marked as done by {string}, with email {string}")
     public void a_task_is_not_marked_as_done_by_with_email(String taskName, String studentName, String studentEmail) {
         try {
-            TaskContainer taskContainer = taskService.getTaskContainer(1);
-            final Student student = studentService.createStudent(studentName, studentEmail, "password");
-
-            Set<TaskContainer> schoolTasks = student.getSchoolTask();
-            schoolTasks.add(taskContainer);
-            studentRepository.save(student);
+            Student student = studentService.createStudent(studentName, studentEmail, "1234");
+            taskService.createTask(1, taskName, " ", "math","math", true, 0, LocalDate.now(), LocalDate.now());
+            Set<TaskContainer> tasks = new HashSet<>();
+            tasks.add(taskService.createTaskContainer(1, LocalDate.now(), TaskStatus.PROGRESS, 1, "u r da bst"));
+            student.setSchoolTask(tasks);
+            studentService.updateStudent(student);
         } catch (Exception e) {
             e.printStackTrace();
         }
