@@ -60,3 +60,7 @@
 #close-button:hover {
   color: red;
 }
+
+#task-name-lable {
+  padding-right: 40%;
+}

@@ -78,6 +78,16 @@ public class StudentService {
 		return false;
 	}
 
+	@Transactional
+	public boolean updateStudent(Student student){
+		if(studentRepository.findStudentByEmail(student.getEmail()) == null){
+			return false;
+		}else{
+			studentRepository.save(student);
+			return true;
+		}
+	}
+
 	private <T> List<T> toList(Iterable<T> iterable) {
 		List<T> resultList = new ArrayList<T>();
 		iterable.forEach(resultList::add);
