@@ -4,7 +4,6 @@ function TemporaryHomePage({ setState }) {
   }
 
   function CreateTeacherAccountOnClick() {
-    console.log("hello");
     setState({ currentPage: "CreateTeacherAccountPage" });
   }
 
