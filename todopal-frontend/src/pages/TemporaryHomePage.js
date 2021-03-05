@@ -11,6 +11,10 @@ function TemporaryHomePage({ setState }) {
     setState({ currentPage: "ViewAllTasksInClassroomPage" });
   }
 
+  function ViewStudenTaskOnClick() {
+    setState({ currentPage: "ViewStudentTasksPage" });
+  }
+
   function CreateStudentAccountOnClick() {
     setState({ currentPage: "CreateStudentAccountPage" });
   }
@@ -36,6 +40,9 @@ function TemporaryHomePage({ setState }) {
       <button onClick={() => ViewAllTasksInClassroomOnClick()}>
         View All Tasks In Classroom
       </button>
+
+      <div>View Studen Task</div>
+      <button onClick={() => ViewStudenTaskOnClick()}>View Studen Task</button>
 
       <div>Join TodoPal As a Student</div>
       <button onClick={() => CreateStudentAccountOnClick()}>
