@@ -34,7 +34,7 @@ public class TeacherService {
 	 * @throws IllegalArgumentException for empty email/password
 	 */
 	@Transactional
-	public Teacher logInStudent(String email, String password) {
+	public Teacher logInTeacher(String email, String password) {
 		if (isEmptyString(email))
 			throw new IllegalArgumentException("Teacher email cannot be empty!");
 

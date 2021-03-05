@@ -110,7 +110,33 @@ public class TodopalRestController {
 		taskService.getAllTaskContainers().forEach(container -> taskContainers.add(Converter.convertToDto(container)));
 		return taskContainers;
 	}
+	
+	@GetMapping(value = {"/teacher_login","/teacher_login/"})
+	public TeacherDto loginTeacher(@RequestParam("email") String email, @PathVariable("password") String password) {
+		Teacher t = new Teacher();
+		try {
+			t = teacherService.logInTeacher(email, password);
+		} catch (Exception ex) {
+			System.out.println(ex.getStackTrace());
+		}
+		
+		return Converter.convertToDto(t);
+		
+	}
 
+	@GetMapping(value = {"/student_login","/student_login/"})
+	public StudentDto loginStudent(@RequestParam("email") String email, @PathVariable("password") String password) {
+		Student s = new Student();
+		try {
+			s = studentService.logInStudent(email, password);
+		} catch (Exception ex) {
+			System.out.println(ex.getStackTrace());
+		}
+		
+		return Converter.convertToDto(s);
+		
+	}
+	
 	@PostMapping(value = { "/teachers/{name}", "/teachers/{name}/" })
 	public TeacherDto createTeacher(@RequestParam("approvalCode") String appCode, @PathVariable("name") String name,
 			@RequestParam("email") String email, @RequestParam("password") String password,
