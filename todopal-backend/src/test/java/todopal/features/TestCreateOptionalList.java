@@ -24,15 +24,6 @@ public class TestCreateOptionalList {
 
     Exception errorThrown = new IllegalArgumentException("");
 
-    @Given("teacher {string} with teacher email {string} is logged in")
-    public void teacherWithTeacherEmailIsLoggedIn(String name, String email) {
-        try {
-            teacherService.createTeacher("123", name, email, "password", "bio");
-        } catch (Exception e) {
-            Ressources.message = e.getMessage();
-        }
-    }
-
     @When("teacher {string} creates a term-long optional task list with list name {string}")
     public void teacherJohnBobCreatesATermLongOptionalTaskListWithListNameMath_work(String email, String listName) {
         try {

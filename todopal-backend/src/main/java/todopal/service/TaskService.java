@@ -219,6 +219,7 @@ public class TaskService {
 		if (parameterValue.trim().length() == 0) {
 			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
 		}
+	}
 	
 	private boolean checkTaskContainer(Set<TaskContainer> taskContainers, long taskContainerId) {
 		boolean hasTask = false;
