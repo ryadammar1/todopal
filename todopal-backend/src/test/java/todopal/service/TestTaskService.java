@@ -320,7 +320,7 @@ public class TestTaskService {
 
 	@Test
 	public void testDoNotApproveInvalidTaskId() throws Exception {
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+		Exception exception = assertThrows(Exception.class, () -> {
 			service.approveTask(TC_TEST_APPROVE+1, SD_TEST_APPROVE);
 		});
 
