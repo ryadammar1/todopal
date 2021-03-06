@@ -84,6 +84,18 @@ public class TodopalRestController {
 		Classroom classroom = classroomService.createClassroom(teacher, name, imagePath, subject);
 		return Converter.converDto(classroom);
 	}
+	
+	@PostMapping(value = {"/add-to-mandatory-list","/add-to-mandatory-list/"})
+	public TeacherDto addToMandatoryList(@RequestParam("teacherEmail") String teacherEmail,
+			@RequestParam("imagePath") String mandatoryLists) {
+		return Converter.convertToDto(teacherService.addToMandatoryLists(teacherEmail, mandatoryLists));
+	}
+	
+	@PostMapping(value = {"/add-to-optional-list","/add-to-optional-list/"})
+	public TeacherDto addToOptionalList(@RequestParam("teacherEmail") String teacherEmail,
+			@RequestParam("imagePath") String optionalLists) {
+		return Converter.convertToDto(teacherService.addToOptionalLists(teacherEmail, optionalLists));
+	}
 
 	@GetMapping(value = { "/task", "/task/" })
 	public TaskDto getTask(@RequestParam("id") long taskId) throws Exception {
@@ -124,6 +136,13 @@ public class TodopalRestController {
 	public TaskContainerDto denyTask(@PathVariable("email") String email, @PathVariable("task") long taskId)
 			throws Exception {
 		TaskContainer taskContainer = taskService.denyTask(taskId, email);
+		return Converter.convertToDto(taskContainer);
+	}
+
+	@PostMapping(value = { "approve/{email}/{task}", "/approve/{email}/{task}" })
+	public TaskContainerDto approveTask(@PathVariable("email") String email, @PathVariable("task") long taskId)
+			throws Exception {
+		TaskContainer taskContainer = taskService.approveTask(taskId, email);
 		return Converter.convertToDto(taskContainer);
 	}
 

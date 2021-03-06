@@ -3,9 +3,10 @@ import TemporaryHomePage from "./pages/TemporaryHomePage";
 import CreateClassroomPage from "./pages/CreateClassroomPage";
 import CreateTeacherAccountPage from "./pages/CreateTeacherAccountPage";
 import ViewAllTasksInClassroomPage from "./pages/ViewAllTasksInClassroomPage";
+import ViewStudentTasksPage from "./pages/ViewStudentTasksPage";
 import Topbar from "./components/Topbar.js";
 import CreateStudentAccountPage from "./pages/CreateStudentAccountPage";
-import CreateTaskListPage from "./pages/CreateTaskListPage";
+import CreateCategoryPage from "./pages/CreateCategoryPage";
 import "./style/global/__font.css";
 
 class App extends React.Component {
@@ -72,7 +73,39 @@ class App extends React.Component {
                 pointCount: 1,
               },
             ]}
-            optionalTasks={[
+            optionalTasks={[]}
+          />
+        </Fragment>
+      );
+    }
+    if (this.state.currentPage === "ViewStudentTasksPage") {
+      return (
+        <Fragment>
+          <Topbar setState={this.setState} name="Teacher" />
+          <ViewStudentTasksPage
+            mandatoryList={[
+              {
+                isMandatory: true,
+                taskName: "Math homework",
+                tag: "Math",
+                description: "I love math",
+                category: "Math?",
+                startDate: "Jan 1 2021",
+                dueDate: "Feb 1 2021",
+                pointCount: 1,
+              },
+              {
+                isMandatory: true,
+                taskName: "English homework",
+                tag: "English",
+                description: "I love refregirators",
+                category: "eng?",
+                startDate: "Jan 1 2021",
+                dueDate: "Feb 1 2021",
+                pointCount: 1,
+              },
+            ]}
+            optionalList={[
               {
                 isMandatory: false,
                 taskName: "Math not work",
@@ -109,11 +142,21 @@ class App extends React.Component {
       );
     }
 
+
     if (this.state.currentPage === "CreateTaskListPage") {
       return (
         <Fragment>
           <Topbar setState={this.setState} name="Teacher" />
           <CreateTaskListPage />
+        </Fragment>
+      );
+    }
+
+    if (this.state.currentPage === "CreateCategoryPage") {
+      return (
+        <Fragment>
+          <Topbar setState={this.setState} name="Student" />
+          <CreateCategoryPage setState={this.setState} />
         </Fragment>
       );
     }

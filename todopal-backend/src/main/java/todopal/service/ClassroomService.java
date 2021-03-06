@@ -94,10 +94,33 @@ public class ClassroomService {
 
 	@Transactional
 	public Classroom addToClassroomTaskCategories(long id, String taskCategory) throws IllegalArgumentException {
-		checkForEmptyString(taskCategory);
+
+		try{
+			checkForEmptyString(taskCategory);
+		}catch (Exception e){
+			throw new IllegalArgumentException("Category name is not provided");
+		}
 
 		Classroom classroom = classroomRepository.findByClassroomId(id);
-		classroom.getTaskCategories().add(taskCategory);
+
+		if(classroom == null){
+			throw new IllegalArgumentException("Classroom doesn't exist");
+		}
+
+		if(classroom.getTaskCategories() != null){
+			for(String e: classroom.getTaskCategories()){
+				if(e.equals(taskCategory)){
+					throw new IllegalArgumentException("Task category already exists");
+				}
+			}
+			classroom.getTaskCategories().add(taskCategory);
+		}else{
+			ArrayList<String> categ = new ArrayList<>();
+			categ.add(taskCategory);
+			classroom.setTaskCategories(categ);
+		}
+
+
 		classroomRepository.save(classroom);
 		return classroom;
 	}

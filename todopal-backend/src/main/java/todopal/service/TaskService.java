@@ -15,9 +15,13 @@ import todopal.model.Student;
 import todopal.model.Task;
 import todopal.model.TaskContainer;
 import todopal.model.TaskStatus;
+import todopal.model.Teacher;
 
 @Service
 public class TaskService {
+
+	private final String EMPTY_STRING_EXCEPTION = "[error] String argument is empty";
+	private final String ALREADY_EXIST_EXCEPTION = "Classroom with same name already created";
 
 	@Autowired
 	private TaskRepository taskRepository;
@@ -145,6 +149,33 @@ public class TaskService {
 	
 	
 	@Transactional
+	public TaskContainer approveTask(long taskContainerId, String studentEmail) throws Exception {
+		if (getTaskContainer(taskContainerId) == null) {
+			throw new IllegalArgumentException("Invalid Task Container Id");
+		} else if (studentRepository.findStudentByEmail(studentEmail) == null) {
+			throw new IllegalArgumentException("Non-existant Student");
+		} 
+		
+		Student student = studentRepository.findStudentByEmail(studentEmail);
+		TaskContainer taskContainer = getTaskContainer(taskContainerId);
+		
+		Set<TaskContainer> schoolTasks = student.getSchoolTask();
+		Set<TaskContainer> personalTasks = student.getPersonalTask();
+		
+		if(!checkTaskContainer(schoolTasks, taskContainerId) && !checkTaskContainer(personalTasks, taskContainerId)) {
+			throw new IllegalArgumentException("The specified student doesn't have this task");
+		}	
+		
+		taskContainer.setStatus(TaskStatus.CLOSED);
+		taskContainer.setCompletionDate(LocalDate.now());
+		taskContainerRepository.save(taskContainer);
+		student.setTotalPoints(student.getTotalPoints() + taskContainer.getTask().getPointCount());
+		studentRepository.save(student);
+
+		return taskContainer;
+	}
+
+	@Transactional
 	public Task getTask(long id) throws Exception {
 		Task task = taskRepository.findBytaskId(id);
 		if (task == null) {
@@ -183,6 +214,11 @@ public class TaskService {
 	private boolean isEmptyString(String value) {
 		return (value == null || value.trim().length() == 0);
 	}
+
+	private void checkForEmptyString(String parameterValue) {
+		if (parameterValue.trim().length() == 0) {
+			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		}
 	
 	private boolean checkTaskContainer(Set<TaskContainer> taskContainers, long taskContainerId) {
 		boolean hasTask = false;
