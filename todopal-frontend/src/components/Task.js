@@ -35,7 +35,6 @@ function Task({ taskInfo, isTeacher }) {
     <>
       <div id="task-wrapper" onClick={() => taskOnClickHandler()}>
         {taskInfo.taskName}
-
         {isTeacher ? (
           <></>
         ) : (

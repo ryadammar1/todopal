@@ -19,6 +19,10 @@ function TemporaryHomePage({ setState }) {
     setState({ currentPage: "CreateStudentAccountPage" });
   }
 
+  function CreateTaskListOnClick() {
+    setState({ currentPage: "CreateTaskListPage" });
+  }
+  
   function CreateCategoryOnClick() {
     setState({ currentPage: "CreateCategoryPage" });
   }
@@ -48,6 +52,9 @@ function TemporaryHomePage({ setState }) {
       <button onClick={() => CreateStudentAccountOnClick()}>
         Create Student Account
       </button>
+
+      <div>Make a task list</div>
+      <button onClick={() => CreateTaskListOnClick()}>Create Task List</button>
 
       <div>Create Category</div>
       <button onClick={() => CreateCategoryOnClick()}>Create Category</button>

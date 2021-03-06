@@ -12,7 +12,7 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         plugin = {"pretty", "junit:build/cucumber-junit.xml", "html:build/cucumber.html"},
-        features = "src/test/resources/done features/"
+        features = "src/test/resources/done features/ID004_Create_Optional_Task_List.feature"
 
 )
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)

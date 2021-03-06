@@ -14,6 +14,7 @@ import todopal.model.Teacher;
 public class TeacherService {
 
 	private final String EMPTY_LIST_STRING_EXCEPTION = "List name is not provided";
+	private final String ALREADY_EXIST_EXCEPTION = "Classroom with same name already created";
 
 	@Autowired
 	TeacherRepository teacherRepository;
