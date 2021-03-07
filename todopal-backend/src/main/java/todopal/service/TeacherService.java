@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import todopal.dao.TeacherRepository;
+import todopal.model.Student;
 import todopal.model.Teacher;
 
 @Service
@@ -27,6 +28,35 @@ public class TeacherService {
 		return teacherRepository.findTeacherByEmail(email);
 	}
 
+	/**
+	 * If the provided teacher's email and password match, the teacher is returned
+	 * Otherwise, null is returned
+	 * 
+	 * @param email
+	 * @param password
+	 * @return teacher
+	 * @throws IllegalArgumentException for empty email/password
+	 */
+	@Transactional
+	public Teacher logInTeacher(String email, String password) {
+		if (isEmptyString(email))
+			throw new IllegalArgumentException("Teacher email cannot be empty!");
+
+		if (isEmptyString(password))
+			throw new IllegalArgumentException("Teacher password cannot be empty!");
+
+		Teacher teacher = teacherRepository.findTeacherByEmail(email);
+
+		if (teacher == null) {
+			throw new IllegalArgumentException("Invalid email");
+		}
+
+		if (teacher.getPassword().equals(password))
+			return teacher;
+		else
+			throw new IllegalArgumentException("Invalid password");
+	}
+	
 	@Transactional
 	public List<Teacher> getAllTeachers() {
 		return toList(teacherRepository.findAll());
@@ -82,6 +112,10 @@ public class TeacherService {
 		}
 
 		return false;
+	}
+	
+	private boolean isEmptyString(String value) {
+		return (value == null || value.trim().length() == 0);
 	}
 
 	@Transactional

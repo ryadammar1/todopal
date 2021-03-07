@@ -2,7 +2,7 @@ package todopal.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 
@@ -127,6 +127,12 @@ public class TestStudentService {
 		String actualMessage = exception.getMessage();
 
 		assertEquals(true, actualMessage.contains(expectedMessage));
+	}
+
+        @Test
+	public void testStudentLogin() {
+		final Student student = makeTestingStudent(SD_EMAIL);
+		assertEquals(student, service.logInStudent(SD_EMAIL, SD_PASSWORD));
 	}
 
 	private Student makeTestingStudent(String email) {

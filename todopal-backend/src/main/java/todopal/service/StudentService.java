@@ -26,6 +26,35 @@ public class StudentService {
 		return studentRepository.findStudentByEmail(email);
 	}
 
+	/**
+	 * If the provided student's email and password match, the student is returned
+	 * Otherwise, null is returned
+	 * 
+	 * @param email
+	 * @param password
+	 * @return student
+	 * @throws IllegalArgumentException for empty email/password
+	 */
+	@Transactional
+	public Student logInStudent(String email, String password) {
+		if (isEmptyString(email))
+			throw new IllegalArgumentException("Student email cannot be empty!");
+
+		if (isEmptyString(password))
+			throw new IllegalArgumentException("Student password cannot be empty!");
+
+		Student student = studentRepository.findStudentByEmail(email);
+
+		if (student == null) {
+			throw new IllegalArgumentException("Invalid email");
+		}
+
+		if (student.getPassword().equals(password))
+			return student;
+		else
+			throw new IllegalArgumentException("Invalid password");
+	}
+
 	@Transactional
 	public Student createStudent(String name, String email, String password) {
 		if (isEmptyString(name)) {
@@ -68,21 +97,21 @@ public class StudentService {
 		if (email == null || email.trim().length() == 0) {
 			throw new IllegalArgumentException("Student email cannot be empty!");
 		}
-		
+
 		Student student = studentRepository.findStudentByEmail(email);
 		if (student != null) {
 			studentRepository.delete(student);
 			return true;
 		}
-		
+
 		return false;
 	}
 
 	@Transactional
-	public boolean updateStudent(Student student){
-		if(studentRepository.findStudentByEmail(student.getEmail()) == null){
+	public boolean updateStudent(Student student) {
+		if (studentRepository.findStudentByEmail(student.getEmail()) == null) {
 			return false;
-		}else{
+		} else {
 			studentRepository.save(student);
 			return true;
 		}

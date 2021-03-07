@@ -17,14 +17,14 @@ Feature: User Login
     Scenario: Invalid role Login (Alternate Flow)
         Given student "Taha" with email "taha@pattoomail.com" and password "1234" wants to login as "teacher"
         When student "Taha" attemps to login with email "taha@pattoomail.com" and password "1234"
-        Then an "Invalid login" message will be issued
+        Then an "Invalid email" message is issued
 
     Scenario: Invalid Email (Error Flow)
         Given teacher "Taha" with email "taha@pattoomail.com" and password "1234" wants to login as "teacher"
         When teacher "Taha" attemps to login with email "taha@pattoomail.ca" and password "1234"
-        Then an "Invalid email" message will be issued
+        Then an "Invalid email" message is issued
 
     Scenario: Invalid Password (Error Flow)
         Given student "Taha" with email "taha@pattoomail.com" and password "1234" wants to login as "student"
         When student "Taha" attemps to login with email "taha@pattoomail.com" and password "12345"
-        Then an "Invalid password" message will be issued
+        Then an "Invalid password" message is issued
