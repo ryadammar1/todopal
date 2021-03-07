@@ -50,6 +50,12 @@ public class TestTaskService {
 	private final String SD_TEST_DENY2 = "denytestSD@email.com2";
 	private final String SD_TEST_DENY3 = "nonexistant@email.com2";
 
+	private final long TC_TEST_APPROVE = 257;
+	private Student approvedStudent;
+	private final String SD_TEST_APPROVE = "approvetestSD@email.com";
+	private final String SD_TEST_APPROVE2 = "approvetestSD@email.com2";
+	private final String SD_TEST_APPROVE3 = "approvenonexistant@email.com2";
+
 	@InjectMocks
 	private TaskService service;
 
@@ -58,6 +64,7 @@ public class TestTaskService {
 	 * Setting up the mocks
 	 */
 	public void setMockOutput() {
+		approvedStudent = null;
 
 		// taskRepository.save();
 		lenient().doAnswer((InvocationOnMock invocation) -> {
@@ -91,6 +98,19 @@ public class TestTaskService {
 			} else if (invocation.getArgument(0).equals(SD_TEST_DENY2)) {
 				return makeTestingStudent(SD_TEST_DENY2);
 			}
+
+			else if (invocation.getArgument(0).equals(SD_TEST_APPROVE)) {
+				if (approvedStudent == null) {
+					approvedStudent = makeTestingStudent(SD_TEST_APPROVE);
+				}
+				return approvedStudent;
+			} else if (invocation.getArgument(0).equals(SD_TEST_APPROVE2)) {
+				if (approvedStudent == null) {
+					approvedStudent = makeTestingStudent(SD_TEST_APPROVE2);
+				}
+				return approvedStudent;
+			}
+
 			return null;
 		});
 
@@ -98,20 +118,22 @@ public class TestTaskService {
 		lenient().when(taskContainerRepository.findBytaskContainerId(anyLong()))
 				.thenAnswer((InvocationOnMock invocation) -> {
 					if ((Long) invocation.getArgument(0) == (TASK_CONTAINER_ID)) {
-						return makeTestingTaskContainer(TASK_CONTAINER_ID, TaskStatus.TODO);
+						return makeTestingTaskContainer(TASK_CONTAINER_ID, TaskStatus.TODO,
+								LocalDate.parse("2021-02-13"));
 					} else if ((Long) invocation.getArgument(0) == (TC_TEST_DENY)) {
-						return makeTestingTaskContainer(TC_TEST_DENY, TaskStatus.DONE);
+						return makeTestingTaskContainer(TC_TEST_DENY, TaskStatus.DONE, LocalDate.parse("2021-02-13"));
+					} else if ((Long) invocation.getArgument(0) == (TC_TEST_APPROVE)) {
+						return makeTestingTaskContainer(TC_TEST_APPROVE, TaskStatus.DONE, null);
 					}
+
 					return null;
 				});
 	}
 
 	@Test
 	public void testCreateTask() {
-
 		LocalDate realStartDate = LocalDate.parse("2021-02-13");
 		LocalDate realDueDate = LocalDate.parse("2021-02-16");
-
 		Task task = service.createTask(2, "Problem 1.1", "Complete the problem", "Math", "Homework", true, 5,
 				realStartDate, realDueDate);
 
@@ -262,13 +284,59 @@ public class TestTaskService {
 		assertEquals(true, actualMessage.contains(expectedMessage));
 	}
 
+	@Test
+	public void testApproveTaskStatusAndPoints() throws Exception {
+		TaskContainer taskContainer = service.approveTask(TC_TEST_APPROVE, SD_TEST_APPROVE);
+		assertEquals(taskContainer.getStatus(), TaskStatus.CLOSED);
+		assertNotNull(taskContainer.getCompletionDate());
+		assertEquals(5, studentRepository.findStudentByEmail(SD_TEST_APPROVE).getTotalPoints());
+	}
+
+	@Test
+	public void testApproveTaskStatusIllegalArgument() throws Exception {
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.approveTask(TC_TEST_APPROVE, SD_TEST_APPROVE2);
+		});
+
+		String expectedMessage = "The specified student doesn't have this task";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+
+	}
+
+	@Test
+	public void testApproveTaskStatusIllegalArgument_2() throws Exception {
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.approveTask(TC_TEST_APPROVE, SD_TEST_APPROVE3);
+		});
+
+		String expectedMessage = "Non-existant Student";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+
+	}
+
+	@Test
+	public void testDoNotApproveInvalidTaskId() throws Exception {
+		Exception exception = assertThrows(Exception.class, () -> {
+			service.approveTask(TC_TEST_APPROVE+1, SD_TEST_APPROVE);
+		});
+
+		String expectedMessage = "Invalid Task Container Id";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+	}
+
 	// Helpers
-	private TaskContainer makeTestingTaskContainer(long id, TaskStatus status) {
+	private TaskContainer makeTestingTaskContainer(long id, TaskStatus status, LocalDate completionDate) {
 		TaskContainer taskContainer = new TaskContainer();
 		taskContainer.setTaskContainerId(id);
 		taskContainer.setStatus(status);
 		taskContainer.setTask(makeTestingTask());
-		taskContainer.setCompletionDate(LocalDate.parse("2021-02-13"));
+		taskContainer.setCompletionDate(completionDate);
 
 		return taskContainer;
 	}
@@ -278,8 +346,11 @@ public class TestTaskService {
 		student.setEmail(email);
 		student.setSchoolTask(new HashSet<TaskContainer>());
 		student.setPersonalTask(new HashSet<TaskContainer>());
-		if (email.equals(SD_TEST_DENY)) {
-			student.getSchoolTask().add(makeTestingTaskContainer(TC_TEST_DENY, TaskStatus.DONE));
+		if (email.equals(SD_TEST_DENY))
+			student.getSchoolTask()
+					.add(makeTestingTaskContainer(TC_TEST_DENY, TaskStatus.DONE, LocalDate.parse("2021-02-13")));
+		else if (email.equals(SD_TEST_APPROVE)) {
+			student.getSchoolTask().add(makeTestingTaskContainer(TC_TEST_APPROVE, TaskStatus.DONE, null));
 		}
 
 		return student;

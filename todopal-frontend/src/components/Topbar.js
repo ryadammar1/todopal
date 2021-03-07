@@ -16,7 +16,14 @@ function Topbar({ setState, name }) {
         </button>
 
         <div id="small-button-wrapper">
-          <button className="small-button">TO-DO</button>
+          <button
+            className="small-button"
+            onClick={() =>
+              setState({ currentPage: "ViewAllTasksInClassroomPage" })
+            }
+          >
+            TO-DO
+          </button>
           <button className="small-button">Race</button>
           <button className="small-button">Profile</button>
           <button className="small-button">Settings</button>
