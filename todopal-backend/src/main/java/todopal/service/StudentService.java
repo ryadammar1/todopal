@@ -52,7 +52,7 @@ public class StudentService {
 		if (student.getPassword().equals(password))
 			return student;
 		else
-			return null;
+			throw new IllegalArgumentException("Invalid password");
 	}
 
 	@Transactional

@@ -50,7 +50,7 @@ public class TeacherService {
 		if (teacher.getPassword().equals(password))
 			return teacher;
 		else
-			return null;
+			throw new IllegalArgumentException("Invalid password");
 	}
 	
 	@Transactional
