@@ -25,6 +25,7 @@ public class StudentDto {
 		this.schoolTask = new HashSet<TaskContainerDto>();
 		this.personalTask = new HashSet<TaskContainerDto>();
 	}
+
 	public void setName(String value) {
 		this.name = value;
 	}

@@ -31,7 +31,9 @@ public class Teacher extends Person {
       this.classroom = classrooms;
    }
 
-   public void setMandatoryLists(ArrayList<String> mandatoryLists) { this.mandatoryLists = mandatoryLists; }
+   public void setMandatoryLists(ArrayList<String> mandatoryLists) {
+      this.mandatoryLists = mandatoryLists;
+   }
 
    public ArrayList<String> getMandatoryLists() {
       return mandatoryLists;
