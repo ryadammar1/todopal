@@ -45,6 +45,7 @@ public class TodopalRestController {
 			@RequestParam("points") int pointCount, @RequestParam("name") String name,
 			@RequestParam("description") String description, @RequestParam("start-date") String startDate,
 			@RequestParam("due-date") String dueDate) throws Exception {
+
 		Task task = taskService.createTask(taskId, name, description, tag, category, isMandatory, pointCount, startDate,
 				dueDate);
 		return Converter.convertToDto(task);
@@ -80,18 +81,19 @@ public class TodopalRestController {
 	public ClassroomDto createClassroom(@RequestParam("teacherEmail") String teacherEmail,
 			@RequestParam("imagePath") String imagePath, @RequestParam("subject") String subject,
 			@PathVariable("name") String name) throws Exception {
+
 		Teacher teacher = teacherService.getTeacher(teacherEmail);
 		Classroom classroom = classroomService.createClassroom(teacher, name, imagePath, subject);
 		return Converter.converDto(classroom);
 	}
-	
-	@PostMapping(value = {"/add-to-mandatory-list","/add-to-mandatory-list/"})
+
+	@PostMapping(value = { "/add-to-mandatory-list", "/add-to-mandatory-list/" })
 	public TeacherDto addToMandatoryList(@RequestParam("teacherEmail") String teacherEmail,
 			@RequestParam("imagePath") String mandatoryLists) {
 		return Converter.convertToDto(teacherService.addToMandatoryLists(teacherEmail, mandatoryLists));
 	}
-	
-	@PostMapping(value = {"/add-to-optional-list","/add-to-optional-list/"})
+
+	@PostMapping(value = { "/add-to-optional-list", "/add-to-optional-list/" })
 	public TeacherDto addToOptionalList(@RequestParam("teacherEmail") String teacherEmail,
 			@RequestParam("imagePath") String optionalLists) {
 		return Converter.convertToDto(teacherService.addToOptionalLists(teacherEmail, optionalLists));
@@ -122,33 +124,31 @@ public class TodopalRestController {
 		taskService.getAllTaskContainers().forEach(container -> taskContainers.add(Converter.convertToDto(container)));
 		return taskContainers;
 	}
-	
-	@GetMapping(value = {"/teacher_login","/teacher_login/"})
+
+	@GetMapping(value = { "/teacher_login", "/teacher_login/" })
 	public TeacherDto loginTeacher(@RequestParam("email") String email, @PathVariable("password") String password) {
-		Teacher t = new Teacher();
+		Teacher teacher = new Teacher();
 		try {
-			t = teacherService.logInTeacher(email, password);
+			teacher = teacherService.logInTeacher(email, password);
 		} catch (Exception ex) {
 			System.out.println(ex.getStackTrace());
 		}
-		
-		return Converter.convertToDto(t);
-		
+
+		return Converter.convertToDto(teacher);
 	}
 
-	@GetMapping(value = {"/student_login","/student_login/"})
+	@GetMapping(value = { "/student_login", "/student_login/" })
 	public StudentDto loginStudent(@RequestParam("email") String email, @PathVariable("password") String password) {
-		Student s = new Student();
+		Student student = new Student();
 		try {
-			s = studentService.logInStudent(email, password);
+			student = studentService.logInStudent(email, password);
 		} catch (Exception ex) {
 			System.out.println(ex.getStackTrace());
 		}
-		
-		return Converter.convertToDto(s);
-		
+
+		return Converter.convertToDto(student);
 	}
-	
+
 	@PostMapping(value = { "/teachers/{name}", "/teachers/{name}/" })
 	public TeacherDto createTeacher(@RequestParam("approvalCode") String appCode, @PathVariable("name") String name,
 			@RequestParam("email") String email, @RequestParam("password") String password,
@@ -157,7 +157,7 @@ public class TodopalRestController {
 		Teacher teacher = teacherService.createTeacher(appCode, name, email, password, bio);
 		return Converter.convertToDto(teacher);
 	}
-	
+
 	@PostMapping(value = { "deny/{email}/{task}", "/deny/{email}/{task}" })
 	public TaskContainerDto denyTask(@PathVariable("email") String email, @PathVariable("task") long taskId)
 			throws Exception {
@@ -205,7 +205,8 @@ public class TodopalRestController {
 	}
 
 	@PostMapping(value = { "/create-task-list/optional/{name}", "/create-task-list/optional/{name}/" })
-	public TeacherDto createOptionalList(@RequestParam("teacherEmail") String teacherEmail, @PathVariable("name") String name) {
+	public TeacherDto createOptionalList(@RequestParam("teacherEmail") String teacherEmail,
+			@PathVariable("name") String name) {
 		Teacher teacher = teacherService.addToOptionalLists(teacherEmail, name);
 		return Converter.convertToDto(teacher);
 	}
