@@ -15,14 +15,9 @@ import todopal.model.Student;
 import todopal.model.Task;
 import todopal.model.TaskContainer;
 import todopal.model.TaskStatus;
-import todopal.model.Teacher;
 
 @Service
 public class TaskService {
-
-	private final String EMPTY_STRING_EXCEPTION = "[error] String argument is empty";
-	private final String ALREADY_EXIST_EXCEPTION = "Classroom with same name already created";
-
 	@Autowired
 	private TaskRepository taskRepository;
 	@Autowired
@@ -57,7 +52,6 @@ public class TaskService {
 		task.setDueDate(dueDate);
 
 		taskRepository.save(task);
-
 		return task;
 	}
 
@@ -71,35 +65,31 @@ public class TaskService {
 		return createTask(taskId, name, description, tag, category, isMandatory, pointCount, localStartDate,
 				localDueDate);
 	}
-	
+
 	@Transactional
 	public Task updateTask(long taskId, Task task) throws Exception {
-
 		Task oldTask = getTask(taskId);
 		oldTask = task;
-		
 		taskRepository.save(oldTask);
-
 		return oldTask;
 	}
 
 	@Transactional
 	public TaskContainer createTaskContainer(long id, LocalDate completionDate, TaskStatus status, long taskId,
 			String feedback) {
-		
 		if (taskContainerRepository.findBytaskContainerId(id) != null) {
 			throw new IllegalArgumentException("The task container was already created");
 		} else if (taskRepository.findBytaskId(taskId) == null) {
 			throw new IllegalArgumentException("Invalid Task Id");
 		} else if (status == null) {
 			throw new IllegalArgumentException("Task container cannot have null status");
-		} else if(isEmptyString(feedback)) {
+		} else if (isEmptyString(feedback)) {
 			throw new IllegalArgumentException("Task Container cannot have empty feedback");
 		}
-		
+
 		TaskContainer taskContainer = new TaskContainer();
 		Task task = taskRepository.findBytaskId(taskId);
-		
+
 		taskContainer.setCompletionDate(completionDate);
 		taskContainer.setStatus(status);
 		taskContainer.setTask(task);
@@ -109,36 +99,20 @@ public class TaskService {
 		taskContainerRepository.save(taskContainer);
 		return taskContainer;
 	}
-	
+
 	@Transactional
 	public TaskContainer updateTaskContainer(long taskContainerId, TaskContainer taskContainer) throws Exception {
-
 		TaskContainer oldTaskContainer = getTaskContainer(taskContainerId);
 		oldTaskContainer = taskContainer;
-
 		taskContainerRepository.save(oldTaskContainer);
-
 		return oldTaskContainer;
 	}
+
 	@Transactional
 	public TaskContainer denyTask(long taskContainerId, String studentEmail) throws Exception {
-		
-		if (getTaskContainer(taskContainerId) == null) {
-			throw new IllegalArgumentException("Invalid Task Container Id");
-		} else if (studentRepository.findStudentByEmail(studentEmail) == null) {
-			throw new IllegalArgumentException("Non-existant Student");
-		} 
-		
-		Student student = studentRepository.findStudentByEmail(studentEmail);
 		TaskContainer taskContainer = getTaskContainer(taskContainerId);
-		
-		Set<TaskContainer> schoolTasks = student.getSchoolTask();
-		Set<TaskContainer> personalTasks = student.getPersonalTask();
-		
-		if(!checkTaskContainer(schoolTasks, taskContainerId) && !checkTaskContainer(personalTasks, taskContainerId)) {
-			throw new IllegalArgumentException("The specified student doesn't have this task");
-		}	
-		
+		Student student = getStudentWithTask(taskContainerId, studentEmail);
+
 		taskContainer.setStatus(TaskStatus.PROGRESS);
 		taskContainer.setCompletionDate(null);
 		taskContainerRepository.save(taskContainer);
@@ -146,26 +120,12 @@ public class TaskService {
 
 		return taskContainer;
 	}
-	
-	
+
 	@Transactional
 	public TaskContainer approveTask(long taskContainerId, String studentEmail) throws Exception {
-		if (getTaskContainer(taskContainerId) == null) {
-			throw new IllegalArgumentException("Invalid Task Container Id");
-		} else if (studentRepository.findStudentByEmail(studentEmail) == null) {
-			throw new IllegalArgumentException("Non-existant Student");
-		} 
-		
-		Student student = studentRepository.findStudentByEmail(studentEmail);
 		TaskContainer taskContainer = getTaskContainer(taskContainerId);
-		
-		Set<TaskContainer> schoolTasks = student.getSchoolTask();
-		Set<TaskContainer> personalTasks = student.getPersonalTask();
-		
-		if(!checkTaskContainer(schoolTasks, taskContainerId) && !checkTaskContainer(personalTasks, taskContainerId)) {
-			throw new IllegalArgumentException("The specified student doesn't have this task");
-		}	
-		
+		Student student = getStudentWithTask(taskContainerId, studentEmail);
+
 		taskContainer.setStatus(TaskStatus.CLOSED);
 		taskContainer.setCompletionDate(LocalDate.now());
 		taskContainerRepository.save(taskContainer);
@@ -183,6 +143,22 @@ public class TaskService {
 		}
 
 		return task;
+	}
+
+	@Transactional
+	private Student getStudentWithTask(long taskContainerId, String studentEmail) throws Exception {
+		if (studentRepository.findStudentByEmail(studentEmail) == null) {
+			throw new IllegalArgumentException("Non-existant Student");
+		}
+		Student student = studentRepository.findStudentByEmail(studentEmail);
+		Set<TaskContainer> schoolTasks = student.getSchoolTask();
+		Set<TaskContainer> personalTasks = student.getPersonalTask();
+
+		if (!checkTaskContainer(schoolTasks, taskContainerId) && !checkTaskContainer(personalTasks, taskContainerId)) {
+			throw new IllegalArgumentException("The specified student doesn't have this task");
+		}
+
+		return student;
 	}
 
 	@Transactional
@@ -215,20 +191,12 @@ public class TaskService {
 		return (value == null || value.trim().length() == 0);
 	}
 
-	private void checkForEmptyString(String parameterValue) {
-		if (parameterValue.trim().length() == 0) {
-			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
-		}
-	}
-	
 	private boolean checkTaskContainer(Set<TaskContainer> taskContainers, long taskContainerId) {
-		boolean hasTask = false;
-		
-		for(TaskContainer task : taskContainers) {
-			if(task.getTaskContainerId() == taskContainerId) {
-				hasTask = true;
+		for (TaskContainer task : taskContainers) {
+			if (task.getTaskContainerId() == taskContainerId) {
+				return true;
 			}
 		}
-		return hasTask;
+		return false;
 	}
 }
