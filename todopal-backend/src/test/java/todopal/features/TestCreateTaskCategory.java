@@ -30,7 +30,7 @@ public class TestCreateTaskCategory {
             Assertions.fail();
         }
     }
-    @When("teacher {string} creates a task list with list name {string} for classroom {string}")
+    @When("teacher {string} creates a weekly mandatory task list with list name {string} for classroom {string}")
     public void teacher_creates_a_task_list_with_list_name_for_classroom(String email, String name, String classroom) {
         try {
             Classroom ecseClass = classroomService.createClassroom(teacherService.getTeacher(email), classroom, "IMAGEPATH", "Software engineering");
@@ -47,7 +47,7 @@ public class TestCreateTaskCategory {
 
     }
 
-    @Then("the task list with list name {string} is created under teacher {string} for classroom {string}")
+    @Then("the weekly mandatory task list with list name {string} is created under teacher {string} for classroom {string}")
     public void the_task_list_with_list_name_is_created_under_teacher_for_classroom(String name, String email, String classroom) {
         boolean check = false;
         Classroom ecseClass = classroomService.getClassroom(Ressources.classroomId);
@@ -65,7 +65,7 @@ public class TestCreateTaskCategory {
         Assertions.assertTrue(check);
     }
 
-    @Given("a task list with list name {string} exists under teacher {string} for classroom {string}")
+    @Given("a weekly mandatory task list with list name {string} exists under teacher {string} for classroom {string}")
     public void a_task_list_with_list_name_exists_under_teacher_for_classroom(String name, String email, String classroom) {
         Classroom ecseClass = classroomService.createClassroom(teacherService.getTeacher(email), classroom, "IMAGEPATH", "Software engineering");
         Ressources.classroomId = ecseClass.getClassroomId();

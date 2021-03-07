@@ -15,10 +15,10 @@ Feature: Create Optional Task List
     Given teacher 'John Bob' with teacher email 'john.bob@gmail.com' is logged in
     And weekly optional task list with list name 'math_work' exists for teacher 'john.bob@gmail.com'
     When teacher 'john.bob@gmail.com' creates a term-long optional task list with list name 'math_work'
-    Then a "Task list already exists" message is issued
+    Then a "Task category already exists" message is issued
 
   Scenario Outline: Teacher creating task list without a list name (Error Flow)
 
     Given teacher "Michael Scott" with teacher email "michael.scott@gmail.com" is logged in
     When teacher "michael.scott@gmail.com" creates a term-long optional task list with list name ""
-    Then a "List name is not provided" message is issued
+    Then a "Category name is not provided" message is issued

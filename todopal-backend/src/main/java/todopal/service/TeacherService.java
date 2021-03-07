@@ -14,7 +14,7 @@ import todopal.model.Teacher;
 @Service
 public class TeacherService {
 
-	private final String EMPTY_LIST_STRING_EXCEPTION = "List name is not provided";
+	private final String EMPTY_LIST_STRING_EXCEPTION = "Category name is not provided";
 	private final String ALREADY_EXIST_EXCEPTION = "Classroom with same name already created";
 
 	@Autowired
@@ -129,7 +129,7 @@ public class TeacherService {
 				teacher.setMandatoryLists(mandatoryLists);
 			} else {
 				if (teacher.getMandatoryLists().contains(mandatoryList)) {
-					throw new IllegalArgumentException("Task list already exists");
+					throw new IllegalArgumentException("Task category already exists");
 				}
 				teacher.getMandatoryLists().add(mandatoryList);
 			}
@@ -148,7 +148,7 @@ public class TeacherService {
 					teacher.setOptionalLists(optionalLists);
 				} else {
 					if (teacher.getOptionalLists().contains(optionalList)) {
-						throw new IllegalArgumentException("Task list already exists");
+						throw new IllegalArgumentException("Task category already exists");
 					}
 					teacher.getOptionalLists().add(optionalList);
 				}
