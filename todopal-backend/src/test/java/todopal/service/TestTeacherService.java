@@ -142,7 +142,7 @@ public class TestTeacherService {
             teacherService.addToMandatoryLists(EXISTING_LIST_TEACHER_EMAIL, MANDATORY_LIST);
         });
 
-        String expectedMessage = "Task list already exists";
+        String expectedMessage = "Task category already exists";
         String actualMessage = exception.getMessage();
 
         assertEquals(true, actualMessage.contains(expectedMessage));
@@ -154,7 +154,7 @@ public class TestTeacherService {
             teacherService.addToMandatoryLists(TEACHER_EMAIL, "");
         });
 
-        String expectedMessage = "List name is not provided";
+        String expectedMessage = "Category name is not provided";
         String actualMessage = exception.getMessage();
 
         assertEquals(true, actualMessage.contains(expectedMessage));
@@ -173,7 +173,7 @@ public class TestTeacherService {
             teacherService.addToOptionalLists(EXISTING_LIST_TEACHER_EMAIL, OPTIONAL_LIST);
         });
 
-        String expectedMessage = "Task list already exists";
+        String expectedMessage = "Task category already exists";
         String actualMessage = exception.getMessage();
 
         assertEquals(true, actualMessage.contains(expectedMessage));
@@ -185,7 +185,7 @@ public class TestTeacherService {
             teacherService.addToOptionalLists(TEACHER_EMAIL, "");
         });
 
-        String expectedMessage = "List name is not provided";
+        String expectedMessage = "Category name is not provided";
         String actualMessage = exception.getMessage();
 
         assertEquals(true, actualMessage.contains(expectedMessage));

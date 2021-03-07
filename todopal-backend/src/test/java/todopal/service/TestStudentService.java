@@ -132,7 +132,7 @@ public class TestStudentService {
         @Test
 	public void testStudentLogin() {
 		final Student student = makeTestingStudent(SD_EMAIL);
-		assertEquals(student, service.logInStudent(SD_EMAIL, SD_PASSWORD));
+		assertEquals(student.getName(), service.logInStudent(SD_EMAIL, SD_PASSWORD).getName());
 	}
 
 	private Student makeTestingStudent(String email) {
