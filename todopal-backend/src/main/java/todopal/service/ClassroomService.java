@@ -47,7 +47,7 @@ public class ClassroomService {
 	public Classroom setClassroomName(long id, String name) throws IllegalArgumentException {
 		checkForEmptyString(name);
 
-		Classroom classroom = classroomRepository.findByClassroomId(id);
+		Classroom classroom = getClassroom(id);
 		classroom.setName(name);
 		classroomRepository.save(classroom);
 		return classroom;
@@ -57,7 +57,7 @@ public class ClassroomService {
 	public Classroom setClassroomDescription(long id, String description) throws IllegalArgumentException {
 		checkForEmptyString(description);
 
-		Classroom classroom = classroomRepository.findByClassroomId(id);
+		Classroom classroom = getClassroom(id);
 		classroom.setDescription(description);
 		classroomRepository.save(classroom);
 		return classroom;
@@ -67,7 +67,7 @@ public class ClassroomService {
 	public Classroom setClassroomSubject(long id, String subject) throws IllegalArgumentException {
 		checkForEmptyString(subject);
 
-		Classroom classroom = classroomRepository.findByClassroomId(id);
+		Classroom classroom = getClassroom(id);
 		classroom.setSubject(subject);
 		classroomRepository.save(classroom);
 		return classroom;
@@ -77,7 +77,7 @@ public class ClassroomService {
 	public Classroom setClassroomImage(long id, String imagePath) throws IllegalArgumentException {
 		checkForEmptyString(imagePath);
 
-		Classroom classroom = classroomRepository.findByClassroomId(id);
+		Classroom classroom = getClassroom(id);
 		classroom.setImagePath(imagePath);
 		classroomRepository.save(classroom);
 		return classroom;
@@ -86,48 +86,15 @@ public class ClassroomService {
 	@Transactional
 	public Classroom setClassroomTaskCategories(long id, ArrayList<String> taskCategories)
 			throws IllegalArgumentException {
-		Classroom classroom = classroomRepository.findByClassroomId(id);
+		Classroom classroom = getClassroom(id);
 		classroom.setTaskCategories(taskCategories);
 		classroomRepository.save(classroom);
 		return classroom;
 	}
 
 	@Transactional
-	public Classroom addToClassroomTaskCategories(long id, String taskCategory) throws IllegalArgumentException {
-
-		try{
-			checkForEmptyString(taskCategory);
-		}catch (Exception e){
-			throw new IllegalArgumentException("Category name is not provided");
-		}
-
-		Classroom classroom = classroomRepository.findByClassroomId(id);
-
-		if(classroom == null){
-			throw new IllegalArgumentException("Classroom doesn't exist");
-		}
-
-		if(classroom.getTaskCategories() != null){
-			for(String e: classroom.getTaskCategories()){
-				if(e.equals(taskCategory)){
-					throw new IllegalArgumentException("Task category already exists");
-				}
-			}
-			classroom.getTaskCategories().add(taskCategory);
-		}else{
-			ArrayList<String> categ = new ArrayList<>();
-			categ.add(taskCategory);
-			classroom.setTaskCategories(categ);
-		}
-
-
-		classroomRepository.save(classroom);
-		return classroom;
-	}
-
-	@Transactional
 	public Classroom setClassroomTaskTags(long id, ArrayList<String> taskTags) throws IllegalArgumentException {
-		Classroom classroom = classroomRepository.findByClassroomId(id);
+		Classroom classroom = getClassroom(id);
 		classroom.setTaskTags(taskTags);
 		classroomRepository.save(classroom);
 		return classroom;
@@ -137,8 +104,31 @@ public class ClassroomService {
 	public Classroom addToClassroomTaskTag(long id, String taskTag) throws IllegalArgumentException {
 		checkForEmptyString(taskTag);
 
-		Classroom classroom = classroomRepository.findByClassroomId(id);
+		Classroom classroom = getClassroom(id);
 		classroom.getTaskTags().add(taskTag);
+		classroomRepository.save(classroom);
+		return classroom;
+	}
+
+	@Transactional
+	public Classroom addToClassroomTaskCategories(long id, String taskCategory) throws IllegalArgumentException {
+		checkForEmptyString(taskCategory, "Category name is not provided");
+
+		Classroom classroom = getClassroom(id);
+
+		if (classroom.getTaskCategories() != null) {
+			for (String categories : classroom.getTaskCategories()) {
+				if (categories.equals(taskCategory)) {
+					throw new IllegalArgumentException("Task category already exists");
+				}
+			}
+			classroom.getTaskCategories().add(taskCategory);
+		} else {
+			ArrayList<String> categ = new ArrayList<>();
+			categ.add(taskCategory);
+			classroom.setTaskCategories(categ);
+		}
+
 		classroomRepository.save(classroom);
 		return classroom;
 	}
@@ -164,7 +154,7 @@ public class ClassroomService {
 
 	private <T> ArrayList<T> toArrayList(Iterable<T> iterable) {
 		ArrayList<T> resultList = new ArrayList<T>();
-		iterable.forEach(resultList :: add);
+		iterable.forEach(resultList::add);
 		return resultList;
 	}
 
@@ -181,6 +171,12 @@ public class ClassroomService {
 	private void checkForEmptyString(String parameterValue) {
 		if (parameterValue.trim().length() == 0) {
 			throw new IllegalArgumentException(EMPTY_STRING_EXCEPTION);
+		}
+	}
+
+	private void checkForEmptyString(String parameterValue, String errorMessage) {
+		if (parameterValue.trim().length() == 0) {
+			throw new IllegalArgumentException(errorMessage);
 		}
 	}
 }
