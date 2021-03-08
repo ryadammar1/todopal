@@ -22,11 +22,11 @@ public class TaskContainerDto {
 	public void setCompletionDate(LocalDate completionDate) {
 		this.completionDate = completionDate;
 	}
-	
+
 	public String getFeedback() {
 		return this.feedback;
 	}
-	
+
 	public LocalDate getCompletionDate() {
 		return this.completionDate;
 	}

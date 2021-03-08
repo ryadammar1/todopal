@@ -17,7 +17,7 @@ public class TaskContainer {
     public void setCompletionDate(LocalDate value) {
         this.completionDate = value;
     }
-    
+
     public void setFeedback(String value) {
         this.feedback = value;
     }
