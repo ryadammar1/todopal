@@ -48,6 +48,7 @@ public class TestTeacherService {
     private final String TEACHER_BIO = "testTeacherBio";
     private final String MANDATORY_LIST = "mandatorylist";
     private final String OPTIONAL_LIST = "optionallist";
+    private final String PASSWORK = "password";
 
     // tests
     @BeforeEach
@@ -191,6 +192,13 @@ public class TestTeacherService {
         assertEquals(true, actualMessage.contains(expectedMessage));
     }
 
+    @Test
+    public void testLoginTeacher()
+    {
+        Teacher teacher = makeLoggedInTeacher(TEACHER_EMAIL);
+        assertEquals(teacher.getName(), teacherService.logInTeacher(TEACHER_EMAIL, TEACHER_PASSWORD).getName());
+    }
+
     // helpers
     private Teacher makeTestingTeacher() {
         Teacher teacher = new Teacher();
@@ -215,6 +223,15 @@ public class TestTeacherService {
         teacher.setBio(TEACHER_BIO);
         teacher.setMandatoryLists(mandatoryLists);
         teacher.setOptionalLists(optionalLists);
+        return teacher;
+    }
+
+    private Teacher makeLoggedInTeacher(String email)
+    {
+        Teacher teacher = new Teacher();
+        teacher.setEmail(email);
+        teacher.setName(TEACHER_NAME);
+        teacher.setPassword(PASSWORK);
         return teacher;
     }
 }
