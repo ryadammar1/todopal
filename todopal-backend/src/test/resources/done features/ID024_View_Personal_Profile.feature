@@ -8,7 +8,7 @@ Feature: View Personal Profile
 
         Given teacher "Michael Scott" is logged in with name "Michael_S" email "michael.scott@gmail.com", password "aa001" and bio "I hate my life"
         And "Micheal_S" has classrooms: "Classroom 1" and "Classroom 2"
-        When teacher "Michael_S" is accessing his personal profile
+        When teacher "michael.scott@gmail.com" is accessing his personal profile
         Then the name of "Michael_S" will be displayed
         And the email "michael.scott@gmail.com" associated with "Michael Scott" will be displayed
         And the classrooms "Classroom 1" and "Classroom 2" are displayed

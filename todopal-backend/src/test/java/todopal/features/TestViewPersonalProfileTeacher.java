@@ -1,6 +1,7 @@
 package todopal.features;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,8 +43,8 @@ public class TestViewPersonalProfileTeacher {
 
 
     @When("teacher {string} is accessing his personal profile")
-    public void teacher_is_accessing_his_personal_profile(String username) {
-	    response = todopalRestController.getTeacherByName(username);
+    public void teacher_is_accessing_his_personal_profile(String email) {
+	    response = todopalRestController.getTeacherByEmailWithPersonalInfo(email);
     }
 
     @Then("the name of {string} will be displayed")
@@ -59,8 +60,15 @@ public class TestViewPersonalProfileTeacher {
     @Then("the classrooms {string} and {string} are displayed")
     public void the_classrooms_and_are_displayed(String classroom1, String classroom2) {
         assertEquals(2, response.getClassroom().size());
-        assertEquals(classroom1, ((ClassroomDto)response.getClassroom().toArray()[0]).getClassroomName());
-        assertEquals(classroom2, ((ClassroomDto)response.getClassroom().toArray()[1]).getClassroomName());
+        
+        boolean foundClassroom1 = false;
+        boolean foundClassroom2 = false;
+        for (ClassroomDto dto : response.getClassroom()) {
+            if (dto.getClassroomName().equals(classroom1)) foundClassroom1 = true;
+            if (dto.getClassroomName().equals(classroom2)) foundClassroom2 = true;
+        }
+        assertTrue(foundClassroom1, "Teacher is registered with " + classroom1);
+        assertTrue(foundClassroom2, "Teacher is registered with " + classroom2);
     }
 
     @Then("the bio displays: {string}")
