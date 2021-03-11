@@ -6,4 +6,6 @@ import todopal.model.Teacher;
 
 public interface TeacherRepository extends CrudRepository<Teacher, String> {
     Teacher findTeacherByEmail(String email);
+
+    Teacher findTeacherByName(String name);
 }

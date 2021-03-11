@@ -161,4 +161,13 @@ public class TeacherService {
 			throw new IllegalArgumentException(EMPTY_LIST_STRING_EXCEPTION);
 		}
 	}
+
+	@Transactional
+	public Teacher getTeacherByName(String name) {
+	    if (name == null || name.trim().length() == 0) {
+		throw new IllegalArgumentException("Teacher username cannot be empty!");
+	    }
+	    return teacherRepository.findTeacherByName(name);
+
+	}
 }
