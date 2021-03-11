@@ -20,6 +20,14 @@ public class Converter {
         return new TeacherDto(teacher.getName());
     }
 
+    protected static TeacherDto convertToDtoWithPersonalInfo(Teacher teacher) {
+        if (teacher == null) {
+            throw new IllegalArgumentException("There is no such Teacher!");
+        }
+
+        return new TeacherDto(teacher.getName(), teacher.getEmail(), teacher.getPassword(), teacher.getBio());
+    }
+
     protected static TaskDto convertToDto(Task task) {
         if (task == null) {
             throw new IllegalArgumentException("There is no such Task!");
