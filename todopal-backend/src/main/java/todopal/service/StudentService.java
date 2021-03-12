@@ -3,12 +3,15 @@ package todopal.service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import todopal.dao.ClassroomRepository;
 import todopal.dao.StudentRepository;
+import todopal.model.Classroom;
 import todopal.model.Student;
 import todopal.model.TaskContainer;
 
@@ -17,6 +20,8 @@ public class StudentService {
 
 	@Autowired
 	StudentRepository studentRepository;
+	@Autowired
+	ClassroomRepository classroomRepository;
 
 	@Transactional
 	public Student getStudent(String email) {
@@ -125,5 +130,28 @@ public class StudentService {
 
 	private boolean isEmptyString(String value) {
 		return (value == null || value.trim().length() == 0);
+	}
+	
+	@Transactional
+	public List<String> get_all_Classroom_Students_Names(long classroomID){
+		Classroom classroom = classroomRepository.findByClassroomId(classroomID);
+		
+		if (classroom ==null) {
+			throw new IllegalArgumentException("This classroom does not exits!");
+		}
+		
+		Set<Student> studentsInClass = classroom.getStudent();
+		if (studentsInClass.isEmpty()) {
+			throw new IllegalArgumentException("Student email cannot be empty!");
+
+		}
+		ArrayList<String> studentNames = new ArrayList<String>();
+		
+		for(Student student : studentsInClass) {
+			studentNames.add(student.getName());
+		}
+		
+		return toList(studentNames);
+		
 	}
 }
