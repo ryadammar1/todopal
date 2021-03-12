@@ -196,6 +196,11 @@ public class TodopalRestController {
 		Student student = studentService.getStudent(email);
 		return Converter.convertToDto(student);
 	}
+	
+	@GetMapping(value = { "/students/personal/{email}", "/students/personal/{email}/" })
+	public StudentDto getStudentByEmailWithPersonalInfo(@PathVariable("email") String email) throws IllegalArgumentException {
+		return Converter.convertToDtoWithPersonalInfo(studentService.getStudent(email));
+	}
 
 	@GetMapping(value = { "/students", "/students/" })
 	public List<StudentDto> getAllStudents() {
