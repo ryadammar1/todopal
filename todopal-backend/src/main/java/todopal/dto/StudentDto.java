@@ -28,10 +28,13 @@ public class StudentDto {
 		this.personalTask = new HashSet<TaskContainerDto>();
 	}
 	
-	public StudentDto(String name, String email, String password, String bio) {
+	
+	
+	public StudentDto(String name, String email, String password, String bio, int points) {
 		this.name = name;
 		this.email = email;
 		this.bio = bio;
+		this.totalPoints = points;
 	}
 
 	public void setName(String value) {

@@ -83,6 +83,37 @@ public class StudentService {
 		studentRepository.save(student);
 		return student;
 	}
+	
+	@Transactional
+	public Student createStudent(String name, String email, String password, int points) {
+		if (isEmptyString(name)) {
+			throw new IllegalArgumentException("Student cannot have an empty name");
+		} else if (isEmptyString(email)) {
+			throw new IllegalArgumentException("Student cannot have an empty email");
+		} else if (isEmptyString(password)) {
+			throw new IllegalArgumentException("Student cannot have an empty password");
+		} else if (points < 0 ) {
+			throw new IllegalArgumentException("Student cannot have an negative points");
+		} else if (!email.contains("@")) {
+			throw new IllegalArgumentException("Invalid email is used");
+		} else if (studentRepository.findStudentByEmail(email) != null) {
+			throw new IllegalArgumentException("Already registered");
+		}
+
+		Student student = new Student();
+		student.setName(name);
+		student.setEmail(email);
+		student.setPassword(password);
+		student.setTotalPoints(points);
+
+		student.setPersonalTask(new HashSet<TaskContainer>());
+		student.setSchoolTask(new HashSet<TaskContainer>());
+		student.setTaskCategories(new ArrayList<String>());
+		student.setTaskTags(new ArrayList<String>());
+
+		studentRepository.save(student);
+		return student;
+	}
 
 	@Transactional
 	public List<Student> getAllStudents() {
