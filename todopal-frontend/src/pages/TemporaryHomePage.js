@@ -22,9 +22,13 @@ function TemporaryHomePage({ setState }) {
   function CreateTaskListOnClick() {
     setState({ currentPage: "CreateTaskListPage" });
   }
-  
+
   function CreateCategoryOnClick() {
     setState({ currentPage: "CreateCategoryPage" });
+  }
+
+  function LoginPageOnClick() {
+    setState({ currentPage: "LoginPage" });
   }
 
   return (
@@ -58,6 +62,9 @@ function TemporaryHomePage({ setState }) {
 
       <div>Create Category</div>
       <button onClick={() => CreateCategoryOnClick()}>Create Category</button>
+
+      <div>Login</div>
+      <button onClick={() => LoginPageOnClick()}>Login Page</button>
     </>
   );
 }
