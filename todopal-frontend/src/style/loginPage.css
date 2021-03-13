@@ -1,0 +1,92 @@
+#login-page-wrapper {
+  padding: 2.5rem;
+  background-color: #d2ffea;
+
+  width: 40%;
+  min-height: 50%;
+  margin: auto;
+  margin-top: 4rem;
+
+  border-radius: 4rem;
+
+  box-shadow: 0.2rem 0.2rem 0rem 0rem #1ace98;
+
+  display: flex;
+  flex-direction: column;
+  color: #1ace98;
+}
+
+#email-entry,
+#password-entry {
+  width: 95.5%;
+}
+
+#email-entry {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+#login-content-wrapper {
+  /* background-color: red; */
+  width: 90%;
+  margin: auto;
+}
+
+label {
+  font-size: 2rem;
+}
+
+#button-wrapper {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-around;
+}
+
+button {
+  border: none;
+  outline: none;
+  font-size: 1.5rem;
+  border-radius: 2rem;
+  padding: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#login-button {
+  width: 13rem;
+  background-color: #1ace98;
+  color: white;
+  margin: auto;
+}
+
+#student-button {
+  background-color: #ff8e31;
+  color: white;
+}
+
+#student-button:hover {
+  background-color: #ffffff;
+  color: #1ace98;
+}
+
+#teacher-button {
+  background-color: #472de2;
+  color: white;
+}
+
+#teacher-button:hover {
+  background-color: #ffffff;
+  color: #1ace98;
+}
+
+#login-button:hover {
+  background-color: #139770;
+}
+
+#login-button-wrapper {
+  width: fit-content;
+  margin: auto;
+}

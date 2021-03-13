@@ -8,6 +8,7 @@ import Topbar from "./components/Topbar.js";
 import CreateStudentAccountPage from "./pages/CreateStudentAccountPage";
 import CreateTaskListPage from "./pages/CreateTaskListPage";
 import CreateCategoryPage from "./pages/CreateCategoryPage";
+import LoginPage from "./pages/LoginPage";
 import "./style/global/__font.css";
 
 class App extends React.Component {
@@ -157,6 +158,15 @@ class App extends React.Component {
         <Fragment>
           <Topbar setState={this.setState} name="Student" />
           <CreateCategoryPage setState={this.setState} />
+        </Fragment>
+      );
+    }
+
+    if (this.state.currentPage === "LoginPage") {
+      return (
+        <Fragment>
+          <Topbar setState={this.setState} name="Student" />
+          <LoginPage setState={this.setState} />
         </Fragment>
       );
     }
