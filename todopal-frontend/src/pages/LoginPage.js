@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "../style/loginPage.css";
+let currentChoice = "";
 
 function LoginPage() {
-  let currentChoice = "";
   const [isChose, setIsChose] = new useState({ student: {}, teacher: {} });
 
   function studentOnClick() {
@@ -10,6 +10,8 @@ function LoginPage() {
       student: { bgColor: "white", color: "#1ace98" },
       teacher: {},
     });
+
+    currentChoice = "student";
   }
 
   function teacherOnClick() {
@@ -17,10 +19,11 @@ function LoginPage() {
       student: {},
       teacher: { bgColor: "white", color: "#1ace98" },
     });
+    currentChoice = "teacher";
   }
 
   function loginOnClick() {
-    console.log("logged in");
+    console.log("logged in as " + currentChoice);
   }
 
   return (
