@@ -138,7 +138,7 @@ public class TestTaskService {
 					} else if ((Long) invocation.getArgument(0) == (TC_TEST_APPROVE)) {
 						return makeTestingTaskContainer(TC_TEST_APPROVE, TaskStatus.DONE, null);
 					} else if ((Long) invocation.getArgument(0) == (TC_TEST_SET_DONE)) {
-						TaskContainer tc = makeTestingTaskContainer(TC_TEST_SET_DONE, TaskStatus.DONE, LocalDate.parse("2021-02-13"));
+						TaskContainer tc = makeTestingTaskContainer(TC_TEST_SET_DONE, TaskStatus.CLOSED, LocalDate.parse("2021-02-13"));
 						tc.setFeedback(FEEDBACK_TEST_SET_DONE);
 						return tc;
 					} else if ((Long) invocation.getArgument(0) == (TC_TEST_SET_DONE2)) {
@@ -434,7 +434,7 @@ public class TestTaskService {
 			student.getSchoolTask().add(makeTestingTaskContainer(TC_TEST_APPROVE, TaskStatus.DONE, null));
 		} else if (email.equals(SD_TEST_SET_DONE1)) {
 			
-			TaskContainer tc = makeTestingTaskContainer(TC_TEST_SET_DONE, TaskStatus.DONE, LocalDate.parse("2021-02-13"));
+			TaskContainer tc = makeTestingTaskContainer(TC_TEST_SET_DONE, TaskStatus.CLOSED, LocalDate.parse("2021-02-13"));
 			tc.setFeedback(FEEDBACK_TEST_SET_DONE);
 			student.getSchoolTask().add(tc);
 			
