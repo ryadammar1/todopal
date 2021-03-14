@@ -134,6 +134,40 @@ public class TestStudentService {
 		final Student student = makeTestingStudent(SD_EMAIL);
 		assertEquals(student.getName(), service.logInStudent(SD_EMAIL, SD_PASSWORD).getName());
 	}
+        
+        @Test
+    	public void testGetStudent() {
+    		Student student = service.getStudent(SD_EMAIL);
+
+    		assertNotNull(student);
+    		assertEquals(SD_NAME, student.getName());
+    		assertEquals(SD_EMAIL, student.getEmail());
+    		assertEquals(SD_PASSWORD, student.getPassword());
+    	}
+        
+        @Test
+    	public void testGetStudentIllegalArgument1() {
+        	Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+    			service.getStudent("notarealstudent@email.com");
+    		});
+
+    		String expectedMessage = "Non-existant Student";
+    		String actualMessage = exception.getMessage();
+
+    		assertEquals(true, actualMessage.contains(expectedMessage));
+    	}
+        
+        @Test
+    	public void testGetStudentIllegalArgument2() {
+        	Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+    			service.getStudent("");
+    		});
+
+    		String expectedMessage = "Student email cannot be empty!";
+    		String actualMessage = exception.getMessage();
+
+    		assertEquals(true, actualMessage.contains(expectedMessage));
+    	}
 
 	private Student makeTestingStudent(String email) {
 		Student student = new Student();

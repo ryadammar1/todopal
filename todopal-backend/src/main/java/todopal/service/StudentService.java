@@ -22,7 +22,10 @@ public class StudentService {
 	public Student getStudent(String email) {
 		if (isEmptyString(email)) {
 			throw new IllegalArgumentException("Student email cannot be empty!");
+		} else if (studentRepository.findStudentByEmail(email) == null) {
+			throw new IllegalArgumentException("Non-existant Student");
 		}
+
 		return studentRepository.findStudentByEmail(email);
 	}
 
