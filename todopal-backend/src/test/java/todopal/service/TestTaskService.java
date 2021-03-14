@@ -49,6 +49,13 @@ public class TestTaskService {
 	private final String SD_TEST_DENY = "denytestSD@email.com";
 	private final String SD_TEST_DENY2 = "denytestSD@email.com2";
 	private final String SD_TEST_DENY3 = "nonexistant@email.com2";
+	private final long TC_TEST_SET_DONE = 2160;
+	private final long TC_TEST_SET_DONE2 = 3210;
+	private final String SD_TEST_SET_DONE1 = "settestdoneSD@email.com";
+	private final String SD_TEST_SET_DONE2 = "secondstudentSD@email.com";
+	private final String SD_TEST_SET_DONE3 = "nonexistantSD@email.com";
+	private final String SD_TEST_SET_DONE4 = "unclosedtaskSD@email.com";
+	private final String FEEDBACK_TEST_SET_DONE = "Task Complete!";
 
 	private final long TC_TEST_APPROVE = 257;
 	private Student approvedStudent;
@@ -109,12 +116,18 @@ public class TestTaskService {
 					approvedStudent = makeTestingStudent(SD_TEST_APPROVE2);
 				}
 				return approvedStudent;
+			} else if (invocation.getArgument(0).equals(SD_TEST_SET_DONE1)) {
+				return makeTestingStudent(SD_TEST_SET_DONE1);
+			} else if (invocation.getArgument(0).equals(SD_TEST_SET_DONE2)) {
+				return makeTestingStudent(SD_TEST_SET_DONE2);
+			} else if (invocation.getArgument(0).equals(SD_TEST_SET_DONE4)) {
+				return makeTestingStudent(SD_TEST_SET_DONE4);
 			}
 
 			return null;
 		});
 
-		// taskRepository.findBytaskId(anyLong())
+		// taskContainerRepository.findBytaskId(anyLong())
 		lenient().when(taskContainerRepository.findBytaskContainerId(anyLong()))
 				.thenAnswer((InvocationOnMock invocation) -> {
 					if ((Long) invocation.getArgument(0) == (TASK_CONTAINER_ID)) {
@@ -124,6 +137,14 @@ public class TestTaskService {
 						return makeTestingTaskContainer(TC_TEST_DENY, TaskStatus.DONE, LocalDate.parse("2021-02-13"));
 					} else if ((Long) invocation.getArgument(0) == (TC_TEST_APPROVE)) {
 						return makeTestingTaskContainer(TC_TEST_APPROVE, TaskStatus.DONE, null);
+					} else if ((Long) invocation.getArgument(0) == (TC_TEST_SET_DONE)) {
+						TaskContainer tc = makeTestingTaskContainer(TC_TEST_SET_DONE, TaskStatus.DONE, LocalDate.parse("2021-02-13"));
+						tc.setFeedback(FEEDBACK_TEST_SET_DONE);
+						return tc;
+					} else if ((Long) invocation.getArgument(0) == (TC_TEST_SET_DONE2)) {
+						TaskContainer tc = makeTestingTaskContainer(TC_TEST_SET_DONE2, TaskStatus.PROGRESS, null);
+						tc.setFeedback(FEEDBACK_TEST_SET_DONE);
+						return tc;
 					}
 
 					return null;
@@ -329,6 +350,66 @@ public class TestTaskService {
 
 		assertEquals(true, actualMessage.contains(expectedMessage));
 	}
+	
+	
+	@Test
+	public void testSetTaskAsDone() throws Exception {
+		TaskContainer taskContainer = service.setTaskAsDone(TC_TEST_SET_DONE, SD_TEST_SET_DONE1, FEEDBACK_TEST_SET_DONE);
+		assertEquals(taskContainer.getStatus(), TaskStatus.DONE);
+		assertNotNull(taskContainer.getCompletionDate());
+		assertNotNull(taskContainer.getFeedback());
+	}
+	
+	
+	@Test
+	public void testSetTaskAsDoneIllegalArgument() throws Exception {
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.setTaskAsDone(TC_TEST_SET_DONE, SD_TEST_SET_DONE2, FEEDBACK_TEST_SET_DONE);
+		});
+
+		String expectedMessage = "The specified student doesn't have this task";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+	}
+
+	@Test
+	public void testSetTaskAsDoneIllegalArgument2() throws Exception {
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.setTaskAsDone(TC_TEST_SET_DONE, SD_TEST_SET_DONE3, FEEDBACK_TEST_SET_DONE);
+		});
+
+		String expectedMessage = "Non-existant Student";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+	}
+	
+	@Test
+	public void testSetTaskAsDoneIllegalArgument3() throws Exception {
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.setTaskAsDone(TC_TEST_SET_DONE, SD_TEST_SET_DONE1, "");
+		});
+
+		String expectedMessage = "Feedback cannot be empty";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+	}
+	
+	@Test
+	public void testSetTaskAsDoneIllegalArgument4() throws Exception {
+		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+			service.setTaskAsDone(TC_TEST_SET_DONE2, SD_TEST_SET_DONE4, FEEDBACK_TEST_SET_DONE);
+		});
+
+		String expectedMessage = "Specified task is not closed yet";
+		String actualMessage = exception.getMessage();
+
+		assertEquals(true, actualMessage.contains(expectedMessage));
+	}
+	
+	
 
 	// Helpers
 	private TaskContainer makeTestingTaskContainer(long id, TaskStatus status, LocalDate completionDate) {
@@ -351,6 +432,17 @@ public class TestTaskService {
 					.add(makeTestingTaskContainer(TC_TEST_DENY, TaskStatus.DONE, LocalDate.parse("2021-02-13")));
 		else if (email.equals(SD_TEST_APPROVE)) {
 			student.getSchoolTask().add(makeTestingTaskContainer(TC_TEST_APPROVE, TaskStatus.DONE, null));
+		} else if (email.equals(SD_TEST_SET_DONE1)) {
+			
+			TaskContainer tc = makeTestingTaskContainer(TC_TEST_SET_DONE, TaskStatus.DONE, LocalDate.parse("2021-02-13"));
+			tc.setFeedback(FEEDBACK_TEST_SET_DONE);
+			student.getSchoolTask().add(tc);
+			
+		} else if (email.equals(SD_TEST_SET_DONE4)) {
+			
+			TaskContainer tc = makeTestingTaskContainer(TC_TEST_SET_DONE2, TaskStatus.PROGRESS, null);
+			tc.setFeedback(FEEDBACK_TEST_SET_DONE);
+			student.getSchoolTask().add(tc);
 		}
 
 		return student;
