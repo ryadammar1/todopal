@@ -132,26 +132,4 @@ public class StudentService {
 		return (value == null || value.trim().length() == 0);
 	}
 	
-	@Transactional
-	public List<String> get_all_Classroom_Students_Names(long classroomID){
-		Classroom classroom = classroomRepository.findByClassroomId(classroomID);
-		
-		if (classroom ==null) {
-			throw new IllegalArgumentException("This classroom does not exits!");
-		}
-		
-		Set<Student> studentsInClass = classroom.getStudent();
-		if (studentsInClass.isEmpty()) {
-			throw new IllegalArgumentException("Student email cannot be empty!");
-
-		}
-		ArrayList<String> studentNames = new ArrayList<String>();
-		
-		for(Student student : studentsInClass) {
-			studentNames.add(student.getName());
-		}
-		
-		return toList(studentNames);
-		
-	}
 }

@@ -1,7 +1,9 @@
 package todopal.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import todopal.dao.ClassroomRepository;
 import todopal.model.Classroom;
+import todopal.model.Student;
 import todopal.model.Teacher;
 
 @Service
@@ -20,6 +23,29 @@ public class ClassroomService {
 	@Autowired
 	ClassroomRepository classroomRepository;
 
+	@Transactional
+	public List<String> getAllClassroomStudentsNames(long classroomID){
+		Classroom classroom = classroomRepository.findByClassroomId(classroomID);
+		
+		if (classroom ==null) {
+			throw new IllegalArgumentException("This classroom does not exits!");
+		}
+		
+		Set<Student> studentsInClass = classroom.getStudent();
+		if (studentsInClass.isEmpty()) {
+			throw new IllegalArgumentException("Class is empty!");
+
+		}
+		ArrayList<String> studentNames = new ArrayList<String>();
+		
+		for(Student student : studentsInClass) {
+			studentNames.add(student.getName());
+		}
+		
+		return toList(studentNames);
+		
+	}
+	
 	@Transactional
 	public Classroom createClassroom(Teacher teacher, String name, String imagePath, String subject) {
 		checkForEmptyString(name);
@@ -178,5 +204,11 @@ public class ClassroomService {
 		if (parameterValue.trim().length() == 0) {
 			throw new IllegalArgumentException(errorMessage);
 		}
+	}
+	
+	private <T> List<T> toList(Iterable<T> iterable) {
+		List<T> resultList = new ArrayList<T>();
+		iterable.forEach(resultList::add);
+		return resultList;
 	}
 }
