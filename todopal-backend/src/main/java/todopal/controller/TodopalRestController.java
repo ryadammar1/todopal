@@ -196,6 +196,20 @@ public class TodopalRestController {
 		Student student = studentService.getStudent(email);
 		return Converter.convertToDto(student);
 	}
+	
+	@GetMapping(value = { "/student-school-task/{email}", "/student-school-task/{email}/" })
+	public List<TaskContainerDto> getStudentSchoolTaskContainers(@PathVariable("email") String email) throws Exception {
+		List<TaskContainerDto> taskContainers = new ArrayList<TaskContainerDto>();
+		studentService.getStudentSchoolTasks(email).forEach(container -> taskContainers.add(Converter.convertToDto(container)));
+		return taskContainers;
+	}
+	
+	@GetMapping(value = { "/student-personal-task/{email}", "/student-personal-task/{email}/" })
+	public List<TaskContainerDto> getStudentPersonalTaskContainers(@PathVariable("email") String email) throws Exception {
+		List<TaskContainerDto> taskContainers = new ArrayList<TaskContainerDto>();
+		studentService.getStudentPersonalTasks(email).forEach(container -> taskContainers.add(Converter.convertToDto(container)));
+		return taskContainers;
+	}
 
 	@GetMapping(value = { "/students", "/students/" })
 	public List<StudentDto> getAllStudents() {

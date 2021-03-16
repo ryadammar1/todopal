@@ -28,7 +28,11 @@ public class StudentService {
 		if (isEmptyString(email)) {
 			throw new IllegalArgumentException("Student email cannot be empty!");
 		}
-		return studentRepository.findStudentByEmail(email);
+		Student student = studentRepository.findStudentByEmail(email);
+		if(student == null) {
+			throw new IllegalArgumentException("Student does not exist!");
+		}
+		return student;
 	}
 
 	/**
@@ -110,6 +114,27 @@ public class StudentService {
 		}
 
 		return false;
+	}
+	
+	@Transactional
+	public String getStudentName(String email) {
+		Student student = getStudent(email);
+		
+		return student.getName();
+	}
+	
+	@Transactional
+	public Set<TaskContainer> getStudentPersonalTasks(String email) {
+		Student student = getStudent(email);
+		
+		return student.getPersonalTask();
+	}
+	
+	@Transactional
+	public Set<TaskContainer> getStudentSchoolTasks(String email) {
+		Student student = getStudent(email);
+		
+		return student.getSchoolTask();
 	}
 
 	@Transactional

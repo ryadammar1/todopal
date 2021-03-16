@@ -2,9 +2,14 @@ package todopal.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +21,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import todopal.dao.StudentRepository;
 import todopal.model.Student;
+import todopal.model.Task;
+import todopal.model.TaskContainer;
 
 @ExtendWith(MockitoExtension.class)
 public class TestStudentService {
@@ -134,13 +141,74 @@ public class TestStudentService {
 		final Student student = makeTestingStudent(SD_EMAIL);
 		assertEquals(student.getName(), service.logInStudent(SD_EMAIL, SD_PASSWORD).getName());
 	}
+        
+    @Test
+       public void testGetStudentName() {
+    	String name = service.getStudentName(SD_EMAIL);
+        assertEquals(name, SD_NAME);
+        
+       }     
+        
+    @Test
+    public void testGetStudentPersonalTasks() {
+    	Set<TaskContainer> personalTasks = service.getStudentPersonalTasks(SD_EMAIL);
 
+    	ArrayList<String> personalTasksName = new ArrayList<String>();
+    	
+    	int i = 0;
+    	for(TaskContainer tc : personalTasks) {
+    		personalTasksName.add(tc.getTask().getName());
+		}
+    	
+    	for(int j = 0; j < 3; j++)
+    		assertTrue(personalTasksName.contains(this.personalTasks[j]));
+    }
+
+    @Test
+    public void testGetStudentSchoolTasks() {
+    	Set<TaskContainer> schoolTasks = service.getStudentSchoolTasks(SD_EMAIL);
+    	
+    	ArrayList<String> schoolTasksName = new ArrayList<String>();
+    	
+    	int i = 0;
+    	for(TaskContainer tc : schoolTasks) {
+    		schoolTasksName.add(tc.getTask().getName());
+		}
+    	
+    	for(int j = 0; j < 3; j++)
+    		assertTrue(schoolTasksName.contains(this.schoolTasks[j]));
+    	
+    }
+
+    String[] schoolTasks = {"st1", "st2", "st3"};
+    String[] personalTasks = {"pt1", "pt2", "pt3"};
+    
 	private Student makeTestingStudent(String email) {
 		Student student = new Student();
 		student.setEmail(email);
 		student.setName(SD_NAME);
 		student.setPassword(SD_PASSWORD);
+		
+		HashSet<TaskContainer> schoolTasks = new HashSet<TaskContainer>();
+		HashSet<TaskContainer> personalTasks = new HashSet<TaskContainer>();
+		
+		for(int i = 0; i < 3; i++) {
+			schoolTasks.add(makeTaskContainer(this.schoolTasks[i]));
+			personalTasks.add(makeTaskContainer(this.personalTasks[i]));
+		}
+		
+		student.setSchoolTask(schoolTasks);
+		student.setPersonalTask(personalTasks);
 
 		return student;
+	}
+	
+	private TaskContainer makeTaskContainer(String taskName) {
+		Task task = new Task();
+		task.setName(taskName);
+		TaskContainer taskcontainer = new TaskContainer();
+		taskcontainer.setTask(task);
+		
+		return taskcontainer;
 	}
 }
