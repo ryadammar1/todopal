@@ -28,7 +28,8 @@ public class Converter {
         }
 
         TeacherDto dto = new TeacherDto(teacher.getName(), teacher.getEmail(), teacher.getPassword(), teacher.getBio());
-        dto.setClassroom(teacher.getClassroom().stream().map((c) -> new ClassroomDto(c.getName())).collect(Collectors.toSet()));
+        dto.setClassroom(
+                teacher.getClassroom().stream().map((c) -> new ClassroomDto(c.getName())).collect(Collectors.toSet()));
 
         return dto;
     }
