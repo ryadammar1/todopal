@@ -27,6 +27,10 @@ function TemporaryHomePage({ setState }) {
     setState({ currentPage: "CreateCategoryPage" });
   }
 
+  function ViewPersonalProfileStudentOnClick() {
+    setState({ currentPage: "ViewPersonalProfileStudent" });
+  }
+
   return (
     <>
       <div>the following are clickables</div>
@@ -58,6 +62,9 @@ function TemporaryHomePage({ setState }) {
 
       <div>Create Category</div>
       <button onClick={() => CreateCategoryOnClick()}>Create Category</button>
+      
+      <div>View Personal Profile as Student</div>
+      <button onClick={() => ViewPersonalProfileStudentOnClick()}>View Personal Profile as Student</button>
     </>
   );
 }
