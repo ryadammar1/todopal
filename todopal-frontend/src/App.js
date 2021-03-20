@@ -8,6 +8,7 @@ import Topbar from "./components/Topbar.js";
 import CreateStudentAccountPage from "./pages/CreateStudentAccountPage";
 import CreateTaskListPage from "./pages/CreateTaskListPage";
 import CreateCategoryPage from "./pages/CreateCategoryPage";
+import ViewTeacherProfilePage from "./pages/ViewTeacherProfilePage";
 import "./style/global/__font.css";
 
 class App extends React.Component {
@@ -157,6 +158,45 @@ class App extends React.Component {
         <Fragment>
           <Topbar setState={this.setState} name="Student" />
           <CreateCategoryPage setState={this.setState} />
+        </Fragment>
+      );
+    }
+
+    //this is a dummy teacher
+    let dummyTeacher = {
+      name: "dummy Teacher",
+      email: "dummy.teacher@let.com",
+      bio: "Im a little dummy teacher",
+      password: "iAmPassword",
+      apprCode: "123ILoveMath",
+      classes: [
+        { id: "classid1" },
+        { id: "classid2" },
+        { id: "classid3" },
+        { id: "classid4" },
+      ],
+    };
+
+    if (this.state.currentPage === "ViewTeacherProfilePageAsTeacher") {
+      return (
+        <Fragment>
+          <Topbar setState={this.setState} name="Teacher" />
+          <ViewTeacherProfilePage
+            isLoggedInAsTeacher={true}
+            teacher={dummyTeacher}
+          />
+        </Fragment>
+      );
+    }
+
+    if (this.state.currentPage === "ViewTeacherProfilePageAsStudent") {
+      return (
+        <Fragment>
+          <Topbar setState={this.setState} name="Teacher" />
+          <ViewTeacherProfilePage
+            isLoggedInAsTeacher={false}
+            teacher={dummyTeacher}
+          />
         </Fragment>
       );
     }

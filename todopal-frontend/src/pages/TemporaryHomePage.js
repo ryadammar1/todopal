@@ -22,9 +22,17 @@ function TemporaryHomePage({ setState }) {
   function CreateTaskListOnClick() {
     setState({ currentPage: "CreateTaskListPage" });
   }
-  
+
   function CreateCategoryOnClick() {
     setState({ currentPage: "CreateCategoryPage" });
+  }
+
+  function ViewTeacherProfileOnClick(isLoggedInAsTeacher) {
+    if (isLoggedInAsTeacher) {
+      setState({ currentPage: "ViewTeacherProfilePageAsTeacher" });
+    } else {
+      setState({ currentPage: "ViewTeacherProfilePageAsStudent" });
+    }
   }
 
   return (
@@ -58,6 +66,16 @@ function TemporaryHomePage({ setState }) {
 
       <div>Create Category</div>
       <button onClick={() => CreateCategoryOnClick()}>Create Category</button>
+
+      <div>View Teacher Profile</div>
+      <button onClick={() => ViewTeacherProfileOnClick(true)}>
+        View Teacher Profile (as teacher)
+      </button>
+
+      <div>View Teacher Profile</div>
+      <button onClick={() => ViewTeacherProfileOnClick(false)}>
+        View Teacher Profile (as student)
+      </button>
     </>
   );
 }
