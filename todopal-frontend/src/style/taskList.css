@@ -8,3 +8,16 @@
   width: 25%;
   flex-direction: column;
 }
+
+#student-list-wrapper {
+  background-color: #eafff5;
+  padding: 1.5rem;
+  border-radius: 2rem;
+
+  border: 2px solid #1ace98;
+
+  margin: 1rem;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+}
