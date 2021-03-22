@@ -56,14 +56,13 @@ public class Converter {
 
         return new StudentDto(student.getName(), student.getEmail(), student.getPassword());
     }
-    
-    protected static StudentDto convertToDtoWithPersonalInfo(Student student) {
+
+    protected static StudentDto convertToStudentDtoWithPersonalInfo(Student student) {
         if (student == null) {
             throw new IllegalArgumentException("There is no such Student!");
         }
 
-        StudentDto dto = new StudentDto(student.getName(), student.getEmail(), student.getPassword(), student.getBio(), student.getTotalPoints());
-
-        return dto;
+        return new StudentDto(student.getName(), student.getEmail(), student.getPassword(), student.getBio(),
+                student.getTotalPoints());
     }
 }

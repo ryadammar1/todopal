@@ -27,12 +27,9 @@ public class StudentDto {
 		this.schoolTask = new HashSet<TaskContainerDto>();
 		this.personalTask = new HashSet<TaskContainerDto>();
 	}
-	
-	
-	
+
 	public StudentDto(String name, String email, String password, String bio, int points) {
-		this.name = name;
-		this.email = email;
+		this(name, email, password);
 		this.bio = bio;
 		this.totalPoints = points;
 	}
@@ -59,6 +56,14 @@ public class StudentDto {
 
 	public String getPassword() {
 		return this.password;
+	}
+
+	public String getBio() {
+		return bio;
+	}
+
+	public void setBio(String bio) {
+		this.bio = bio;
 	}
 
 	public void setTotalPoints(int value) {

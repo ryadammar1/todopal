@@ -86,7 +86,7 @@ public class StudentService {
 		studentRepository.save(student);
 		return student;
 	}
-	
+
 	@Transactional
 	public Student createStudent(String name, String email, String password, int points) {
 		if (isEmptyString(name)) {
@@ -95,7 +95,7 @@ public class StudentService {
 			throw new IllegalArgumentException("Student cannot have an empty email");
 		} else if (isEmptyString(password)) {
 			throw new IllegalArgumentException("Student cannot have an empty password");
-		} else if (points < 0 ) {
+		} else if (points < 0) {
 			throw new IllegalArgumentException("Student cannot have an negative points");
 		} else if (!email.contains("@")) {
 			throw new IllegalArgumentException("Invalid email is used");
