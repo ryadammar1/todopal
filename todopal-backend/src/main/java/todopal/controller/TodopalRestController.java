@@ -148,6 +148,15 @@ public class TodopalRestController {
 
 		return Converter.convertToDto(student);
 	}
+	
+	@GetMapping(value = {"/classroom_student_names{class_id}","/classroom_student_names/{class_id}"})
+	public List<String> getStudentNames(@PathVariable("class_id") String class_id){
+		long id = Long.parseLong(class_id);
+		Classroom c = classroomService.getClassroom(id);
+		List<String> names = classroomService.getAllClassroomStudentsNames(c);
+		return names;
+		
+	}
 
 	@PostMapping(value = { "/teachers/{name}", "/teachers/{name}/" })
 	public TeacherDto createTeacher(@RequestParam("approvalCode") String appCode, @PathVariable("name") String name,
