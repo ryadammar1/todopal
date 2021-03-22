@@ -180,38 +180,34 @@ public class TaskService {
 	public Iterable<TaskContainer> getAllTaskContainers() {
 		return toArrayList(taskContainerRepository.findAll());
 	}
-	
+
 	@Transactional
 	public TaskContainer setTaskAsDone(long taskContainerID, String email, String feedback) {
-		// TODO Auto-generated method stub
-		if (feedback.equals("")) {throw new IllegalArgumentException("Feedback cannot be empty");}
-		
-		TaskContainer taskContainer = taskContainerRepository.findBytaskContainerId(taskContainerID);
+		if (feedback.trim().equals("")) {
+			throw new IllegalArgumentException("Feedback cannot be empty");
+		}
 		Student student = studentRepository.findStudentByEmail(email);
-		
 		if (student == null) {
 			throw new IllegalArgumentException("Non-existant Student");
 		}
-		
+
+		TaskContainer taskContainer = taskContainerRepository.findBytaskContainerId(taskContainerID);
 		boolean hasTask = false;
-		
+
 		for (TaskContainer tc : student.getSchoolTask()) {
-			
-			if (tc.getTaskContainerId()==taskContainerID) {
-				
-				if (taskContainer.getStatus()==TaskStatus.CLOSED) {
+			if (tc.getTaskContainerId() == taskContainerID) {
+				if (taskContainer.getStatus() == TaskStatus.CLOSED) {
 					taskContainer.setStatus(TaskStatus.DONE);
 					taskContainer.setFeedback(feedback);
 					taskContainer.setCompletionDate(LocalDate.now());
 					taskContainerRepository.save(taskContainer);
 					hasTask = true;
-				}
-				else {
+				} else {
 					throw new IllegalArgumentException("Specified task is not closed yet");
 				}
 			}
 		}
-		if(hasTask == false) {
+		if (hasTask == false) {
 			throw new IllegalArgumentException("The specified student doesn't have this task");
 		}
 
@@ -237,5 +233,4 @@ public class TaskService {
 		return false;
 	}
 
-	
 }
