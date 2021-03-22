@@ -34,6 +34,8 @@ public class TestClassroomService {
 	private final long TEST_ID_FILL = 1;
 	private final long TEST_ID_EMPTY = 2;
 
+	private final Classroom VOID_CLASSROOM = null;
+
 	// teacher's values
 	private final String APPROVAL_CODE = "appr123";
 	private final String TEACHER_NAME = "testTeacher";
@@ -137,7 +139,7 @@ public class TestClassroomService {
 
 	@Test
 	public void testGetAllStudentNamesSuccess() {
-		List<String> students = service.getAllClassroomStudentsNames(TEST_ID_FILL);
+		List<String> students = service.getAllClassroomStudentsNames(createClassroomMockFill());
 		for (int i = 1; i <= 3; i++) {
 			students.get(i - 1).equals("stu" + i);
 		}
@@ -146,7 +148,7 @@ public class TestClassroomService {
 	@Test
 	public void testGetAllStudentNamesEmpty() {
 		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-			service.getAllClassroomStudentsNames(TEST_ID_EMPTY);
+			service.getAllClassroomStudentsNames(createClassroomMockEmpty());
 		});
 		
 		String expectedMessage = "Class is empty!";
@@ -158,10 +160,10 @@ public class TestClassroomService {
 	@Test
 	public void testGetAllStudentNamesNull() {
 		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-			service.getAllClassroomStudentsNames(-1);
+			service.getAllClassroomStudentsNames(null);
 		});
 		
-		String expectedMessage = "This classroom does not exits!";
+		String expectedMessage = "Inexistent Classroom";
 		String actualMessage = exception.getMessage();
 
 		assertEquals(true, actualMessage.contains(expectedMessage));

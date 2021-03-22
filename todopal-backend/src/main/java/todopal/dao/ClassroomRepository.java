@@ -7,4 +7,5 @@ public interface ClassroomRepository extends CrudRepository<Classroom, String> {
 	Classroom findByClassroomId(long classId);
 
 	Classroom findByNameAndTeacherEmail(String name, String teacherEmail);
+
 }
