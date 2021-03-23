@@ -8,8 +8,8 @@ Feature: Delete Task
         Given teacher "Michael Scott" is logged in
         And "Michael Scott" has a mandatory list "Bonus"
         And the following tasks exist
-            | name  | description               | points | start date | due date   | tag   | list  |
-            | exist | this is an existing task  | 1      | 2021-01-23 | 2021-01-23 | math  | Bonus |
+            | name  | description              | points | start date | due date   | tag  | list  |
+            | exist | this is an existing task | 1      | 2021-01-23 | 2021-01-23 | math | Bonus |
         When task "exist" is deleted
         Then there are no more tasks in the list "Bonus"
 
@@ -17,9 +17,9 @@ Feature: Delete Task
         Given teacher "Michael Scott" is logged in
         And "Michael Scott" has a mandatory list "Bonus"
         And the following tasks exist
-            | name  | description               | points | startDate  | dueDate    | tag   | list  |
-            | exist | this is an existing task  | 1      | 2021-01-23 | 2021-01-23 | math  | Bonus |
-            | new   | this is a new task        | 2      | 2021-01-24 | 2021-01-24 | math  | Bonus |
+            | name  | description              | points | startDate  | dueDate    | tag  | list  |
+            | exist | this is an existing task | 1      | 2021-01-23 | 2021-01-23 | math | Bonus |
+            | new   | this is a new task       | 2      | 2021-01-24 | 2021-01-24 | math | Bonus |
         When tasks "exist" and "new" are deleted
         Then there are no more tasks in the list "Bonus"
 
@@ -27,7 +27,7 @@ Feature: Delete Task
         Given teacher "Michael Scott" is logged in
         And "Michael Scott" has a mandatory list "Bonus"
         And the following tasks exist
-            | name  | description               | points | start date | due date   | tag   | list  |
-            | exist | this is an existing task  | 1      | 2021-01-23 | 2021-01-23 | math  | Bonus |
+            | name  | description              | points | start date | due date   | tag  | list  |
+            | exist | this is an existing task | 1      | 2021-01-23 | 2021-01-23 | math | Bonus |
         When task "notexist" is deleted
         Then a "Task cannot be deleted because it does not exist" message is issued

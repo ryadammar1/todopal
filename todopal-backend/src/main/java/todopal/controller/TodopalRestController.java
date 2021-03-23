@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -209,5 +210,18 @@ public class TodopalRestController {
 			@PathVariable("name") String name) {
 		Teacher teacher = teacherService.addToOptionalLists(teacherEmail, name);
 		return Converter.convertToDto(teacher);
+	}
+
+	@DeleteMapping(value = { "delete-task/{id}", "delete-task/{id}/" })
+	public TaskDto deleteTaskId(@PathVariable("id") long id) {
+		Task task = taskService.deleteTask(id);
+		return Converter.convertToDto(task);
+	}
+
+	@DeleteMapping(value = { "delete-task-names", "delete-task-names/" })
+	public TaskDto deleteTaskNames(@RequestParam("task") String taskName,
+			@RequestParam("teacherEmail") String teacherEmail, @RequestParam("classroom") String classroomName) {
+		Task task = taskService.deleteTask(taskName, classroomName, teacherEmail);
+		return Converter.convertToDto(task);
 	}
 }

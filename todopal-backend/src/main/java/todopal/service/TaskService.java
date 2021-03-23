@@ -56,23 +56,26 @@ public class TaskService {
 	}
 
 	@Transactional
-	public Task deleteTask(long taskId){
+	public Task deleteTask(long taskId) {
 		Task toDelete = taskRepository.findBytaskId(taskId);
 		if (toDelete == null) {
 			throw new IllegalArgumentException("Task cannot be deleted because it does not exist");
 		}
+		taskRepository.delete(toDelete);
+		return toDelete;
 
-		return taskRepository.deleteTaskByTaskId(taskId);
 	}
 
 	@Transactional
-	public Task deleteTask(String taskName, String classroomName, String teacherEmail){
-		Task toDelete = taskRepository.findTaskByNameAndAndClassroom(taskName, classroomRepository.findByNameAndTeacherEmail(classroomName, teacherEmail));
+	public Task deleteTask(String taskName, String classroomName, String teacherEmail) {
+		Task toDelete = taskRepository.findTaskByNameAndAndClassroom(taskName,
+				classroomRepository.findByNameAndTeacherEmail(classroomName, teacherEmail));
 		if (toDelete == null) {
 			throw new IllegalArgumentException("Task cannot be deleted because it does not exist");
 		}
 
-		return taskRepository.deleteTaskByTaskId(toDelete.getTaskId());
+		taskRepository.delete(toDelete);
+		return toDelete;
 	}
 
 	@Transactional

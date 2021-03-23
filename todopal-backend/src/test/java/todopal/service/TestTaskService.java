@@ -1,16 +1,22 @@
 package todopal.service;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyObject;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 
+import org.checkerframework.checker.nullness.qual.AssertNonNullIfNonNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,9 +25,11 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import todopal.dao.ClassroomRepository;
 import todopal.dao.StudentRepository;
 import todopal.dao.TaskContainerRepository;
 import todopal.dao.TaskRepository;
+import todopal.model.Classroom;
 import todopal.model.Student;
 import todopal.model.Task;
 import todopal.model.TaskContainer;
@@ -36,6 +44,8 @@ public class TestTaskService {
 	private StudentRepository studentRepository;
 	@Mock
 	private TaskContainerRepository taskContainerRepository;
+	@Mock
+	private ClassroomRepository classroomRepository;
 
 	private final boolean TASK_MANDATORY = true;
 	private final String TASK_TAG = "MATH";
@@ -65,6 +75,25 @@ public class TestTaskService {
 	 */
 	public void setMockOutput() {
 		approvedStudent = null;
+
+		// classroomrepo.findbynameandteacheremail()
+		lenient().when(classroomRepository.findByNameAndTeacherEmail(anyString(), anyString()))
+				.thenAnswer((InvocationOnMock invocation) -> {
+					if (((String) invocation.getArgument(0)).equals("VALID")
+							&& ((String) invocation.getArgument(1)).equals("VALID")) {
+						return makeTestingClassroom();
+					}
+					return null;
+				});
+
+		// taskRepository.findTaskByNameAndAndClassroom();
+		lenient().when(taskRepository.findTaskByNameAndAndClassroom(anyString(), any()))
+				.thenAnswer((InvocationOnMock invocation) -> {
+					if (((String) invocation.getArgument(0)).equals(TASK_NAME) && (invocation.getArgument(1)) != null) {
+						return makeTestingTask();
+					}
+					return null;
+				});
 
 		// taskRepository.save();
 		lenient().doAnswer((InvocationOnMock invocation) -> {
@@ -128,6 +157,7 @@ public class TestTaskService {
 
 					return null;
 				});
+
 	}
 
 	@Test
@@ -137,7 +167,7 @@ public class TestTaskService {
 		Task task = service.createTask(2, "Problem 1.1", "Complete the problem", "Math", "Homework", true, 5,
 				realStartDate, realDueDate);
 
-		assertNotNull(task);
+		assertNotNull(task, "");
 		assertEquals(2, task.getTaskId());
 		assertEquals(true, task.isIsMandatory());
 		assertEquals("Math", task.getTag());
@@ -153,14 +183,14 @@ public class TestTaskService {
 	public void testCreateTaskContainer() throws Exception {
 		LocalDate realCompletionDate = LocalDate.parse("2021-02-13");
 
-		TaskContainer taskContainer = service.createTaskContainer(3, realCompletionDate, TaskStatus.TODO, TASK_ID, "Hi");	
+		TaskContainer taskContainer = service.createTaskContainer(3, realCompletionDate, TaskStatus.TODO, TASK_ID,
+				"Hi");
 
-
-		assertNotNull(taskContainer);
+		assertNotNull(taskContainer, "");
 		assertEquals(3, taskContainer.getTaskContainerId());
 		assertEquals(TaskStatus.TODO, taskContainer.getStatus());
 		assertEquals(realCompletionDate, taskContainer.getCompletionDate());
-		assertNotNull(taskContainer.getTask());
+		assertNotNull(taskContainer.getTask(), "");
 	}
 
 	@Test
@@ -288,7 +318,7 @@ public class TestTaskService {
 	public void testApproveTaskStatusAndPoints() throws Exception {
 		TaskContainer taskContainer = service.approveTask(TC_TEST_APPROVE, SD_TEST_APPROVE);
 		assertEquals(taskContainer.getStatus(), TaskStatus.CLOSED);
-		assertNotNull(taskContainer.getCompletionDate());
+		assertNotNull(taskContainer.getCompletionDate(), "");
 		assertEquals(5, studentRepository.findStudentByEmail(SD_TEST_APPROVE).getTotalPoints());
 	}
 
@@ -321,13 +351,132 @@ public class TestTaskService {
 	@Test
 	public void testDoNotApproveInvalidTaskId() throws Exception {
 		Exception exception = assertThrows(Exception.class, () -> {
-			service.approveTask(TC_TEST_APPROVE+1, SD_TEST_APPROVE);
+			service.approveTask(TC_TEST_APPROVE + 1, SD_TEST_APPROVE);
 		});
 
 		String expectedMessage = "Invalid Task Container Id";
 		String actualMessage = exception.getMessage();
 
 		assertEquals(true, actualMessage.contains(expectedMessage));
+	}
+
+	@Test
+	public void testDeleteTaskFromValidTask() {
+		Task task = makeTestingTask();
+		try {
+			service.createTask(task.getTaskId(), task.getName(), task.getDescription(), task.getTag(),
+					task.getCategory(), task.isIsMandatory(), task.getPointCount(), task.getStartDate(),
+					task.getDueDate());
+
+		} catch (Exception e) {
+		} // No action
+
+		try {
+			service.deleteTask(task.getTaskId());
+		} catch (Exception e) {
+			fail();
+		}
+
+	}
+
+	@Test
+	public void testDeleteTaskFromInvalidTask() {
+		Task task = makeTestingTask();
+		try {
+			service.createTask(task.getTaskId(), task.getName(), task.getDescription(), task.getTag(),
+					task.getCategory(), task.isIsMandatory(), task.getPointCount(), task.getStartDate(),
+					task.getDueDate());
+
+		} catch (Exception e) {
+		} // No action
+
+		try {
+			service.deleteTask(task.getTaskId() + 1);
+			fail();
+		} catch (Exception e) {
+			assertEquals(e.getMessage(), "Task cannot be deleted because it does not exist");
+		}
+
+	}
+
+	@Test
+	public void testDeleteTaskFromValidTaskNameClassroomNameTeacherEmail() {
+		Task task = makeTestingTask();
+		try {
+			service.createTask(task.getTaskId(), task.getName(), task.getDescription(), task.getTag(),
+					task.getCategory(), task.isIsMandatory(), task.getPointCount(), task.getStartDate(),
+					task.getDueDate());
+
+		} catch (Exception e) {
+		} // No action
+
+		try {
+			service.deleteTask(task.getName(), "VALID", "VALID");
+
+		} catch (Exception e) {
+			fail();
+		}
+
+	}
+
+	@Test
+	public void testDeleteTaskFromInvalidTaskNameValidClassroomNameValidTeacherEmail() {
+		Task task = makeTestingTask();
+		try {
+			service.createTask(task.getTaskId(), task.getName(), task.getDescription(), task.getTag(),
+					task.getCategory(), task.isIsMandatory(), task.getPointCount(), task.getStartDate(),
+					task.getDueDate());
+
+		} catch (Exception e) {
+		} // No action
+
+		try {
+			service.deleteTask(task.getName() + "e", "VALID", "VALID");
+			fail();
+		} catch (Exception e) {
+			assertEquals(e.getMessage(), "Task cannot be deleted because it does not exist");
+		}
+
+	}
+
+	@Test
+	public void testDeleteTaskFromValidTaskNameInvalidClassroomNameValidTeacherEmail() {
+		Task task = makeTestingTask();
+		try {
+			service.createTask(task.getTaskId(), task.getName(), task.getDescription(), task.getTag(),
+					task.getCategory(), task.isIsMandatory(), task.getPointCount(), task.getStartDate(),
+					task.getDueDate());
+
+		} catch (Exception e) {
+		} // No action
+
+		try {
+			service.deleteTask(task.getName(), "INVALID", "VALID");
+			fail();
+		} catch (Exception e) {
+			assertEquals(e.getMessage(), "Task cannot be deleted because it does not exist");
+		}
+
+	}
+
+	@Test
+	public void testDeleteTaskFromValidTaskNameValidClassroomNameInvalidTeacherEmail() {
+		Task task = makeTestingTask();
+		try {
+			service.createTask(task.getTaskId(), task.getName(), task.getDescription(), task.getTag(),
+					task.getCategory(), task.isIsMandatory(), task.getPointCount(), task.getStartDate(),
+					task.getDueDate());
+
+		} catch (Exception e) {
+		} // No action
+
+		try {
+			service.deleteTask(task.getName(), "VALID", "INVALID");
+			fail();
+		} catch (Exception e) {
+			assertEquals(e.getMessage(), "Task cannot be deleted because it does not exist");
+		}
+
 	}
 
 	// Helpers
@@ -366,5 +515,10 @@ public class TestTaskService {
 		task.setName(TASK_NAME);
 		task.setDescription(TASK_DESCRIPTION);
 		return task;
+	}
+
+	private Classroom makeTestingClassroom() {
+		Classroom classroom = new Classroom();
+		return classroom;
 	}
 }
