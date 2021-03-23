@@ -23,7 +23,7 @@ class App extends React.Component {
     if (this.state.currentPage === "TemporaryHomePage") {
       return (
         <Fragment>
-          <Topbar setState={this.setState} name="Teacher" />
+          <Topbar setState={this.setState} name="Teacher" isTeacher={true} />
           <TemporaryHomePage setState={this.setState} />
         </Fragment>
       );
@@ -32,7 +32,11 @@ class App extends React.Component {
     if (this.state.currentPage === "CreateClassroomPage") {
       return (
         <Fragment>
-          <Topbar setState={this.setState} name="TeacherClassRoom" />
+          <Topbar
+            setState={this.setState}
+            name="TeacherClassRoom"
+            isTeacher={true}
+          />
           <CreateClassroomPage />
         </Fragment>
       );
@@ -41,7 +45,7 @@ class App extends React.Component {
     if (this.state.currentPage === "CreateTeacherAccountPage") {
       return (
         <Fragment>
-          <Topbar setState={this.setState} name="Teacher" />
+          <Topbar setState={this.setState} name="Teacher" isTeacher={true} />
           <CreateTeacherAccountPage />
         </Fragment>
       );
@@ -50,7 +54,7 @@ class App extends React.Component {
     if (this.state.currentPage === "ViewAllTasksInClassroomPage") {
       return (
         <Fragment>
-          <Topbar setState={this.setState} name="Teacher" />
+          <Topbar setState={this.setState} name="Teacher" isTeacher={true} />
           <ViewAllTasksInClassroomPage
             mandatoryTasks={[
               {
@@ -82,7 +86,7 @@ class App extends React.Component {
     if (this.state.currentPage === "ViewStudentTasksPage") {
       return (
         <Fragment>
-          <Topbar setState={this.setState} name="Teacher" />
+          <Topbar setState={this.setState} name="Teacher" isTeacher={true} />
           <ViewStudentTasksPage
             mandatoryList={[
               {
@@ -137,7 +141,7 @@ class App extends React.Component {
     if (this.state.currentPage === "CreateStudentAccountPage") {
       return (
         <Fragment>
-          <Topbar setState={this.setState} name="Student" />
+          <Topbar setState={this.setState} name="Student" isTeacher={false} />
           <CreateStudentAccountPage setState={this.setState} />
         </Fragment>
       );
@@ -146,7 +150,7 @@ class App extends React.Component {
     if (this.state.currentPage === "CreateTaskListPage") {
       return (
         <Fragment>
-          <Topbar setState={this.setState} name="Teacher" />
+          <Topbar setState={this.setState} name="Teacher" isTeacher={true} />
           <CreateTaskListPage />
         </Fragment>
       );
@@ -155,7 +159,7 @@ class App extends React.Component {
     if (this.state.currentPage === "CreateCategoryPage") {
       return (
         <Fragment>
-          <Topbar setState={this.setState} name="Student" />
+          <Topbar setState={this.setState} name="Teacher" isTeacher={true} />
           <CreateCategoryPage setState={this.setState} />
         </Fragment>
       );
