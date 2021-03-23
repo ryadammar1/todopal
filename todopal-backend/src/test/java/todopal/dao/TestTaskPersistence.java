@@ -42,11 +42,11 @@ public class TestTaskPersistence {
 
 	private ArrayList<String> TASK_CATEGORIES = new ArrayList<String>();
 
-	// @Autowired
-	// private TeacherRepository teacherRepository;
+	@Autowired
+	private TeacherRepository teacherRepository;
 
-	// @Autowired
-	// private ClassroomRepository classroomRepository;
+	@Autowired
+	private ClassroomRepository classroomRepository;
 
 	@Autowired
 	private TaskRepository taskRepository;
@@ -54,28 +54,34 @@ public class TestTaskPersistence {
 	@AfterEach
 	public void clearDatabase() {
 		taskRepository.deleteAll();
-		// classroomRepository.deleteAll();
-		// teacherRepository.deleteAll();
+		classroomRepository.deleteAll();
+		teacherRepository.deleteAll();
 	}
 
-	/*
-	 * private Teacher createTeacher() { final Teacher teacher = new Teacher();
-	 * 
-	 * teacher.setEmail(TEACHER_EMAIL); teacher.setName(TEACHER_NAME);
-	 * teacher.setBio(TEACHER_BIO); teacher.setApprovalCode(TEACHER_APPROVAL_CODE);
-	 * 
-	 * return teacherRepository.save(teacher); }
-	 * 
-	 * private Classroom createClassroom() { Classroom classroom = new Classroom();
-	 * 
-	 * TASK_CATEGORIES.add("Math"); TASK_CATEGORIES.add("English");
-	 * TASK_CATEGORIES.add("Physics");
-	 * 
-	 * classroom.setClassroomId(CLASS_ID); classroom.setName(CLASS_NAME);
-	 * classroom.setTaskCategories(TASK_CATEGORIES);
-	 * 
-	 * return classroomRepository.save(classroom); }
-	 */
+	private Teacher createTeacher() {
+		final Teacher teacher = new Teacher();
+
+		teacher.setEmail(TEACHER_EMAIL);
+		teacher.setName(TEACHER_NAME);
+		teacher.setBio(TEACHER_BIO);
+		teacher.setApprovalCode(TEACHER_APPROVAL_CODE);
+
+		return teacherRepository.save(teacher);
+	}
+
+	private Classroom createClassroom() {
+		Classroom classroom = new Classroom();
+
+		TASK_CATEGORIES.add("Math");
+		TASK_CATEGORIES.add("English");
+		TASK_CATEGORIES.add("Physics");
+
+		classroom.setClassroomId(CLASS_ID);
+		classroom.setName(CLASS_NAME);
+		classroom.setTaskCategories(TASK_CATEGORIES);
+
+		return classroomRepository.save(classroom);
+	}
 
 	@Test
 	public void testPersistAfterSave() {
@@ -114,7 +120,7 @@ public class TestTaskPersistence {
 
 	@Test
 	@Transactional
-	public void testDeleteById() {
+	public void testDeleteByClass() {
 
 		Task newTask = new Task();
 
@@ -133,56 +139,63 @@ public class TestTaskPersistence {
 		newTask.setDueDate(realDueDate);
 
 		taskRepository.save(newTask);
-		Task savedTask = taskRepository.deleteTaskByTaskId(TASK_ID);
+		taskRepository.delete(newTask);
 
-		assertNull(savedTask);
+		assertNull(taskRepository.findBytaskId(TASK_ID));
 
 	}
 
-	/*
-	 * @Test public void testFindByClassAndName() {
-	 * 
-	 * Task newTask = new Task();
-	 * 
-	 * Classroom classroom = createClassroom(); Teacher teacher = createTeacher();
-	 * 
-	 * newTask.setIsMandatory(TASK_MANDATORY); newTask.setTag(TASK_TAG);
-	 * newTask.setCategory(TASK_CATEGORY); newTask.setPointCount(TASK_POINTS);
-	 * newTask.setName(TASK_NAME); newTask.setDescription(TASK_DESCRIPTION);
-	 * newTask.setTaskId(TASK_ID);
-	 * 
-	 * LocalDate realStartDate = LocalDate.parse(TASK_START_DATE);
-	 * newTask.setStartDate(realStartDate);
-	 * 
-	 * LocalDate realDueDate = LocalDate.parse(TASK_DUE_DATE);
-	 * newTask.setDueDate(realDueDate);
-	 * 
-	 * Set<Task> tasks = new HashSet<>(); tasks.add(newTask);
-	 * 
-	 * classroom.setTask(tasks);
-	 * 
-	 * Set<Classroom> classrooms = new HashSet<>(); classrooms.add(classroom);
-	 * 
-	 * teacher.setClassroom(classrooms);
-	 * 
-	 * taskRepository.save(newTask); classroomRepository.save(classroom);
-	 * teacherRepository.save(teacher);
-	 * 
-	 * Task savedTask =
-	 * taskRepository.findTaskByNameAndAndClassroom(newTask.getName(),
-	 * classroomRepository.findByNameAndTeacherEmail(classroom.getName(),
-	 * teacher.getName()));
-	 * 
-	 * assertNotNull(savedTask); assertEquals(TASK_MANDATORY,
-	 * savedTask.isIsMandatory()); assertEquals(TASK_TAG, savedTask.getTag());
-	 * assertEquals(TASK_CATEGORY, savedTask.getCategory());
-	 * assertEquals(TASK_POINTS, savedTask.getPointCount()); assertEquals(TASK_NAME,
-	 * savedTask.getName()); assertEquals(TASK_DESCRIPTION,
-	 * savedTask.getDescription()); assertEquals(TASK_ID, savedTask.getTaskId());
-	 * assertEquals(realStartDate, savedTask.getStartDate());
-	 * assertEquals(realDueDate, savedTask.getDueDate());
-	 * 
-	 * }
-	 */
+	@Test
+	@Transactional
+	public void testFindByClassAndName() {
+
+		Task newTask = new Task();
+
+		Classroom classroom = createClassroom();
+		Teacher teacher = createTeacher();
+
+		newTask.setIsMandatory(TASK_MANDATORY);
+		newTask.setTag(TASK_TAG);
+		newTask.setCategory(TASK_CATEGORY);
+		newTask.setPointCount(TASK_POINTS);
+		newTask.setName(TASK_NAME);
+		newTask.setDescription(TASK_DESCRIPTION);
+		newTask.setTaskId(TASK_ID);
+
+		LocalDate realStartDate = LocalDate.parse(TASK_START_DATE);
+		newTask.setStartDate(realStartDate);
+
+		LocalDate realDueDate = LocalDate.parse(TASK_DUE_DATE);
+		newTask.setDueDate(realDueDate);
+
+		Set<Task> tasks = new HashSet<>();
+		tasks.add(newTask);
+
+		classroom.setTask(tasks);
+
+		Set<Classroom> classrooms = new HashSet<>();
+		classrooms.add(classroom);
+
+		teacher.setClassroom(classrooms);
+
+		taskRepository.save(newTask);
+		classroomRepository.save(classroom);
+		teacherRepository.save(teacher);
+
+		Task savedTask = taskRepository.findTaskByNameAndAndClassroom(newTask.getName(),
+				classroomRepository.findByNameAndTeacherEmail(classroom.getName(), teacher.getEmail()));
+
+		assertNotNull(savedTask);
+		assertEquals(TASK_MANDATORY, savedTask.isIsMandatory());
+		assertEquals(TASK_TAG, savedTask.getTag());
+		assertEquals(TASK_CATEGORY, savedTask.getCategory());
+		assertEquals(TASK_POINTS, savedTask.getPointCount());
+		assertEquals(TASK_NAME, savedTask.getName());
+		assertEquals(TASK_DESCRIPTION, savedTask.getDescription());
+		assertEquals(TASK_ID, savedTask.getTaskId());
+		assertEquals(realStartDate, savedTask.getStartDate());
+		assertEquals(realDueDate, savedTask.getDueDate());
+
+	}
 
 }
