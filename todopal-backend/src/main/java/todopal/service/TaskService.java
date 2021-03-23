@@ -8,13 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import todopal.dao.ClassroomRepository;
 import todopal.dao.StudentRepository;
 import todopal.dao.TaskContainerRepository;
 import todopal.dao.TaskRepository;
-import todopal.model.Student;
-import todopal.model.Task;
-import todopal.model.TaskContainer;
-import todopal.model.TaskStatus;
+import todopal.model.*;
 
 @Service
 public class TaskService {
@@ -24,6 +22,8 @@ public class TaskService {
 	private TaskContainerRepository taskContainerRepository;
 	@Autowired
 	private StudentRepository studentRepository;
+	@Autowired
+	private ClassroomRepository classroomRepository;
 
 	@Transactional
 	public Task createTask(long taskId, String name, String description, String tag, String category,
@@ -53,6 +53,26 @@ public class TaskService {
 
 		taskRepository.save(task);
 		return task;
+	}
+
+	@Transactional
+	public Task deleteTask(long taskId){
+		Task toDelete = taskRepository.findBytaskId(taskId);
+		if (toDelete == null) {
+			throw new IllegalArgumentException("Task cannot be deleted because it does not exist");
+		}
+
+		return taskRepository.deleteTaskByTaskId(taskId);
+	}
+
+	@Transactional
+	public Task deleteTask(String taskName, String classroomName, String teacherEmail){
+		Task toDelete = taskRepository.findTaskByNameAndAndClassroom(taskName, classroomRepository.findByNameAndTeacherEmail(classroomName, teacherEmail));
+		if (toDelete == null) {
+			throw new IllegalArgumentException("Task cannot be deleted because it does not exist");
+		}
+
+		return taskRepository.deleteTaskByTaskId(toDelete.getTaskId());
 	}
 
 	@Transactional
@@ -146,7 +166,7 @@ public class TaskService {
 	}
 
 	@Transactional
-	private Student getStudentWithTask(long taskContainerId, String studentEmail) throws Exception {
+	public Student getStudentWithTask(long taskContainerId, String studentEmail) throws Exception {
 		if (studentRepository.findStudentByEmail(studentEmail) == null) {
 			throw new IllegalArgumentException("Non-existant Student");
 		}
