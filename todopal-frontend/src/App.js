@@ -9,6 +9,9 @@ import CreateStudentAccountPage from "./pages/CreateStudentAccountPage";
 import CreateTaskListPage from "./pages/CreateTaskListPage";
 import CreateCategoryPage from "./pages/CreateCategoryPage";
 import ViewStudentsInClassroomPage from "./pages/ViewStudentsInClassroomPage"
+import ViewStudentProfileAsTeacherPage from "./pages/ViewStudentProfileAsTeacherPage";
+import ViewTeacherProfilePage from "./pages/ViewTeacherProfilePage";
+import ViewPersonalProfileStudentPage from "./pages/ViewPersonalProfileStudentPage"
 import "./style/global/__font.css";
 
 class App extends React.Component {
@@ -135,6 +138,69 @@ class App extends React.Component {
       );
     }
 
+    if (this.state.currentPage === "ViewPersonalProfileStudent") {
+      return (
+        <Fragment>
+          <Topbar setState={this.setState} name="Student" />
+          <ViewPersonalProfileStudentPage
+            student={{
+              studentName: "Johnny",
+              studentEmail: "johnny@email.com",
+              studentPassword: "johnnyiscool",
+              studentBio: "I like watching TV",
+              studentPoints: 15,
+              studentClassroom: 134,
+            }}
+            mandatoryList={[
+              {
+                isMandatory: true,
+                taskName: "Math homework",
+                tag: "Math",
+                description: "I love math",
+                category: "Math?",
+                startDate: "Jan 1 2021",
+                dueDate: "Feb 1 2021",
+                pointCount: 1,
+              },
+              {
+                isMandatory: true,
+                taskName: "English homework",
+                tag: "English",
+                description: "I love refregirators",
+                category: "eng?",
+                startDate: "Jan 1 2021",
+                dueDate: "Feb 1 2021",
+                pointCount: 1,
+              },
+            ]}
+            optionalList={[
+              {
+                isMandatory: false,
+                taskName: "Math not work",
+                tag: "Math",
+                description:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                category: "Math?",
+                startDate: "Jan 1 2021",
+                dueDate: "Feb 1 2021",
+                pointCount: 1,
+              },
+              {
+                isMandatory: false,
+                taskName: "English not work",
+                tag: "English",
+                description: "I love refregirators",
+                category: "eng?",
+                startDate: "Jan 1 2021",
+                dueDate: "Feb 1 2021",
+                pointCount: 1,
+              },
+            ]}
+          />
+        </Fragment>
+      );
+    }
+
     if (this.state.currentPage === "CreateStudentAccountPage") {
       return (
         <Fragment>
@@ -209,6 +275,45 @@ class App extends React.Component {
         <Fragment>
           <Topbar setState={this.setState} name="Student" />
           <CreateCategoryPage setState={this.setState} />
+        </Fragment>
+      );
+    }
+
+    //this is a dummy teacher
+    let dummyTeacher = {
+      name: "dummy Teacher",
+      email: "dummy.teacher@let.com",
+      bio: "Im a little dummy teacher",
+      password: "iAmPassword",
+      apprCode: "123ILoveMath",
+      classes: [
+        { id: "classid1" },
+        { id: "classid2" },
+        { id: "classid3" },
+        { id: "classid4" },
+      ],
+    };
+
+    if (this.state.currentPage === "ViewTeacherProfilePageAsTeacher") {
+      return (
+        <Fragment>
+          <Topbar setState={this.setState} name="Teacher" />
+          <ViewTeacherProfilePage
+            isLoggedInAsTeacher={true}
+            teacher={dummyTeacher}
+          />
+        </Fragment>
+      );
+    }
+
+    if (this.state.currentPage === "ViewTeacherProfilePageAsStudent") {
+      return (
+        <Fragment>
+          <Topbar setState={this.setState} name="Teacher" />
+          <ViewTeacherProfilePage
+            isLoggedInAsTeacher={false}
+            teacher={dummyTeacher}
+          />
         </Fragment>
       );
     }

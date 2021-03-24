@@ -183,8 +183,14 @@ public class TodopalRestController {
 	}
 
 	@GetMapping(value = { "/teachers/{email}", "/teachers/{email}/" })
-	public TeacherDto getTeacherByName(@PathVariable("email") String email) throws IllegalArgumentException {
+	public TeacherDto getTeacherByEmail(@PathVariable("email") String email) throws IllegalArgumentException {
 		return Converter.convertToDto(teacherService.getTeacher(email));
+	}
+
+	@GetMapping(value = { "/teachers/personal/{email}", "/teachers/personal/{email}/" })
+	public TeacherDto getTeacherPersonalInfromationByEmail(@PathVariable("email") String email)
+			throws IllegalArgumentException {
+		return Converter.convertToDtoWithPersonalInfo(teacherService.getTeacher(email));
 	}
 
 	@GetMapping(value = { "/teachers", "/teachers/" })
@@ -194,7 +200,7 @@ public class TodopalRestController {
 		return teachers;
 	}
 
-	@PostMapping(value = { "/students/{name}", "/studentss/{name}/" })
+	@PostMapping(value = { "/students/{name}", "/students/{name}/" })
 	public StudentDto createStudent(@PathVariable("name") String name, @RequestParam("email") String email,
 			@RequestParam("password") String password) throws IllegalArgumentException {
 		Student student = studentService.createStudent(name, email, password);
@@ -216,7 +222,29 @@ public class TodopalRestController {
 
 		studentService.updateStudent(student);
 
-		return Converter.converDto(classroom);
+		return Converter.convertToDto(classroom);
+  }
+
+	@GetMapping(value = { "/student-school-task/{email}", "/student-school-task/{email}/" })
+	public List<TaskContainerDto> getStudentSchoolTaskContainers(@PathVariable("email") String email) throws Exception {
+		List<TaskContainerDto> taskContainers = new ArrayList<TaskContainerDto>();
+		studentService.getStudentSchoolTasks(email)
+				.forEach(container -> taskContainers.add(Converter.convertToDto(container)));
+		return taskContainers;
+	}
+
+	@GetMapping(value = { "/student-personal-task/{email}", "/student-personal-task/{email}/" })
+	public List<TaskContainerDto> getStudentPersonalTaskContainers(@PathVariable("email") String email)
+			throws Exception {
+		List<TaskContainerDto> taskContainers = new ArrayList<TaskContainerDto>();
+		studentService.getStudentPersonalTasks(email)
+				.forEach(container -> taskContainers.add(Converter.convertToDto(container)));
+		return taskContainers;
+
+	@GetMapping(value = { "/students/personal/{email}", "/students/personal/{email}/" })
+	public StudentDto getStudentByEmailWithPersonalInfo(@PathVariable("email") String email)
+			throws IllegalArgumentException {
+		return Converter.convertToStudentDtoWithPersonalInfo(studentService.getStudent(email));
 	}
 
 	@GetMapping(value = { "/students", "/students/" })
@@ -231,5 +259,11 @@ public class TodopalRestController {
 			@PathVariable("name") String name) {
 		Teacher teacher = teacherService.addToOptionalLists(teacherEmail, name);
 		return Converter.convertToDto(teacher);
+	}
+
+	@PostMapping(value = { "/mark-task-done", "/mark-task-done/" })
+	public void markTaskAsDone(@RequestParam("id") long taskId, @RequestParam("email") String studentEmail,
+			@RequestParam("feedback") String feedback) {
+		taskService.setTaskAsDone(taskId, studentEmail, feedback);
 	}
 }
