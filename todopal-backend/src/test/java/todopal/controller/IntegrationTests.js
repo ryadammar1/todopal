@@ -14,15 +14,19 @@ import assert from "assert";
 //import your test files here
 import { ID012 } from "./ID012.js";
 import { ID007 } from "./ID007.js";
+import { ID013 } from "./ID013.js"; 
 
 //import db cleaner
 import { clean } from './DBCleaner.js';
 
 //call your test files here
+await clean();
 const id012 = await ID012();
-clean();
+await clean();
 const id007 = await ID007();
-clean();
+await clean();
+const id013 = await ID013();
+await clean();
 
 assert.strictEqual("Kevin", id012[0]);
 assert.strictEqual(id007 != null, true);

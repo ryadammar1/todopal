@@ -4,7 +4,9 @@ import pg from 'pg';
 export const clean = async () => {
     const Pool = pg.Pool;
     const connectionString = process.env.CONNECTION_URI
-    const pool = new Pool({connectionString, ssl: true});
+    const pool = new Pool({connectionString, ssl: {
+        rejectUnauthorized: false
+      }});
     await pool.query('DELETE FROM student_personal_task');
     await pool.query('DELETE FROM student_school_task');
     await pool.query('DELETE FROM student');

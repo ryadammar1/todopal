@@ -26,8 +26,8 @@ export const ID007 = async function () {
 
 //test functions
 const createTask = async () => {
-    await axios.post(`/create-task/`, null, { params: { taskId : id, name : name, description : description, tag : tag, category : category , isMandatory : isMandatory , pointCount : points, startDate : start_date,
-        dueDate : due_date } });
+    await axios.post(`/create-task/`, null, { params: { id : id, name : name, description : description, tag : tag, category : category , mandatory : isMandatory , points : points, "start-date" : start_date,
+        "due-date" : due_date } });
 }
 
 
