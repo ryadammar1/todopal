@@ -1,16 +1,22 @@
 /* Here is the integration testing main script. Run this and the files with the axios calls will run. */
 
 //axios config, dw about this
-import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:8080';
+import axios from "axios";
+axios.defaults.baseURL = "http://localhost:8080";
 
 //import assertions
-import assert from 'assert';
+import assert from "assert";
 
 //import your test files here
-import { ID012 } from './ID012.js';
+import { ID012 } from "./ID012.js";
+import { ID013 } from "./ID013.js";
 
 //call your test files here
 const id012 = await ID012();
+const id013 = await ID013();
 
 assert.strictEqual("Kevin", id012[0]);
+assert.strictEqual("Kevin", id013.name);
+assert.strictEqual("kevin@kevin.ca", id013.email);
+assert.strictEqual("1234", id013.password);
+assert.strictEqual("-1", id013.classroom.classroomId);
