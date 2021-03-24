@@ -14,12 +14,8 @@ import assert from "assert";
 //import your test files here
 import { ID012 } from "./ID012.js";
 import { ID007 } from "./ID007.js";
-<<<<<<< HEAD
 import { ID013 } from "./ID013.js"; 
 import { ID024 } from "./ID024.js";
-=======
-import { ID013 } from "./ID013.js";
->>>>>>> 5a3e032267dd063c31528e119f50dede6d5082ca
 
 //import db cleaner
 import { clean } from "./DBCleaner.js";
