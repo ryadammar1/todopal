@@ -66,7 +66,8 @@ function TemporaryHomePage({ setState }) {
 
       <div>Create Category</div>
       <button onClick={() => CreateCategoryOnClick()}>Create Category</button>
-
+      <div>View Student Profile As Teacher</div>
+      <button onClick={() => ViewStudentProfileAsTeacherOnClick()}>View Student Profile As Teacher</button>
       <div>View Teacher Profile</div>
       <button onClick={() => ViewTeacherProfileOnClick(true)}>
         View Teacher Profile (as teacher)

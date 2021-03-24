@@ -3,12 +3,15 @@ package todopal.service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import todopal.dao.ClassroomRepository;
 import todopal.dao.StudentRepository;
+import todopal.model.Classroom;
 import todopal.model.Student;
 import todopal.model.TaskContainer;
 
@@ -17,6 +20,8 @@ public class StudentService {
 
 	@Autowired
 	StudentRepository studentRepository;
+	@Autowired
+	ClassroomRepository classroomRepository;
 
 	@Transactional
 	public Student getStudent(String email) {
@@ -25,8 +30,11 @@ public class StudentService {
 		} else if (studentRepository.findStudentByEmail(email) == null) {
 			throw new IllegalArgumentException("Non-existant Student");
 		}
-
-		return studentRepository.findStudentByEmail(email);
+		Student student = studentRepository.findStudentByEmail(email);
+		if(student == null) {
+			throw new IllegalArgumentException("Student does not exist!");
+		}
+		return student;
 	}
 
 	/**
@@ -140,6 +148,27 @@ public class StudentService {
 
 		return false;
 	}
+	
+	@Transactional
+	public String getStudentName(String email) {
+		Student student = getStudent(email);
+		
+		return student.getName();
+	}
+	
+	@Transactional
+	public Set<TaskContainer> getStudentPersonalTasks(String email) {
+		Student student = getStudent(email);
+		
+		return student.getPersonalTask();
+	}
+	
+	@Transactional
+	public Set<TaskContainer> getStudentSchoolTasks(String email) {
+		Student student = getStudent(email);
+		
+		return student.getSchoolTask();
+	}
 
 	@Transactional
 	public boolean updateStudent(Student student) {
@@ -160,4 +189,5 @@ public class StudentService {
 	private boolean isEmptyString(String value) {
 		return (value == null || value.trim().length() == 0);
 	}
+	
 }

@@ -8,6 +8,7 @@ import Topbar from "./components/Topbar.js";
 import CreateStudentAccountPage from "./pages/CreateStudentAccountPage";
 import CreateTaskListPage from "./pages/CreateTaskListPage";
 import CreateCategoryPage from "./pages/CreateCategoryPage";
+import ViewStudentProfileAsTeacherPage from "./pages/ViewStudentProfileAsTeacherPage";
 import ViewTeacherProfilePage from "./pages/ViewTeacherProfilePage";
 import ViewPersonalProfileStudentPage from "./pages/ViewPersonalProfileStudentPage"
 import "./style/global/__font.css";
