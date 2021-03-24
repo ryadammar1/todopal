@@ -16,16 +16,43 @@ const studentPassword = "1234";
 
 //main function of id
 export const ID013 = async function () {
+  await createTeacher();
+  await createClassroom();
   await createStudent();
   await setStudentToClassroom();
   return await getStudentsById();
 };
 
 //test functions
+const createTeacher = async () => {
+  await axios.post(`/teachers/${teacherName}`, null, {
+    params: {
+      approvalCode: teacherApprovalCode,
+      email: teacherEmail,
+      bio: teacherBio,
+      password: teacherPassword,
+    },
+  });
+};
+
 const createStudent = async () => {
   await axios.post(`/students/${studentName}`, null, {
     params: { email: studentEmail, password: studentPassword },
   });
+};
+
+const createClassroom = async () => {
+  await axios
+    .post(`/create-classroom/${classroomName}`, null, {
+      params: {
+        teacherEmail: teacherEmail,
+        imagePath: classroomImage,
+        subject: classroomSubject,
+      },
+    })
+    .then((res) => {
+      classroomId = res.data.classroomDtoId;
+    });
 };
 
 const setStudentToClassroom = async () => {
