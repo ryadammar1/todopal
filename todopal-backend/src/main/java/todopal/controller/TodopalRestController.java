@@ -224,7 +224,7 @@ public class TodopalRestController {
 		studentService.updateStudent(student);
 
 		return Converter.convertToDto(classroom);
-  }
+	}
 
 	@GetMapping(value = { "/student-school-task/{email}", "/student-school-task/{email}/" })
 	public List<TaskContainerDto> getStudentSchoolTaskContainers(@PathVariable("email") String email) throws Exception {

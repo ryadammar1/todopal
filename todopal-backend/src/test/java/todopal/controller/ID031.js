@@ -3,13 +3,24 @@ import axios from "axios";
 //variables
 const id = 69;
 const name = "TestTask";
-// TODO finish the constants here. Make sure the names are good, nothing in this file is good,
+const description = "none";
+const tag = "math";
+const category = "homework";
+const isMandatory = true;
+const points = 1;
+const start_date = "2021-01-01";
+const due_date = "2021-01-02";
+//variables
+const studentName = "Kevin";
+const studentEmail = "kevin@kevin.ca";
+const studentPassword = "1234";
 
 //main function of id
 export const ID031 = async function () {
   await createStudent();
-  await setStudentToClassroom();
-  return await getStudentsById();
+  await createTask();
+  await setTaskAsDone();
+  return await getTask();
 };
 
 //test functions
@@ -33,14 +44,22 @@ const setTaskAsDone = async () => {
   await axios.post(`/mark-task-done/`, null, {
     params: {
       id: id,
-      name: name,
-      description: description,
-      tag: tag,
-      category: category,
-      mandatory: isMandatory,
-      points: points,
-      "start-date": start_date,
-      "due-date": due_date,
+      email: email,
+      feedback: feedback,
     },
+  });
+};
+
+const getTask = async () => {
+  await axios.post(`/task/`, null, {
+    params: {
+      id: id,
+    },
+  });
+};
+
+const createStudent = async () => {
+  await axios.post(`/students/${studentName}`, null, {
+    params: { email: studentEmail, password: studentPassword },
   });
 };
