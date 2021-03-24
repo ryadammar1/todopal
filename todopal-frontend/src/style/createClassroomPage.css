@@ -32,6 +32,14 @@
   justify-content: space-between;
 }
 
+#name-subject-student-profile {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 50px;
+  margin-top: 50px;
+}
+
 .name-subject {
   display: flex;
   flex-direction: column;

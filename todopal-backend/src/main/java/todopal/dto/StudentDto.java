@@ -8,6 +8,7 @@ public class StudentDto {
 	private String name;
 	private String email;
 	private String password;
+	private String bio;
 	private int totalPoints;
 	private ArrayList<String> taskCategories;
 	private ArrayList<String> taskTags;
@@ -19,11 +20,18 @@ public class StudentDto {
 		this.name = name;
 		this.email = email;
 		this.password = password;
+		this.bio = null;
 		this.totalPoints = 0;
 		this.taskCategories = new ArrayList<String>();
 		this.taskTags = new ArrayList<String>();
 		this.schoolTask = new HashSet<TaskContainerDto>();
 		this.personalTask = new HashSet<TaskContainerDto>();
+	}
+
+	public StudentDto(String name, String email, String password, String bio, int points) {
+		this(name, email, password);
+		this.bio = bio;
+		this.totalPoints = points;
 	}
 
 	public void setName(String value) {
@@ -48,6 +56,14 @@ public class StudentDto {
 
 	public String getPassword() {
 		return this.password;
+	}
+
+	public String getBio() {
+		return bio;
+	}
+
+	public void setBio(String bio) {
+		this.bio = bio;
 	}
 
 	public void setTotalPoints(int value) {

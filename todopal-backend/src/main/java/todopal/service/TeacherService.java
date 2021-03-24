@@ -98,6 +98,15 @@ public class TeacherService {
 	}
 
 	@Transactional
+	public Teacher updateTeacher(Teacher teacher) {
+		if (teacherRepository.findTeacherByEmail(teacher.getEmail()) == null) {
+			throw new IllegalArgumentException("No such teacher");
+		}
+		teacherRepository.save(teacher);
+		return teacher;
+	}
+
+	@Transactional
 	public boolean deleteTeacher(String teacherEmail) {
 		Teacher teacher = teacherRepository.findTeacherByEmail(teacherEmail);
 		if (teacher != null) {
