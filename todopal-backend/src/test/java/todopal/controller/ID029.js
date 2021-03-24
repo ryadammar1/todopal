@@ -12,9 +12,9 @@ const tag = "math";
 const category = "homework";
 
 //main function of id
-export const ID007 = async function () {
+export const ID029 = async function () {
     await createTask();
-    return await deleteTask();
+    return await getTasks();
 }
 
 //test functions
@@ -24,7 +24,7 @@ const createTask = async () => {
 }
 
 
-const deleteTask = async () => {
-    const res = await axios.delete(`/delete-task/${id}`);
+const getTasks = async () => {
+    const res = await axios.delete(`/all-tasks/`);
     return res.data;
 }
