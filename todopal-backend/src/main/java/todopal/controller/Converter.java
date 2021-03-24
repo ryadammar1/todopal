@@ -54,7 +54,7 @@ public class Converter {
                 taskContainer.getStatus(), taskDto, taskContainer.getFeedback());
     }
 
-    protected static ClassroomDto converDto(Classroom classroom) {
+    protected static ClassroomDto convertToDto(Classroom classroom) {
         if (classroom == null) {
             throw new IllegalArgumentException("There is no such Classroom!");
         }

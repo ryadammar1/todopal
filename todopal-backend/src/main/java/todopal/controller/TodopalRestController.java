@@ -86,7 +86,7 @@ public class TodopalRestController {
 
 		Teacher teacher = teacherService.getTeacher(teacherEmail);
 		Classroom classroom = classroomService.createClassroom(teacher, name, imagePath, subject);
-		return Converter.converDto(classroom);
+		return Converter.convertToDto(classroom);
 	}
 
 	@PostMapping(value = { "/add-to-mandatory-list", "/add-to-mandatory-list/" })
@@ -241,6 +241,7 @@ public class TodopalRestController {
 		studentService.getStudentPersonalTasks(email)
 				.forEach(container -> taskContainers.add(Converter.convertToDto(container)));
 		return taskContainers;
+	}
 
 	@GetMapping(value = { "/students/personal/{email}", "/students/personal/{email}/" })
 	public StudentDto getStudentByEmailWithPersonalInfo(@PathVariable("email") String email)

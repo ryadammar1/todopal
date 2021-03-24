@@ -15,6 +15,7 @@ import static org.mockito.Mockito.lenient;
 import java.time.LocalDate;
 import java.util.HashSet;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -384,8 +385,8 @@ public class TestTaskService {
 	public void testSetTaskAsDone() throws Exception {
 		TaskContainer taskContainer = service.setTaskAsDone(TC_TEST_SET_DONE, SD_TEST_SET_DONE1, FEEDBACK_TEST_SET_DONE);
 		assertEquals(taskContainer.getStatus(), TaskStatus.DONE);
-		assertNotNull(taskContainer.getCompletionDate());
-		assertNotNull(taskContainer.getFeedback());
+		Assertions.assertNotNull(taskContainer.getCompletionDate());
+		Assertions.assertNotNull(taskContainer.getFeedback());
 	}
 	
 	

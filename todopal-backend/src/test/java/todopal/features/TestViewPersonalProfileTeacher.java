@@ -45,16 +45,6 @@ public class TestViewPersonalProfileTeacher {
         response = todopalRestController.getTeacherPersonalInfromationByEmail(email);
     }
 
-    @Then("the name of {string} will be displayed")
-    public void the_name_of_will_be_displayed(String name) {
-        assertEquals(name, response.getName());
-    }
-
-    @Then("the email {string} associated with {string} will be displayed")
-    public void the_email_associated_with_will_be_displayed(String email, String fullname) {
-        assertEquals(email, response.getEmail());
-    }
-
     @Then("the classrooms {string} and {string} are displayed")
     public void the_classrooms_and_are_displayed(String classroom1, String classroom2) {
         assertEquals(2, response.getClassroom().size());
