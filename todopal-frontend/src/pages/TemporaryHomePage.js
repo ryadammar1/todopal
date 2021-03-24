@@ -27,6 +27,10 @@ function TemporaryHomePage({ setState }) {
     setState({ currentPage: "CreateCategoryPage" });
   }
 
+  function ViewStudentsInClassroomOnClick() {
+    setState({ currentPage: "ViewStudentsInClassroomPage" });
+  }
+  
   function ViewTeacherProfileOnClick(isLoggedInAsTeacher) {
     if (isLoggedInAsTeacher) {
       setState({ currentPage: "ViewTeacherProfilePageAsTeacher" });
@@ -66,6 +70,9 @@ function TemporaryHomePage({ setState }) {
 
       <div>Create Category</div>
       <button onClick={() => CreateCategoryOnClick()}>Create Category</button>
+
+      <div>View Students In Classroom</div>
+      <button onClick={() => ViewStudentsInClassroomOnClick()}>View Students In Classroom</button>
       <div>View Student Profile As Teacher</div>
       <button onClick={() => ViewStudentProfileAsTeacherOnClick()}>View Student Profile As Teacher</button>
       <div>View Teacher Profile</div>

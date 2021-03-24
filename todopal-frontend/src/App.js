@@ -8,6 +8,7 @@ import Topbar from "./components/Topbar.js";
 import CreateStudentAccountPage from "./pages/CreateStudentAccountPage";
 import CreateTaskListPage from "./pages/CreateTaskListPage";
 import CreateCategoryPage from "./pages/CreateCategoryPage";
+import ViewStudentsInClassroomPage from "./pages/ViewStudentsInClassroomPage"
 import ViewStudentProfileAsTeacherPage from "./pages/ViewStudentProfileAsTeacherPage";
 import ViewTeacherProfilePage from "./pages/ViewTeacherProfilePage";
 import ViewPersonalProfileStudentPage from "./pages/ViewPersonalProfileStudentPage"
@@ -205,6 +206,57 @@ class App extends React.Component {
         <Fragment>
           <Topbar setState={this.setState} name="Student" />
           <CreateStudentAccountPage setState={this.setState} />
+        </Fragment>
+      );
+    }
+
+    if (this.state.currentPage === "ViewStudentsInClassroomPage") {
+      return (
+        <Fragment>
+          <Topbar setState={this.setState} name="Teacher" />
+          <ViewStudentsInClassroomPage studentList={[
+              {
+                fullName: "Ricky",
+                email: "ricky@email.com"
+              },
+              {
+                fullName: "Taha",
+                email: "taha@email.com"
+              },
+              {
+                fullName: "Delia",
+                email: "delia@email.com"
+              },
+              {
+                fullName: "Zimu",
+                email: "zimu@email.com"
+              },
+              {
+                fullName: "Nafiz",
+                email: "nafiz@email.com"
+              },
+              {
+                fullName: "Ryad",
+                email: "ryad@email.com"
+              },
+              {
+                fullName: "Ahmad",
+                email: "ahmad@email.com"
+              },
+              {
+                fullName: "Gurdarshan",
+                email: "gurdarshan@email.com"
+              },
+              {
+                fullName: "Daniel",
+                email: "daniel@email.com"
+              },
+              {
+                fullName: "Omar",
+                email: "omar@email.com"
+              },
+
+          ]}/>
         </Fragment>
       );
     }

@@ -24,28 +24,30 @@ public class ClassroomService {
 	ClassroomRepository classroomRepository;
 
 	@Transactional
-	public List<String> getAllClassroomStudentsNames(long classroomID){
-		Classroom classroom = classroomRepository.findByClassroomId(classroomID);
-		
-		if (classroom ==null) {
-			throw new IllegalArgumentException("This classroom does not exits!");
+	public List<String> getAllClassroomStudentsNames(Classroom originalClassroom) {
+		if (originalClassroom == null) {
+			throw new IllegalArgumentException("Inexistent Classroom");
 		}
-		
+		Classroom classroom = classroomRepository.findByClassroomId(originalClassroom.getClassroomId());
+
+		if (classroom == null) {
+			throw new IllegalArgumentException("Inexistent Classroom");
+		}
+
 		Set<Student> studentsInClass = classroom.getStudent();
 		if (studentsInClass.isEmpty()) {
 			throw new IllegalArgumentException("Class is empty!");
 
 		}
 		ArrayList<String> studentNames = new ArrayList<String>();
-		
-		for(Student student : studentsInClass) {
+
+		for (Student student : studentsInClass) {
 			studentNames.add(student.getName());
 		}
-		
+
 		return toList(studentNames);
-		
 	}
-	
+
 	@Transactional
 	public Classroom createClassroom(Teacher teacher, String name, String imagePath, String subject) {
 		checkForEmptyString(name);
@@ -160,6 +162,15 @@ public class ClassroomService {
 	}
 
 	@Transactional
+	public Classroom updateClassroom(Classroom classroom) {
+		if (classroomRepository.findByClassroomId(classroom.getClassroomId()) == null) {
+			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
+		}
+		classroomRepository.save(classroom);
+		return classroom;
+	}
+
+	@Transactional
 	public Classroom getClassroom(long id) {
 		Classroom classroom = classroomRepository.findByClassroomId(id);
 		if (classroom == null) {
@@ -169,8 +180,8 @@ public class ClassroomService {
 	}
 
 	@Transactional
-	public Classroom getClassroom(String teacherName, String classroomName) {
-		return classroomRepository.findByNameAndTeacherEmail(teacherName, classroomName);
+	public Classroom getClassroom(String classroomName, String teacherEmail) {
+		return classroomRepository.findByNameAndTeacherEmail(classroomName, teacherEmail);
 	}
 
 	@Transactional
@@ -205,7 +216,7 @@ public class ClassroomService {
 			throw new IllegalArgumentException(errorMessage);
 		}
 	}
-	
+
 	private <T> List<T> toList(Iterable<T> iterable) {
 		List<T> resultList = new ArrayList<T>();
 		iterable.forEach(resultList::add);

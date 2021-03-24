@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -149,6 +150,15 @@ public class TodopalRestController {
 		return Converter.convertToDto(student);
 	}
 
+	@GetMapping(value = { "/classroom_student_names/{class_id}/", "/classroom_student_names/{class_id}" })
+	public List<String> getStudentNames(@PathVariable("class_id") String class_id) {
+		long id = Long.parseLong(class_id);
+		Classroom c = classroomService.getClassroom(id);
+		List<String> names = classroomService.getAllClassroomStudentsNames(c);
+		return names;
+
+	}
+
 	@PostMapping(value = { "/teachers/{name}", "/teachers/{name}/" })
 	public TeacherDto createTeacher(@RequestParam("approvalCode") String appCode, @PathVariable("name") String name,
 			@RequestParam("email") String email, @RequestParam("password") String password,
@@ -202,6 +212,18 @@ public class TodopalRestController {
 		Student student = studentService.getStudent(email);
 		return Converter.convertToDto(student);
 	}
+
+	@PutMapping(value = { "/students/{email}/{class_id}", "/students/{email}/{class_id}/" })
+	public ClassroomDto setStudentToClassroom(@PathVariable("email") String email,
+			@PathVariable("class_id") String class_id) {
+		Student student = studentService.getStudent(email);
+		Classroom classroom = classroomService.getClassroom(Long.parseLong(class_id));
+		student.setClassroom(classroom);
+
+		studentService.updateStudent(student);
+
+		return Converter.convertToDto(classroom);
+  }
 
 	@GetMapping(value = { "/student-school-task/{email}", "/student-school-task/{email}/" })
 	public List<TaskContainerDto> getStudentSchoolTaskContainers(@PathVariable("email") String email) throws Exception {

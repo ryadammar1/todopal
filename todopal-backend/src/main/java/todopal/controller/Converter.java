@@ -19,7 +19,8 @@ public class Converter {
             throw new IllegalArgumentException("There is no such Teacher!");
         }
 
-        return new TeacherDto(teacher.getName());
+        return new TeacherDto(teacher.getName(), teacher.getEmail(), teacher.getPassword(), teacher.getBio(),
+                teacher.getApprovalCode());
     }
 
     protected static TeacherDto convertToDtoWithPersonalInfo(Teacher teacher) {
