@@ -216,4 +216,10 @@ public class TodopalRestController {
 		Teacher teacher = teacherService.addToOptionalLists(teacherEmail, name);
 		return Converter.convertToDto(teacher);
 	}
+
+	@PostMapping(value = { "/mark-task-done", "/mark-task-done/" })
+	public void markTaskAsDone(@RequestParam("id") long taskId, @RequestParam("email") String studentEmail,
+			@RequestParam("feedback") String feedback) {
+		taskService.setTaskAsDone(taskId, studentEmail, feedback);
+	}
 }

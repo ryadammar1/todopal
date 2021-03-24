@@ -5,7 +5,11 @@ function ViewStudentTaskPage({ mandatoryList, optionalList }) {
   return (
     <div id="view-student-tasks-page-wrapper">
       <div id="tasks-wrapper">
-        <TaskList tasks={mandatoryList} listName="Mandatory" isTeacher={true} />
+        <TaskList
+          tasks={mandatoryList}
+          listName="Mandatory"
+          isTeacher={false}
+        />
 
         <TaskList tasks={optionalList} listName="Optional" isTeacher={false} />
       </div>
