@@ -6,6 +6,10 @@ import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import todopal.dao.*;
+import todopal.model.Classroom;
+import todopal.model.Teacher;
+
+import java.util.HashSet;
 
 @SpringBootTest(classes = CucumberTestsRunner.class)
 public class CucumberHooks {
@@ -37,7 +41,16 @@ public class CucumberHooks {
         studentRepository.deleteAll();
         taskContainerRepository.deleteAll();
         taskRepository.deleteAll();
-
+        for (Teacher t : teacherRepository.findAll()) {
+            for (Classroom c : t.getClassroom()) {
+                c.setTeacher(null);
+                classroomRepository.save(c);
+            }
+            t.setClassroom(new HashSet<Classroom>());
+            teacherRepository.save(t);
+        }
+        teacherRepository.deleteAll();
+        classroomRepository.deleteAll();
     }
 
 }

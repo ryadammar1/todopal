@@ -34,8 +34,8 @@ public class TestCreateTeacher {
 		 }
 	 }
 	 
-	 @Then("an account for {string} is created under the email {string} with name {string} and password {string}")
-	 public void an_account_for_is_created_under_the_email_with_name_and_password(String email, String email2, String name, String password) {
+	 @Then("a teacher account for {string} is created under the email {string} with name {string} and password {string}")
+	 public void a_teacher_account_for_is_created_under_the_email_with_name_and_password(String email, String email2, String name, String password) {
 	 	boolean exists = false;
 
 	     Teacher teacher = teacherService.getTeacher(email);
@@ -43,11 +43,6 @@ public class TestCreateTeacher {
 	     	exists = true;
 		 }
 
-		 Student student = studentService.getStudent(email);
-	     System.out.println(email);
-	     if(student != null){
-	     	exists = true;
-		 }
 	     Assertions.assertTrue(exists);
 	 }
 	 

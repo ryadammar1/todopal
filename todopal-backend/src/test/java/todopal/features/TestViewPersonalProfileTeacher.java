@@ -3,6 +3,7 @@ package todopal.features;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import io.cucumber.java.en.Given;
@@ -45,6 +46,11 @@ public class TestViewPersonalProfileTeacher {
         response = todopalRestController.getTeacherPersonalInfromationByEmail(email);
     }
 
+    @Then("the teacher name of {string} will be displayed")
+    public void the_teacher_name_of_will_be_displayed(String name) {
+        Assert.assertEquals(name, response.getName());
+    }
+
     @Then("the classrooms {string} and {string} are displayed")
     public void the_classrooms_and_are_displayed(String classroom1, String classroom2) {
         assertEquals(2, response.getClassroom().size());
@@ -59,6 +65,11 @@ public class TestViewPersonalProfileTeacher {
         }
         assertTrue(foundClassroom1, "Teacher is registered with " + classroom1);
         assertTrue(foundClassroom2, "Teacher is registered with " + classroom2);
+    }
+
+    @Then("the email {string} associated with teacher {string} will be displayed")
+    public void the_email_associated_with_teacher_will_be_displayed(String email, String fullname) {
+        Assert.assertEquals(email, response.getEmail());
     }
 
     @Then("the bio displays: {string}")

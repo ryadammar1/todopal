@@ -59,7 +59,7 @@ public class TestMarkTaskCompletion {
 
 	@When("student {string} marks the task as complete")
 	public void student_marks_as_complete(String studentName) {
-		todopalRestController.markTaskAsDone(task.getTaskId(), student.getEmail(), "You're lazy");
+		taskContainer = taskService.setTaskAsDone(task.getTaskId(), student.getEmail(), "You're lazy");
 	}
 
 	@Then("the {string} is marked as {string}")

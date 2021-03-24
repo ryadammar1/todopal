@@ -219,18 +219,27 @@ public class TaskService {
 
 		for (TaskContainer tc : student.getSchoolTask()) {
 			if (tc.getTaskContainerId() == taskContainerID) {
-				if (taskContainer.getStatus() == TaskStatus.CLOSED) {
+				if (taskContainer.getStatus() == TaskStatus.PROGRESS) {
 					taskContainer.setStatus(TaskStatus.DONE);
 					taskContainer.setFeedback(feedback);
 					taskContainer.setCompletionDate(LocalDate.now());
 					taskContainerRepository.save(taskContainer);
 					hasTask = true;
-				} else {
-					throw new IllegalArgumentException("Specified task is not closed yet");
 				}
 			}
 		}
-		if (hasTask == false) {
+		for (TaskContainer tc : student.getPersonalTask()) {
+			if (tc.getTaskContainerId() == taskContainerID) {
+				if (taskContainer.getStatus() == TaskStatus.PROGRESS) {
+					taskContainer.setStatus(TaskStatus.CLOSED);
+					taskContainer.setFeedback(feedback);
+					taskContainer.setCompletionDate(LocalDate.now());
+					taskContainerRepository.save(taskContainer);
+					hasTask = true;
+				}
+			}
+		}
+		if (!hasTask) {
 			throw new IllegalArgumentException("The specified student doesn't have this task");
 		}
 

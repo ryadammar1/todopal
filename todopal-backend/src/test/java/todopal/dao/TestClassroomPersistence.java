@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import todopal.model.Classroom;
+import todopal.model.Teacher;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -26,8 +28,20 @@ public class TestClassroomPersistence {
 	@Autowired
 	private ClassroomRepository classroomRepository;
 
+	@Autowired
+	private TeacherRepository teacherRepository;
+
 	@AfterEach
 	public void clearDatabase() {
+		for (Teacher t : teacherRepository.findAll()) {
+			for (Classroom c : t.getClassroom()) {
+				c.setTeacher(null);
+				classroomRepository.save(c);
+			}
+			t.setClassroom(new HashSet<Classroom>());
+			teacherRepository.save(t);
+		}
+		teacherRepository.deleteAll();
 		classroomRepository.deleteAll();
 	}
 

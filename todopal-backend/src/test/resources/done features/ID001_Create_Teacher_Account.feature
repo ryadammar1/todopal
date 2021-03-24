@@ -8,7 +8,7 @@ Scenario Outline: Different Teachers (Normal Flow)
 
     Given an unregistered teacher wants to register for a new account
     When user "Michael Scott" with email "michael.scott@gmail.com" registers for a teacher account with name "Michael Scott" and password "aa001"
-    Then an account for "michael.scott@gmail.com" is created under the email "michael.scott@gmail.com" with name "Michael Scott" and password "aa001"
+    Then a teacher account for "michael.scott@gmail.com" is created under the email "michael.scott@gmail.com" with name "Michael Scott" and password "aa001"
 
 Scenario Outline: Teacher attempts to become an user with an invalid email (Error Flow)
 

@@ -8,7 +8,7 @@ Feature: Create Student User
 
         Given an unregistered student wants to register for a new account
         When user "Jake Peralta" with email "jake.peralta@gmail.com" registers for a student account with name "Jake_P" and password "aa001"
-        Then an account for "jake.peralta@gmail.com" is created under the email "jake.peralta@gmail.com" with name "Jake_P" and password "aa001"
+        Then a student account for "jake.peralta@gmail.com" is created under the email "jake.peralta@gmail.com" with name "Jake_P" and password "aa001"
 
     Scenario Outline: Student attempts to become user with an invalid email (Error Flow)
 

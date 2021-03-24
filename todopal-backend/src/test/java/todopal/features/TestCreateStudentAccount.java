@@ -1,10 +1,14 @@
 package todopal.features;
 
+import io.cucumber.java.en.Then;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import todopal.controller.TodopalRestController;
+import todopal.model.Student;
+import todopal.model.Teacher;
 import todopal.service.StudentService;
 
 public class TestCreateStudentAccount {
@@ -27,6 +31,19 @@ public class TestCreateStudentAccount {
             Ressources.message = e.getMessage();
         }
     }
+
+    @Then("a student account for {string} is created under the email {string} with name {string} and password {string}")
+    public void a_student_account_for_is_created_under_the_email_with_name_and_password(String email, String email2, String name, String password) {
+        boolean exists = false;
+
+        Student student = studentService.getStudent(email);
+        if(student != null){
+            exists = true;
+        }
+
+        Assertions.assertTrue(exists);
+    }
+
 
     @Given("a registered student {string} with email {string} wants to register for a new account")
     public void a_registered_student_with_email_wants_to_register_for_a_new_account(String name, String email) {

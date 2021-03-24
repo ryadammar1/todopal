@@ -166,7 +166,7 @@ public class TestTaskService {
 					} else if ((Long) invocation.getArgument(0) == (TC_TEST_APPROVE)) {
 						return makeTestingTaskContainer(TC_TEST_APPROVE, TaskStatus.DONE, null);
 					} else if ((Long) invocation.getArgument(0) == (TC_TEST_SET_DONE)) {
-						TaskContainer tc = makeTestingTaskContainer(TC_TEST_SET_DONE, TaskStatus.CLOSED, LocalDate.parse("2021-02-13"));
+						TaskContainer tc = makeTestingTaskContainer(TC_TEST_SET_DONE, TaskStatus.PROGRESS, LocalDate.parse("2021-02-13"));
 						tc.setFeedback(FEEDBACK_TEST_SET_DONE);
 						return tc;
 					} else if ((Long) invocation.getArgument(0) == (TC_TEST_SET_DONE2)) {
@@ -425,20 +425,6 @@ public class TestTaskService {
 
 		assertEquals(true, actualMessage.contains(expectedMessage));
 	}
-	
-	@Test
-	public void testSetTaskAsDoneIllegalArgument4() throws Exception {
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-			service.setTaskAsDone(TC_TEST_SET_DONE2, SD_TEST_SET_DONE4, FEEDBACK_TEST_SET_DONE);
-		});
-
-		String expectedMessage = "Specified task is not closed yet";
-		String actualMessage = exception.getMessage();
-
-		assertEquals(true, actualMessage.contains(expectedMessage));
-	}
-	
-	
 
 	@Test
 	public void testDeleteTaskFromValidTask() {

@@ -8,6 +8,6 @@ Feature: View Personal Profile
 
         Given student "John Bob" is logged in with email "john.king@art.gallery" and password "Bob1234" and total points "15"
         When student "john.king@art.gallery" is accessing his personal profile
-        Then the name of "John Bob" will be displayed
+        Then the student name of "John Bob" will be displayed
         And the number of total points "15" of "John Bob" wll be displayed
-        And the email "john.king@art.gallery" associated with "John Bob" will be displayed
+        And the email "john.king@art.gallery" associated with student "John Bob" will be displayed
