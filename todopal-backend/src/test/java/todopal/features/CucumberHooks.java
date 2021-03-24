@@ -37,8 +37,7 @@ public class CucumberHooks {
         studentRepository.deleteAll();
         taskContainerRepository.deleteAll();
         taskRepository.deleteAll();
-        classroomRepository.deleteAll();
-        teacherRepository.deleteAll();
+
     }
 
 }

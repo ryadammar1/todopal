@@ -162,6 +162,13 @@ public class ClassroomService {
 	}
 
 	@Transactional
+	public Classroom deleteClassroom(long id){
+		Classroom classroom = classroomRepository.findByClassroomId(id);
+		if (classroom == null) {
+			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
+		}
+		classroomRepository.delete(classroom);
+}
 	public Classroom updateClassroom(Classroom classroom) {
 		if (classroomRepository.findByClassroomId(classroom.getClassroomId()) == null) {
 			throw new IllegalArgumentException(NULL_CLASSROOM_EXCEPTION);
@@ -180,8 +187,13 @@ public class ClassroomService {
 	}
 
 	@Transactional
-	public Classroom getClassroom(String classroomName, String teacherEmail) {
-		return classroomRepository.findByNameAndTeacherEmail(classroomName, teacherEmail);
+	public Classroom getClassroom(String teacherEmail, String classroomName) {
+		return classroomRepository.findByNameAndTeacherEmail(teacherEmail, classroomName);
+	}
+
+	@Transactional
+	public Classroom updateClassroom(Classroom classroom) {
+		return classroomRepository.save(classroom);
 	}
 
 	@Transactional

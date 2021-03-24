@@ -2,7 +2,7 @@ import { useState } from "react";
 import "../style/topbar.css";
 import TaskCreater from "./TaskCreater";
 
-function Topbar({ setState, name }) {
+function Topbar({ setState, name, isTeacher }) {
   const [isDisplay, setIsDisplay] = useState("none");
 
   function homeOnClickHandler() {

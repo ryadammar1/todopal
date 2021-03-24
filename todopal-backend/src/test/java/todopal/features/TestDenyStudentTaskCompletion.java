@@ -52,7 +52,11 @@ public class TestDenyStudentTaskCompletion {
 
     @Given("teacher {string} is logged in with email {string}")
     public void teacher_is_logged_in_with_email(String name, String email) {
-        teacherService.createTeacher("123", name, email, "123", "I am teacher and I exist");
+        try{
+            teacherService.createTeacher("123", name, email, "123", "I am teacher and I exist");
+        }catch (Exception e){
+
+        }
     }
 
     @When("{string} marks {string} as incomplete for student {string} with message {string}")
