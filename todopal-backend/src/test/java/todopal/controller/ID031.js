@@ -2,6 +2,7 @@ import axios from "axios";
 
 //variables
 const id = 69;
+const containerId = 10000;
 const name = "TestTask";
 const description = "none";
 const tag = "math";
@@ -19,8 +20,10 @@ const studentPassword = "1234";
 export const ID031 = async function () {
   await createStudent();
   await createTask();
+  await createTaskContainer();
+  await addTaskToStudent();
   await setTaskAsDone();
-  return await getTask();
+  return await getTaskContainer();
 };
 
 //test functions
@@ -40,22 +43,39 @@ const createTask = async () => {
   });
 };
 
-const setTaskAsDone = async () => {
-  await axios.post(`/mark-task-done/`, null, {
+const createTaskContainer = async () => {
+  await axios.post(`/create-task-container/`, null, {
     params: {
-      id: id,
-      email: email,
-      feedback: feedback,
+      id: containerId,
+      date: due_date,
+      status: "PROGRESS",
+      taskId: id,
+      feedback: "you are not a good student",
     },
   });
 };
 
-const getTask = async () => {
-  await axios.post(`/task/`, null, {
+const addTaskToStudent = async () => {
+  await axios.put(`/add_task_to_student/${studentEmail}/${containerId}`);
+};
+
+const setTaskAsDone = async () => {
+  await axios.post(`/mark-task-done/`, null, {
     params: {
-      id: id,
+      id: containerId,
+      email: studentEmail,
+      feedback: "nop",
     },
   });
+};
+
+const getTaskContainer = async () => {
+  const res = await axios.get(`/task-container/`, {
+    params: {
+      id: containerId,
+    },
+  });
+  return res.data;
 };
 
 const createStudent = async () => {

@@ -70,12 +70,12 @@ public class TodopalRestController {
 
 	@PostMapping(value = { "/create-task-container", "/create-task-container/" })
 	public TaskContainerDto createTaskContainer(@RequestParam("id") long taskContainerId,
-			@RequestParam("date") String completionDate, @RequestParam("status") TaskStatus status,
+			@RequestParam("date") String completionDate, @RequestParam("status") String status,
 			@RequestParam("taskId") long taskId, @RequestParam("feedback") String feedback) throws Exception {
 
 		LocalDate realCompletionDate = LocalDate.parse(completionDate);
-		TaskContainer taskContainer = taskService.createTaskContainer(taskContainerId, realCompletionDate, status,
-				taskId, feedback);
+		TaskContainer taskContainer = taskService.createTaskContainer(taskContainerId, realCompletionDate,
+				TaskStatus.valueOf(status), taskId, feedback);
 		return Converter.convertToDto(taskContainer);
 	}
 
@@ -280,5 +280,17 @@ public class TodopalRestController {
 	public void markTaskAsDone(@RequestParam("id") long taskId, @RequestParam("email") String studentEmail,
 			@RequestParam("feedback") String feedback) {
 		taskService.setTaskAsDone(taskId, studentEmail, feedback);
+	}
+
+	@PutMapping(value = { "/add_task_to_student/{email}/{task_id}", "/add_task_to_student/{email}/{task_id}/" })
+	public StudentDto addTaskToStudent(@PathVariable("email") String email, @PathVariable("task_id") String task_id)
+			throws Exception {
+		Student student = studentService.getStudent(email);
+		TaskContainer task = taskService.getTaskContainer(Long.parseLong(task_id));
+		student.getSchoolTask().add(task);
+
+		studentService.updateStudent(student);
+
+		return Converter.convertToDto(student);
 	}
 }
