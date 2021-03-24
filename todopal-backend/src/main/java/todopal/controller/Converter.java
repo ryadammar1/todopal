@@ -1,5 +1,7 @@
 package todopal.controller;
 
+import java.util.stream.Collectors;
+
 import todopal.dto.ClassroomDto;
 import todopal.dto.StudentDto;
 import todopal.dto.TaskContainerDto;
@@ -18,6 +20,18 @@ public class Converter {
         }
 
         return new TeacherDto(teacher.getName());
+    }
+
+    protected static TeacherDto convertToDtoWithPersonalInfo(Teacher teacher) {
+        if (teacher == null) {
+            throw new IllegalArgumentException("There is no such Teacher!");
+        }
+
+        TeacherDto dto = new TeacherDto(teacher.getName(), teacher.getEmail(), teacher.getPassword(), teacher.getBio());
+        dto.setClassroom(
+                teacher.getClassroom().stream().map((c) -> new ClassroomDto(c.getName())).collect(Collectors.toSet()));
+
+        return dto;
     }
 
     protected static TaskDto convertToDto(Task task) {
