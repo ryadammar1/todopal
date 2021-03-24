@@ -173,8 +173,14 @@ public class TodopalRestController {
 	}
 
 	@GetMapping(value = { "/teachers/{email}", "/teachers/{email}/" })
-	public TeacherDto getTeacherByName(@PathVariable("email") String email) throws IllegalArgumentException {
+	public TeacherDto getTeacherByEmail(@PathVariable("email") String email) throws IllegalArgumentException {
 		return Converter.convertToDto(teacherService.getTeacher(email));
+	}
+
+	@GetMapping(value = { "/teachers/personal/{email}", "/teachers/personal/{email}/" })
+	public TeacherDto getTeacherPersonalInfromationByEmail(@PathVariable("email") String email)
+			throws IllegalArgumentException {
+		return Converter.convertToDtoWithPersonalInfo(teacherService.getTeacher(email));
 	}
 
 	@GetMapping(value = { "/teachers", "/teachers/" })
@@ -212,6 +218,11 @@ public class TodopalRestController {
 		studentService.getStudentPersonalTasks(email)
 				.forEach(container -> taskContainers.add(Converter.convertToDto(container)));
 		return taskContainers;
+
+	@GetMapping(value = { "/students/personal/{email}", "/students/personal/{email}/" })
+	public StudentDto getStudentByEmailWithPersonalInfo(@PathVariable("email") String email)
+			throws IllegalArgumentException {
+		return Converter.convertToStudentDtoWithPersonalInfo(studentService.getStudent(email));
 	}
 
 	@GetMapping(value = { "/students", "/students/" })
@@ -226,5 +237,11 @@ public class TodopalRestController {
 			@PathVariable("name") String name) {
 		Teacher teacher = teacherService.addToOptionalLists(teacherEmail, name);
 		return Converter.convertToDto(teacher);
+	}
+
+	@PostMapping(value = { "/mark-task-done", "/mark-task-done/" })
+	public void markTaskAsDone(@RequestParam("id") long taskId, @RequestParam("email") String studentEmail,
+			@RequestParam("feedback") String feedback) {
+		taskService.setTaskAsDone(taskId, studentEmail, feedback);
 	}
 }

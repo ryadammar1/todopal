@@ -22,7 +22,7 @@ public class Teacher extends Person {
       return this.approvalCode;
    }
 
-   @OneToMany(fetch = FetchType.EAGER)
+   @OneToMany(mappedBy = "teacher", fetch = FetchType.EAGER)
    public Set<Classroom> getClassroom() {
       return this.classroom;
    }
