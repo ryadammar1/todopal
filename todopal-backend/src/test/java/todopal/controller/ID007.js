@@ -1,13 +1,6 @@
 import axios from 'axios';
 
 //variables
-/**
- * 
- *  | name  | description              | points | start date | due date   | tag  | list  |
-    | exist | this is an existing task | 1      | 2021-01-23 | 2021-01-23 | math | Bonus | 
- * 
- * 
- */
 let id = 5;
 const isMandatory = true;
 const name = "exist";

@@ -16,6 +16,7 @@ import { ID012 } from "./ID012.js";
 import { ID007 } from "./ID007.js";
 import { ID013 } from "./ID013.js"; 
 import { ID024 } from "./ID024.js";
+import { ID029 } from "./ID029.js";
 
 //import db cleaner
 import { clean } from "./DBCleaner.js";
@@ -30,9 +31,13 @@ const id013 = await ID013();
 await clean();
 const id024 = await ID024();
 await clean();
+const id029 = await ID029();
+await clean();
 
+/*
 assert.strictEqual("Kevin", id012[0]);
 assert.strictEqual(id007 != null, true);
 assert.strictEqual("Kevin", id013.name);
 assert.strictEqual("kevin@kevin.ca", id013.email);
 assert.strictEqual("1234", id013.password);
+*/
