@@ -203,6 +203,12 @@ public class TodopalRestController {
 		return Converter.convertToDto(student);
 	}
 
+	@GetMapping(value = { "/students/personal/{email}", "/students/personal/{email}/" })
+	public StudentDto getStudentByEmailWithPersonalInfo(@PathVariable("email") String email)
+			throws IllegalArgumentException {
+		return Converter.convertToStudentDtoWithPersonalInfo(studentService.getStudent(email));
+	}
+
 	@GetMapping(value = { "/students", "/students/" })
 	public List<StudentDto> getAllStudents() {
 		List<StudentDto> students = new ArrayList<>();
@@ -215,5 +221,11 @@ public class TodopalRestController {
 			@PathVariable("name") String name) {
 		Teacher teacher = teacherService.addToOptionalLists(teacherEmail, name);
 		return Converter.convertToDto(teacher);
+	}
+
+	@PostMapping(value = { "/mark-task-done", "/mark-task-done/" })
+	public void markTaskAsDone(@RequestParam("id") long taskId, @RequestParam("email") String studentEmail,
+			@RequestParam("feedback") String feedback) {
+		taskService.setTaskAsDone(taskId, studentEmail, feedback);
 	}
 }

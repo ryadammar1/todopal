@@ -76,6 +76,9 @@ function TemporaryHomePage({ setState }) {
       <button onClick={() => ViewTeacherProfileOnClick(false)}>
         View Teacher Profile (as student)
       </button>
+      
+      <div>View Personal Profile as Student</div>
+      <button onClick={() => ViewPersonalProfileStudentOnClick()}>View Personal Profile as Student</button>
     </>
   );
 }
