@@ -15,6 +15,7 @@ import assert from "assert";
 import { ID012 } from "./ID012.js";
 import { ID007 } from "./ID007.js";
 import { ID013 } from "./ID013.js"; 
+import { ID024 } from "./ID024.js";
 
 //import db cleaner
 import { clean } from './DBCleaner.js';
@@ -26,6 +27,8 @@ await clean();
 const id007 = await ID007();
 await clean();
 const id013 = await ID013();
+await clean();
+const id024 = await ID024();
 await clean();
 
 assert.strictEqual("Kevin", id012[0]);
