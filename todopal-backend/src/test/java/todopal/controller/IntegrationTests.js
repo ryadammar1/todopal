@@ -18,6 +18,7 @@ import { ID013 } from "./ID013.js";
 import { ID024 } from "./ID024.js";
 import { ID029 } from "./ID029.js";
 import { ID031 } from "./ID031.js";
+import { ID036 } from "./ID036.js";
 
 //import db cleaner
 import { clean } from "./DBCleaner.js";
@@ -36,6 +37,8 @@ const id029 = await ID029();
 await clean();
 const id031 = await ID031();
 await clean();
+const id036 = await ID036();
+await clean();
 
 assert.strictEqual("Kevin", id012[0]);
 assert.strictEqual(id007 != null, true);
@@ -44,3 +47,4 @@ assert.strictEqual("kevin@kevin.ca", id013.email);
 assert.strictEqual("John", id024.name);
 assert.strictEqual("exist", id029[0].name);
 assert.strictEqual("DONE", id031.status);
+assert.strictEqual("Student Bread", id036.name);
