@@ -33,14 +33,7 @@ public class TestTaskPersistence {
 	private final String TASK_START_DATE = "2021-02-13";
 	private final String TASK_DUE_DATE = "2021-02-16";
 
-	private final String TEACHER_NAME = "NAME_TEST";
-	private final String TEACHER_EMAIL = "name.test@yahoo.ca";
-	private final String TEACHER_BIO = "I love pen island!";
-	private final String TEACHER_APPROVAL_CODE = "911";
-	private final String CLASS_NAME = "NAME_TEST";
-	private final long CLASS_ID = 1;
-
-	private ArrayList<String> TASK_CATEGORIES = new ArrayList<String>();
+	private final ArrayList<String> TASK_CATEGORIES = new ArrayList<>();
 
 	@Autowired
 	private TeacherRepository teacherRepository;
@@ -61,9 +54,13 @@ public class TestTaskPersistence {
 	private Teacher createTeacher() {
 		final Teacher teacher = new Teacher();
 
+		String TEACHER_EMAIL = "name.test@yahoo.ca";
 		teacher.setEmail(TEACHER_EMAIL);
+		String TEACHER_NAME = "NAME_TEST";
 		teacher.setName(TEACHER_NAME);
+		String TEACHER_BIO = "I love pen island!";
 		teacher.setBio(TEACHER_BIO);
+		String TEACHER_APPROVAL_CODE = "911";
 		teacher.setApprovalCode(TEACHER_APPROVAL_CODE);
 
 		return teacherRepository.save(teacher);
@@ -76,7 +73,9 @@ public class TestTaskPersistence {
 		TASK_CATEGORIES.add("English");
 		TASK_CATEGORIES.add("Physics");
 
+		long CLASS_ID = 1;
 		classroom.setClassroomId(CLASS_ID);
+		String CLASS_NAME = "NAME_TEST";
 		classroom.setName(CLASS_NAME);
 		classroom.setTaskCategories(TASK_CATEGORIES);
 

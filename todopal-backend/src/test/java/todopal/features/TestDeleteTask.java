@@ -3,10 +3,7 @@ package todopal.features;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import todopal.dao.ClassroomRepository;
-import todopal.dao.TaskRepository;
 import todopal.model.Classroom;
 import todopal.model.Task;
 import todopal.model.Teacher;
@@ -19,19 +16,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class TeskDeleteTask {
+@SuppressWarnings("SpringJavaAutowiredMembersInspection")
+public class TestDeleteTask {
 
     @Autowired
     private TeacherService teacherService;
+
     @Autowired
     private ClassroomService classroomService;
+
     @Autowired
     private TaskService taskService;
-    @Autowired
-    private ClassroomRepository classroomRepository;
 
 
     @Given("{string} has a class {string}")
@@ -50,8 +47,8 @@ public class TeskDeleteTask {
         }
     }
 
-    @Given("the following tasks exist within class {string} for teacher {string}")
-    public void the_following_tasks_exist_within_class_for_teacher(String className, String teacherName, io.cucumber.datatable.DataTable dataTable) {
+    @Given("the following tasks exist for teacher {string}")
+    public void the_following_tasks_exist_within_class_for_teacher(String teacherName, io.cucumber.datatable.DataTable dataTable) {
 
         System.out.println(teacherName+"@gmail.com");
         Classroom classroom = classroomService.getClassroom(Ressources.classroomId);
@@ -61,7 +58,7 @@ public class TeskDeleteTask {
 
         for (Map<String, String> taskInfo : tasksInfo) {
             try {
-                Task task = taskService.createTask((long)taskInfo.get("description").hashCode(), taskInfo.get("name"), taskInfo.get("description"), taskInfo.get("tag"), taskInfo.get("list"), true, Integer.parseInt(taskInfo.get("points")), taskInfo.get("start date"), taskInfo.get("due date"));
+                Task task = taskService.createTask(taskInfo.get("description").hashCode(), taskInfo.get("name"), taskInfo.get("description"), taskInfo.get("tag"), taskInfo.get("list"), true, Integer.parseInt(taskInfo.get("points")), taskInfo.get("start date"), taskInfo.get("due date"));
                 tasks.add(task);
             } catch (Exception e) {
                 Ressources.message = e.getMessage();
@@ -90,20 +87,10 @@ public class TeskDeleteTask {
         }
     }
 
-    @Then("there are no more tasks in class {string} for teacher {string}")
-    public void there_are_no_more_tasks_in_class(String className, String teacherName) {
+    @Then("there are no more tasks in the class")
+    public void there_are_no_more_tasks_in_class() {
         Classroom classroom = classroomService.getClassroom(Ressources.classroomId);
         if(!(classroom.getTask() == null || classroom.getTask().size() == 0)){
-            fail();
-        }
-    }
-
-
-    @Then("only one task remains in class {string} for teacher {string}")
-    public void only_one_tasks_in_class(String className, String teacherName) {
-        Classroom classroom = classroomService.getClassroom(Ressources.classroomId);
-        System.out.println(classroom.getTask().size());
-        if(classroom.getTask().size() != 1){
             fail();
         }
     }

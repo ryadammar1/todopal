@@ -44,7 +44,7 @@ public class TestDenyStudentTaskCompletion {
         try {
             Task task = taskService.getTask(1);
             task.setPointCount(Integer.parseInt(points));
-            taskService.updateTask(task.getTaskId(), task);
+            taskService.updateTask(task);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -76,7 +76,7 @@ public class TestDenyStudentTaskCompletion {
         currentTask.setStatus(TaskStatus.PROGRESS);
         currentTask.setFeedback(message);
         try {
-            taskService.updateTaskContainer(currentTask.getTaskContainerId(), currentTask);
+            taskService.updateTaskContainer(currentTask);
         } catch (Exception e) {
             Assert.fail();
         }

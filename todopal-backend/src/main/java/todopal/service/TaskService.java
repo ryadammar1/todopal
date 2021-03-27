@@ -90,11 +90,9 @@ public class TaskService {
 	}
 
 	@Transactional
-	public Task updateTask(long taskId, Task task) throws Exception {
-		Task oldTask = getTask(taskId);
-		oldTask = task;
-		taskRepository.save(oldTask);
-		return oldTask;
+	public Task updateTask(Task task) {
+		taskRepository.save(task);
+		return task;
 	}
 
 	@Transactional
@@ -124,11 +122,9 @@ public class TaskService {
 	}
 
 	@Transactional
-	public TaskContainer updateTaskContainer(long taskContainerId, TaskContainer taskContainer) throws Exception {
-		TaskContainer oldTaskContainer = getTaskContainer(taskContainerId);
-		oldTaskContainer = taskContainer;
-		taskContainerRepository.save(oldTaskContainer);
-		return oldTaskContainer;
+	public TaskContainer updateTaskContainer(TaskContainer taskContainer) {
+		taskContainerRepository.save(taskContainer);
+		return taskContainer;
 	}
 
 	@Transactional
@@ -169,7 +165,7 @@ public class TaskService {
 	}
 
 	@Transactional
-	public Student getStudentWithTask(long taskContainerId, String studentEmail) throws Exception {
+	public Student getStudentWithTask(long taskContainerId, String studentEmail) {
 		if (studentRepository.findStudentByEmail(studentEmail) == null) {
 			throw new IllegalArgumentException("Non-existant Student");
 		}
@@ -247,7 +243,7 @@ public class TaskService {
 	}
 
 	private <T> ArrayList<T> toArrayList(Iterable<T> iterable) {
-		ArrayList<T> resultList = new ArrayList<T>();
+		ArrayList<T> resultList = new ArrayList<>();
 		iterable.forEach(resultList::add);
 		return resultList;
 	}
