@@ -6,19 +6,19 @@ Feature: View Todo List
 
     Scenario: Student attempts to view all his tasks and is part of a classroom (Normal Flow)
 
-        Given student "John" is logged in with email "John@gmail.com" and password "1234" and total points "0"
-        And the following tasks exist for "John@gmail.com" in class "ECSE428"
-            | TaskName          | Status       |
-            | Read book         | To-do        |
-            | Complete homework | In Progress  |
-            | Watch tutorial    | Done         |
-            | Read tutorial     | To-do        |
-        When user "John@gmail.com" views his todolist
+        Given user "John" is logged in as a student
+        And the following tasks exist for "John"
+            | TaskName          | Status       | List      |
+            | Read book         | To-do        | Mandatory |
+            | Complete homework | In Progress  | Personal  |
+            | Watch tutorial    | Done         | Optional  |
+            | Read tutorial     | To-do        | Mandatory |
+        When user "John" views his todolist
         Then the following todo list is returned "To-do Read book,In Progress Complete homework,Done Watch tutorial,To-do Read tutorial"
 
     Scenario: Student attempts to view all of his tasks but is not part of a classroom (Error Flow)
 
-        Given student "John" is logged in with email "John@gmail.com" and password "1234" and total points "0"
-        But user "John@gmail.com" is not part of a classroom
-        When user "John@gmail.com" views his todolist
+        Given user "John" is logged on as a student
+        But user "John" is not part of a classroom
+        When user "John" views his todolist
         Then an "Student is not part of a classroom" message is issued

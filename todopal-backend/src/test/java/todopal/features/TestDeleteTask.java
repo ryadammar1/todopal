@@ -50,7 +50,7 @@ public class TestDeleteTask {
     @Given("the following tasks exist for teacher {string}")
     public void the_following_tasks_exist_within_class_for_teacher(String teacherName, io.cucumber.datatable.DataTable dataTable) {
 
-
+        System.out.println(teacherName+"@gmail.com");
         Classroom classroom = classroomService.getClassroom(Ressources.classroomId);
         Set<Task> tasks = new HashSet<>();
         if(classroom == null) fail();
