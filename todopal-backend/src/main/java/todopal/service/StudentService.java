@@ -159,14 +159,16 @@ public class StudentService {
 	@Transactional
 	public Set<TaskContainer> getStudentPersonalTasks(String email) {
 		Student student = getStudent(email);
-		
+
 		return student.getPersonalTask();
 	}
 	
 	@Transactional
 	public Set<TaskContainer> getStudentSchoolTasks(String email) {
 		Student student = getStudent(email);
-		
+		if(student.getClassroom() == null){
+			throw new IllegalStateException("Student is not part of a classroom");
+		}
 		return student.getSchoolTask();
 	}
 
