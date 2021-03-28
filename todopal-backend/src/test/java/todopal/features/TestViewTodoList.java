@@ -1,6 +1,6 @@
 package todopal.features;
 
-import io.cucumber.java.bs.A;
+import io.cucumber.core.resource.Resource;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -16,10 +16,10 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.fail;
-
 
 public class TestViewTodoList {
 
@@ -35,57 +35,76 @@ public class TestViewTodoList {
     @Autowired
     private TaskService taskService;
 
+    @Given("the following tasks exist for {string} in class {string}")
+    public void the_following_tasks_exist_for(String string, String string2,
+            io.cucumber.datatable.DataTable dataTable) {
 
-        @Given("the following tasks exist for {string} in class {string}")
-        public void the_following_tasks_exist_for(String string, String string2, io.cucumber.datatable.DataTable dataTable) {
+        Student student = studentService.getStudent(string);
+        Teacher teacher = teacherService.createTeacher("123", "Bob", "e@e.e", "1234", "i am a teacher");
+        Classroom classroom = classroomService.createClassroom(teacher, string2, "/", "math");
 
-            Student student = studentService.getStudent(string);
-            Teacher teacher = teacherService.createTeacher("123","Bob","e@e.e","1234","i am a teacher");
-            Classroom classroom = classroomService.createClassroom(teacher, string2, "/","math");
-
-            Set<Task> tasks = new HashSet<>();
-            Set<TaskContainer> studentTasks = new HashSet<>();
-            if(classroom == null) fail();
-            List<Map<String, String>> tasksInfo = dataTable.asMaps(String.class, String.class);
-
-            for (Map<String, String> taskInfo : tasksInfo) {
-                try {
-                    Task task = taskService.createTask(taskInfo.get("TaskName").hashCode(), taskInfo.get("TaskName"), "", "", "", true, 0, LocalDate.now(), LocalDate.of(2025, 03, 03));
-                    studentTasks.add(taskService.createTaskContainer(12, LocalDate.now(), TaskStatus.valueOf(taskInfo.get("TaskName")), taskInfo.get("TaskName").hashCode(), "Good"));
-                    tasks.add(task);
-                } catch (Exception e) {
-                    Ressources.message = e.getMessage();
-
-                }
-            }
-
-            classroom.setTask(tasks);
-            student.setSchoolTask(studentTasks);
-            student.setClassroom(classroom);
-            studentService.updateStudent(student);
-            classroomService.updateClassroom(classroom);
+        Set<Task> tasks = new HashSet<>();
+        Set<TaskContainer> studentTasks = new HashSet<>();
+        if (classroom == null) {
+            fail();
         }
+        List<Map<String, String>> tasksInfo = dataTable.asMaps(String.class, String.class);
 
-        @When("user {string} views his todolist")
-        public void user_views_his_todolist(String string) {
-            try{
-                Set<TaskContainer> tasks = studentService.getStudentSchoolTasks(string);
-                Ressources.message = tasks.toString();
-            }catch (Exception e){
+        Random random = new Random();
+
+        for (Map<String, String> taskInfo : tasksInfo) {
+            try {
+                Task task = taskService.createTask(taskInfo.get("TaskName").hashCode(), taskInfo.get("TaskName"), "",
+                        "", "", true, 0, LocalDate.now(), LocalDate.of(2025, 03, 03));
+
+
+                studentTasks.add(taskService.createTaskContainer(random.nextInt(), LocalDate.now(),
+                        TaskStatus.valueOf(taskInfo.get("Status")), taskInfo.get("TaskName").hashCode(), "Good"));
+                tasks.add(task);
+            } catch (Exception e) {
                 Ressources.message = e.getMessage();
+
             }
-
         }
 
-        @Then("the following todo list is returned {string}")
-        public void the_following_todo_list_is_returned(String string) {
-            Assertions.assertEquals(Ressources.message, string);
+        student.setClassroom(classroom);
+        classroom.setTask(tasks);
+        student.setSchoolTask(studentTasks);
+
+        studentService.updateStudent(student);
+        classroomService.updateClassroom(classroom);
+    }
+
+    @When("user {string} views his todolist")
+    public void user_views_his_todolist(String string) {
+        try {
+            Set<TaskContainer> tasks = studentService.getStudentSchoolTasks(string);
+            Ressources.message = "";
+            for(TaskContainer taskContainer : tasks)
+            {
+                Ressources.message += taskContainer.getTask().getName() + ",";
+            }
+        } catch (Exception e) {
+            Ressources.message = e.getMessage();
         }
 
+    }
 
-        @Given("user {string} is not part of a classroom")
-        public void user_is_not_part_of_a_classroom(String string) {
+    @Then("the following todo list is returned {string}")
+    public void the_following_todo_list_is_returned(String string) {
 
+        for (String sequence : string.split(","))
+        {
+            if(!Ressources.message.contains(sequence))
+            {
+                Assertions.fail();
+            }
         }
+    }
+
+    @Given("user {string} is not part of a classroom")
+    public void user_is_not_part_of_a_classroom(String string) {
+
+    }
 
 }

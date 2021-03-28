@@ -8,13 +8,13 @@ Feature: View Todo List
 
         Given student "John" is logged in with email "John@gmail.com" and password "1234" and total points "0"
         And the following tasks exist for "John@gmail.com" in class "ECSE428"
-            | TaskName          | Status       |
-            | Read book         | To-do        |
-            | Complete homework | In Progress  |
-            | Watch tutorial    | Done         |
-            | Read tutorial     | To-do        |
+            | TaskName          | Status   |
+            | Read book         | TODO     |
+            | Complete homework | PROGRESS |
+            | Watch tutorial    | DONE     |
+            | Read tutorial     | TODO     |
         When user "John@gmail.com" views his todolist
-        Then the following todo list is returned "To-do Read book,In Progress Complete homework,Done Watch tutorial,To-do Read tutorial"
+        Then the following todo list is returned "Complete homework,Read book,Read tutorial,Watch tutorial,"
 
     Scenario: Student attempts to view all of his tasks but is not part of a classroom (Error Flow)
 
