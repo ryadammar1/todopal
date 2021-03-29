@@ -20,6 +20,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import todopal.dao.StudentRepository;
+import todopal.model.Classroom;
 import todopal.model.Student;
 import todopal.model.Task;
 import todopal.model.TaskContainer;
@@ -222,6 +223,7 @@ public class TestStudentService {
 		student.setEmail(email);
 		student.setName(SD_NAME);
 		student.setPassword(SD_PASSWORD);
+		student.setClassroom(createClassroomMockFill());
 		
 		HashSet<TaskContainer> schoolTasks = new HashSet<TaskContainer>();
 		HashSet<TaskContainer> personalTasks = new HashSet<TaskContainer>();
@@ -245,4 +247,31 @@ public class TestStudentService {
 		
 		return taskcontainer;
 	}
+
+	private Classroom createClassroomMockFill() {
+		Classroom classroomMock = new Classroom();
+
+		classroomMock.setClassroomId(1);
+		classroomMock.setTeacher(null);
+		classroomMock.setName("group2");
+		classroomMock.setImagePath("www.image.com");
+		classroomMock.setSubject("french");
+
+		Set<Student> students = new HashSet<Student>();
+		Student stu1 = new Student();
+		stu1.setName("stu1");
+		Student stu2 = new Student();
+		stu2.setName("stu2");
+		Student stu3 = new Student();
+		stu3.setName("stu3");
+
+		students.add(stu1);
+		students.add(stu2);
+		students.add(stu3);
+
+		classroomMock.setStudent(students);
+
+		return classroomMock;
+	}
+
 }
